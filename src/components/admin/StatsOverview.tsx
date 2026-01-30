@@ -1,6 +1,6 @@
 "use client";
 
-import { useStorage } from "@/hooks/useStorage";
+import { useState, useEffect } from "react";
 import { Euro, Calendar, Users, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -20,7 +20,22 @@ const colorMap: Record<string, string> = {
 };
 
 export default function StatsOverview() {
-    const [bookings] = useStorage<any[]>('barber_bookings', []);
+    const [bookings, setBookings] = useState<any[]>([]);
+
+    useEffect(() => {
+        async function fetchStats() {
+            try {
+                const res = await fetch('/api/appointments');
+                if (res.ok) {
+                    const data = await res.json();
+                    setBookings(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch stats", error);
+            }
+        }
+        fetchStats();
+    }, []);
 
     // Calculate Stats
     const totalRevenue = bookings.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);

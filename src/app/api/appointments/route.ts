@@ -1,37 +1,55 @@
 import { NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
 
-// GET: Fetch all appointments (Mock implementation)
+// GET: Fetch all appointments from Real DB
 export async function GET() {
-    return NextResponse.json([
-        {
-            id: '1',
-            date: new Date().toISOString(),
-            status: 'CONFIRMED',
-            user: { name: 'Demo User' },
-            service: { name: 'Haircut & Styling' },
-            barber: { shopName: 'Neon Cuts' }
-        },
-        {
-            id: '2',
-            date: new Date(Date.now() + 86400000).toISOString(),
-            status: 'PENDING',
-            user: { name: 'Guest Client' },
-            service: { name: 'Beard Trim' },
-            barber: { shopName: 'Midnight Grooming' }
+    try {
+        if (!prisma) {
+            return NextResponse.json({ error: 'Database connection not initialized' }, { status: 500 });
         }
-    ]);
+
+        const appointments = await prisma.simpleAppointment.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+        return NextResponse.json(appointments);
+    } catch (error) {
+        console.error('Failed to fetch appointments:', error);
+        return NextResponse.json({ error: 'Failed to fetch appointments' }, { status: 500 });
+    }
 }
 
-// POST: Create a new appointment (Mock)
+// POST: Create a new appointment in Real DB
 export async function POST(request: Request) {
     try {
+        if (!prisma) {
+            return NextResponse.json({ error: 'Database connection not initialized' }, { status: 500 });
+        }
+
         const body = await request.json();
-        return NextResponse.json({
-            id: Math.random().toString(36).substr(2, 9),
-            ...body,
-            status: 'PENDING'
+
+        // Validate required fields
+        if (!body.name || !body.date || !body.time || !body.services) {
+            return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+        }
+
+        const appointment = await prisma.simpleAppointment.create({
+            data: {
+                name: body.name,
+                email: body.email || "",
+                phone: body.phone || "",
+                date: body.date,
+                time: body.time,
+                services: Array.isArray(body.services) ? body.services.join(", ") : body.services, // Ensure string storage
+                total: parseFloat(body.total),
+                status: 'pending'
+            }
         });
+
+        return NextResponse.json(appointment);
     } catch (error) {
+        console.error('Failed to create appointment:', error);
         return NextResponse.json({ error: 'Failed to create appointment' }, { status: 500 });
     }
 }

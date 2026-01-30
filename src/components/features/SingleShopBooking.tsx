@@ -32,8 +32,8 @@ export default function SingleShopBooking() {
     // Services State (Reactive)
     const [services] = useStorage('barber_services', SHOP.services);
 
-    // Bookings State (Reactive)
-    const [bookings, setBookings] = useStorage<any[]>('barber_bookings', []);
+    // Bookings State (Removed useStorage for bookings, as we now push to API)
+    // const [bookings, setBookings] = useStorage<any[]>('barber_bookings', []);
 
     const toggleService = (id: string) => {
         setSelectedServices(prev =>
@@ -45,7 +45,7 @@ export default function SingleShopBooking() {
         .filter(s => selectedServices.includes(s.id))
         .reduce((acc, s) => acc + s.price, 0);
 
-    const handleNext = () => {
+    const handleNext = async () => {
         if (step === 1 && selectedServices.length > 0) setStep(2);
         else if (step === 2 && selectedTime) setStep(3);
         else if (step === 3) {
@@ -54,22 +54,31 @@ export default function SingleShopBooking() {
                 return;
             }
 
-            // Save booking using useStorage hook
-            const newBooking = {
-                id: Date.now().toString(),
-                name: contactInfo.name,
-                email: contactInfo.email,
-                phone: contactInfo.phone,
-                services: services.filter(s => selectedServices.includes(s.id)).map(s => s.name.en),
-                total: total,
-                date: new Date().toISOString(),
-                time: selectedTime,
-                status: 'pending',
-                timestamp: Date.now()
-            };
+            // Save booking to Database
+            try {
+                const newBooking = {
+                    name: contactInfo.name,
+                    email: contactInfo.email,
+                    phone: contactInfo.phone,
+                    services: services.filter(s => selectedServices.includes(s.id)).map(s => s.name.en),
+                    total: total,
+                    date: new Date().toISOString(), // In real app, combine selectedDate + Year
+                    time: selectedTime,
+                };
 
-            setBookings([newBooking, ...bookings]);
-            setStep(4);
+                const res = await fetch('/api/appointments', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newBooking),
+                });
+
+                if (!res.ok) throw new Error('Failed to create booking');
+
+                setStep(4);
+            } catch (err) {
+                console.error("Booking error:", err);
+                setError("Failed to confirm booking. Please try again.");
+            }
         }
     };
 
@@ -79,7 +88,7 @@ export default function SingleShopBooking() {
         'en': 'en-US',
         'tr': 'tr-TR'
     };
-    const currentLocale = localeMap[language];
+    const currentLocale = localeMap[language || 'de'];
 
     return (
         <div className="relative z-10 w-full max-w-5xl mx-auto p-6 md:p-12 min-h-screen flex flex-col pt-32 pb-20">
@@ -138,7 +147,7 @@ export default function SingleShopBooking() {
                                         )}
                                     >
                                         <div className="flex justify-between items-start mb-2">
-                                            <h3 className="text-xl font-bold text-white">{service.name[language]}</h3>
+                                            <h3 className="text-xl font-bold text-white">{service.name[language || 'de']}</h3>
                                             <span className="text-neon-blue font-mono text-lg">€{service.price}</span>
                                         </div>
                                         <p className="text-gray-400 text-sm">{service.duration} mins</p>
@@ -348,7 +357,7 @@ export default function SingleShopBooking() {
                             <div className="space-y-4">
                                 {services.filter(s => selectedServices.includes(s.id)).map(s => (
                                     <div key={s.id} className="flex justify-between text-gray-300 text-sm border-b border-white/5 pb-2">
-                                        <span>{s.name[language]}</span>
+                                        <span>{s.name[language || 'de']}</span>
                                         <span>€{s.price}</span>
                                     </div>
                                 ))}

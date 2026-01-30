@@ -1,15 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/admin/DashboardLayout";
 import StatsOverview from "@/components/admin/StatsOverview";
 import { Check, X, Clock } from "lucide-react";
 import { useStorage } from "@/hooks/useStorage";
 
 export default function AdminDashboardPage() {
-    const [bookings, setBookings] = useStorage<any[]>('barber_bookings', []);
+    const [bookings, setBookings] = useState<any[]>([]);
+
+    useEffect(() => {
+        async function fetchBookings() {
+            try {
+                const res = await fetch('/api/appointments');
+                if (res.ok) {
+                    const data = await res.json();
+                    setBookings(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch bookings", error);
+            }
+        }
+        fetchBookings();
+    }, []);
 
     const handleStatusUpdate = (id: string, status: 'approved' | 'rejected') => {
+        // Optimistic UI update - In real app, consider PATCH request to API
         const updatedBookings = bookings.map(b => b.id === id ? { ...b, status } : b);
         setBookings(updatedBookings);
     };
