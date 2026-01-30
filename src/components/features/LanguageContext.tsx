@@ -47,7 +47,18 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.dashboard": "Übersicht",
         "admin.nav.termins": "Termine",
         "admin.nav.services": "Dienstleistungen",
-        "admin.logout": "Abmelden"
+        "admin.logout": "Abmelden",
+
+        "admin.stats.total_revenue": "GESAMTEINNAHMEN",
+        "admin.stats.confirmed_appointments": "BESTÄTIGTE TERMINE",
+        "admin.stats.pending_approvals": "ONAY BEKLEYENLER",
+
+        "admin.dashboard.pending_title": "Ausstehende Anfragen",
+        "admin.dashboard.pending_empty": "Keine ausstehenden Termine.",
+        "admin.dashboard.pending_subtitle": "Neue Buchungen erscheinen hier automatisch.",
+        "admin.btn.approve": "Bestätigen",
+        "admin.btn.reject": "Ablehnen",
+        "admin.btn.delete_confirm": "Termin wirklich ablehnen und löschen?"
     },
     en: {
         "hero.title": "YOUR APPOINTMENT.",
@@ -82,7 +93,18 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.dashboard": "Dashboard",
         "admin.nav.termins": "Appointments",
         "admin.nav.services": "Services",
-        "admin.logout": "Logout"
+        "admin.logout": "Logout",
+
+        "admin.stats.total_revenue": "TOTAL REVENUE",
+        "admin.stats.confirmed_appointments": "CONFIRMED APPOINTMENTS",
+        "admin.stats.pending_approvals": "PENDING APPROVALS",
+
+        "admin.dashboard.pending_title": "Pending Requests",
+        "admin.dashboard.pending_empty": "No pending appointments.",
+        "admin.dashboard.pending_subtitle": "New bookings will appear here automatically.",
+        "admin.btn.approve": "Approve",
+        "admin.btn.reject": "Reject",
+        "admin.btn.delete_confirm": "Really reject and delete appointment?"
     },
     tr: {
         "hero.title": "RANDEVUNUZ.",
@@ -117,7 +139,18 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.dashboard": "Panel",
         "admin.nav.termins": "Randevular",
         "admin.nav.services": "Hizmetler",
-        "admin.logout": "Çıkış Yap"
+        "admin.logout": "Çıkış Yap",
+
+        "admin.stats.total_revenue": "TOPLAM GELİR",
+        "admin.stats.confirmed_appointments": "ONAYLANAN RANDEVULAR",
+        "admin.stats.pending_approvals": "ONAY BEKLEYENLER",
+
+        "admin.dashboard.pending_title": "Bekleyen Talepler",
+        "admin.dashboard.pending_empty": "Bekleyen randevu yok.",
+        "admin.dashboard.pending_subtitle": "Yeni talepler burada otomatik görünür.",
+        "admin.btn.approve": "Onayla",
+        "admin.btn.reject": "Reddet",
+        "admin.btn.delete_confirm": "Randevuyu reddedip silmek istiyor musunuz?"
     }
 };
 

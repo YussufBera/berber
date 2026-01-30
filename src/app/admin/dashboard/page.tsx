@@ -6,10 +6,14 @@ import StatsOverview from "@/components/admin/StatsOverview";
 import { Check, X, Clock } from "lucide-react";
 
 
+import { useLanguage } from "@/components/features/LanguageContext";
+
 export default function AdminDashboardPage() {
+    const { t } = useLanguage();
     const [bookings, setBookings] = useState<any[]>([]);
 
     useEffect(() => {
+        // ... (keep fetch logic)
         async function fetchBookings() {
             try {
                 const res = await fetch('/api/appointments');
@@ -25,7 +29,7 @@ export default function AdminDashboardPage() {
     }, []);
 
     const handleApprove = async (id: string) => {
-        // Optimistic UI update
+        // ... (keep logic)
         const updatedBookings = bookings.map(b => b.id === id ? { ...b, status: 'approved' } : b);
         setBookings(updatedBookings);
 
@@ -42,7 +46,7 @@ export default function AdminDashboardPage() {
     };
 
     const handleReject = async (id: string) => {
-        if (!confirm("Termin wirklich ablehnen und löschen?")) return;
+        if (!confirm(t("admin.btn.delete_confirm"))) return;
 
         try {
             await fetch(`/api/appointments?id=${id}`, { method: 'DELETE' });
@@ -59,18 +63,16 @@ export default function AdminDashboardPage() {
             <div className="space-y-6">
                 <StatsOverview />
 
-
-
                 <div className="bg-[#111] border border-white/5 rounded-2xl p-6 min-h-[600px]">
                     <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
                         <Clock className="text-neon-blue" size={24} />
-                        Ausstehende Anfragen
+                        {t("admin.dashboard.pending_title")}
                     </h3>
 
                     {pendingBookings.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-64 text-gray-500">
-                            <p>Keine ausstehenden Termine.</p>
-                            <p className="text-xs mt-2">Neue Buchungen erscheinen hier automatisch.</p>
+                            <p>{t("admin.dashboard.pending_empty")}</p>
+                            <p className="text-xs mt-2">{t("admin.dashboard.pending_subtitle")}</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -98,13 +100,13 @@ export default function AdminDashboardPage() {
                                             onClick={() => handleApprove(booking.id)}
                                             className="flex-1 bg-green-500/10 text-green-400 border border-green-500/20 py-3 rounded-xl text-sm font-bold hover:bg-green-500 hover:text-black hover:border-green-500 transition-all flex items-center justify-center gap-2"
                                         >
-                                            <Check size={18} /> Bestätigen
+                                            <Check size={18} /> {t("admin.btn.approve")}
                                         </button>
                                         <button
                                             onClick={() => handleReject(booking.id)}
                                             className="flex-1 bg-red-500/10 text-red-400 border border-red-500/20 py-3 rounded-xl text-sm font-bold hover:bg-red-500 hover:text-black hover:border-red-500 transition-all flex items-center justify-center gap-2"
                                         >
-                                            <X size={18} /> Ablehnen
+                                            <X size={18} /> {t("admin.btn.reject")}
                                         </button>
                                     </div>
                                 </div>

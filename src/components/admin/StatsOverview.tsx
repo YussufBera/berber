@@ -21,8 +21,11 @@ const colorMap: any = {
     clock: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20"
 };
 
+import { useLanguage } from "../features/LanguageContext";
+
 export default function StatsOverview() {
-    const [bookings, setBookings] = useState<any[]>([]);
+    const { t } = useLanguage();
+    const [stats, setStats] = useState({ revenue: 0, appointments: 0, pending: 0 });
 
     useEffect(() => {
         async function fetchStats() {
@@ -30,7 +33,18 @@ export default function StatsOverview() {
                 const res = await fetch('/api/appointments');
                 if (res.ok) {
                     const data = await res.json();
-                    setBookings(data);
+                    const approvedBookings = data.filter((b: any) => b.status === 'approved');
+                    const pendingBookings = data.filter((b: any) => b.status === 'pending');
+
+                    const totalRevenue = approvedBookings.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);
+                    const totalAppointments = approvedBookings.length;
+                    const totalPending = pendingBookings.length;
+
+                    setStats({
+                        revenue: totalRevenue,
+                        appointments: totalAppointments,
+                        pending: totalPending
+                    });
                 }
             } catch (error) {
                 console.error("Failed to fetch stats", error);
@@ -39,65 +53,40 @@ export default function StatsOverview() {
         fetchStats();
     }, []);
 
-    // Filter only approved bookings for stats
-    const approvedBookings = bookings.filter((b: any) => b.status === 'approved');
-    const pendingBookings = bookings.filter((b: any) => b.status === 'pending');
-
-    // Calculate Stats based on approved bookings
-    const totalRevenue = approvedBookings.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);
-    const totalAppointments = approvedBookings.length;
-    const totalPending = pendingBookings.length;
-
-    const stats = [
-        {
-            icon: "euro",
-            label: "GESAMTEINNAHMEN",
-            value: `€${totalRevenue}`
-        },
-        {
-            icon: "calendar",
-            label: "BESTÄTIGTE TERMINE",
-            value: totalAppointments.toString()
-        },
-        {
-            icon: "clock",
-            label: "ONAY BEKLEYENLER",
-            value: totalPending.toString()
-        }
-    ];
-
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {stats.map((stat, index) => {
-                const Icon = iconMap[stat.icon];
-                const colorClass = colorMap[stat.icon];
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Revenue */}
+            <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
+                <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-neon-purple/10 rounded-xl">
+                        <TrendingUp className="text-neon-purple" size={24} />
+                    </div>
+                </div>
+                <h3 className="text-gray-400 text-sm font-medium tracking-wider mb-1">{t("admin.stats.total_revenue")}</h3>
+                <p className="text-4xl font-bold text-white">€{stats.revenue}</p>
+            </div>
 
-                return (
-                    <motion.div
-                        key={stat.label}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="p-6 rounded-2xl bg-[#111] border border-white/5 relative overflow-hidden group"
-                    >
-                        {/* Background Glow */}
-                        <div className={cn("absolute -right-10 -top-10 w-32 h-32 rounded-full blur-3xl opacity-20",
-                            stat.icon === 'euro' ? 'bg-green-500' : stat.icon === 'calendar' ? 'bg-neon-blue' : 'bg-neon-purple'
-                        )} />
+            {/* Appointments */}
+            <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
+                <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-neon-blue/10 rounded-xl">
+                        <Users className="text-neon-blue" size={24} />
+                    </div>
+                </div>
+                <h3 className="text-gray-400 text-sm font-medium tracking-wider mb-1">{t("admin.stats.confirmed_appointments")}</h3>
+                <p className="text-4xl font-bold text-white">{stats.appointments}</p>
+            </div>
 
-                        <div className="flex justify-between items-start mb-4 relative z-10">
-                            <div className={cn("p-3 rounded-xl border", colorClass)}>
-                                <Icon size={24} />
-                            </div>
-                        </div>
-
-                        <div className="relative z-10">
-                            <p className="text-gray-400 text-sm font-medium uppercase tracking-wider">{stat.label}</p>
-                            <h3 className="text-3xl font-bold text-white mt-1">{stat.value}</h3>
-                        </div>
-                    </motion.div>
-                );
-            })}
+            {/* Pending */}
+            <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
+                <div className="flex justify-between items-start mb-4">
+                    <div className="p-3 bg-orange-500/10 rounded-xl">
+                        <Clock className="text-orange-500" size={24} />
+                    </div>
+                </div>
+                <h3 className="text-gray-400 text-sm font-medium tracking-wider mb-1">{t("admin.stats.pending_approvals")}</h3>
+                <p className="text-4xl font-bold text-white">{stats.pending}</p>
+            </div>
         </div>
     );
 }
