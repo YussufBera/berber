@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/admin/DashboardLayout";
 import StatsOverview from "@/components/admin/StatsOverview";
 import { Check, X, Clock } from "lucide-react";
-import { useStorage } from "@/hooks/useStorage";
+
 
 export default function AdminDashboardPage() {
     const [bookings, setBookings] = useState<any[]>([]);
@@ -70,7 +70,7 @@ export default function AdminDashboardPage() {
                                         <div className="flex justify-between items-start mb-4">
                                             <div>
                                                 <p className="text-white font-bold text-lg">{booking.name}</p>
-                                                <p className="text-sm text-neon-blue">{booking.services.join(", ")}</p>
+                                                <p className="text-sm text-neon-blue">{booking.services}</p>
                                                 <p className="text-xs text-gray-400 mt-1">{booking.phone} / {booking.email}</p>
                                             </div>
                                             <span className="text-neon-purple font-mono font-bold text-xl">€{booking.total}</span>
