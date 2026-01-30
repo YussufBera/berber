@@ -161,11 +161,34 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-    const [language, setLanguage] = useState<Language>(null);
+    // Start with null to allow client-side hydration match (but t() will handle fallback)
+    const [language, setLanguageState] = useState<Language>(null);
+
+    // Load from localStorage on mount
+    useEffect(() => {
+        const saved = localStorage.getItem('berber_language') as LanguageCode;
+        if (saved && ['de', 'en', 'tr'].includes(saved)) {
+            setLanguageState(saved);
+        } else {
+            // Default to 'de' if nothing saved
+            setLanguageState('de');
+        }
+    }, []);
+
+    const setLanguage = (lang: Language) => {
+        if (lang) {
+            localStorage.setItem('berber_language', lang);
+        } else {
+            localStorage.removeItem('berber_language');
+        }
+        setLanguageState(lang);
+    };
 
     const t = (key: string) => {
-        if (!language) return key;
-        return TRANSLATIONS[language as LanguageCode][key] || key;
+        // Fallback to 'de' if language is not yet loaded (e.g. generic SSR or pre-mount)
+        // This prevents showing keys like 'admin.login.title' during hydration
+        const currentLang = language || 'de';
+        return TRANSLATIONS[currentLang as LanguageCode][key] || key;
     };
 
     return (
