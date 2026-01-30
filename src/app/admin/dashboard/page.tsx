@@ -24,20 +24,32 @@ export default function AdminDashboardPage() {
         fetchBookings();
     }, []);
 
-    const handleStatusUpdate = async (id: string, status: 'approved' | 'rejected') => {
+    const handleApprove = async (id: string) => {
         // Optimistic UI update
-        const updatedBookings = bookings.map(b => b.id === id ? { ...b, status } : b);
+        const updatedBookings = bookings.map(b => b.id === id ? { ...b, status: 'approved' } : b);
         setBookings(updatedBookings);
 
         try {
             await fetch('/api/appointments', {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id, status })
+                body: JSON.stringify({ id, status: 'approved' })
             });
         } catch (error) {
-            console.error("Failed to update status", error);
-            // Revert on failure (optional, but good practice)
+            console.error("Failed to approve", error);
+        }
+    };
+
+    const handleReject = async (id: string) => {
+        if (!confirm("Termin wirklich ablehnen und löschen?")) return;
+
+        // Optimistic UI update (Remove from list)
+        setBookings(prev => prev.filter(b => b.id !== id));
+
+        try {
+            await fetch(`/api/appointments?id=${id}`, { method: 'DELETE' });
+        } catch (error) {
+            console.error("Failed to delete", error);
         }
     };
 
@@ -48,19 +60,7 @@ export default function AdminDashboardPage() {
             <div className="space-y-6">
                 <StatsOverview />
 
-                <div className="flex justify-end mb-4">
-                    <button
-                        onClick={() => {
-                            if (confirm("Datenbank zurücksetzen? Alle Testdaten werden gelöscht.")) {
-                                localStorage.clear();
-                                window.location.reload();
-                            }
-                        }}
-                        className="text-xs text-red-500 hover:text-red-400 underline"
-                    >
-                        Reset Debug Data
-                    </button>
-                </div>
+
 
                 <div className="bg-[#111] border border-white/5 rounded-2xl p-6 min-h-[600px]">
                     <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
@@ -96,13 +96,13 @@ export default function AdminDashboardPage() {
 
                                     <div className="flex gap-3 mt-auto">
                                         <button
-                                            onClick={() => handleStatusUpdate(booking.id, 'approved')}
+                                            onClick={() => handleApprove(booking.id)}
                                             className="flex-1 bg-green-500/10 text-green-400 border border-green-500/20 py-3 rounded-xl text-sm font-bold hover:bg-green-500 hover:text-black hover:border-green-500 transition-all flex items-center justify-center gap-2"
                                         >
                                             <Check size={18} /> Bestätigen
                                         </button>
                                         <button
-                                            onClick={() => handleStatusUpdate(booking.id, 'rejected')}
+                                            onClick={() => handleReject(booking.id)}
                                             className="flex-1 bg-red-500/10 text-red-400 border border-red-500/20 py-3 rounded-xl text-sm font-bold hover:bg-red-500 hover:text-black hover:border-red-500 transition-all flex items-center justify-center gap-2"
                                         >
                                             <X size={18} /> Ablehnen

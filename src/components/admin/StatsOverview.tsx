@@ -47,20 +47,17 @@ export default function StatsOverview() {
         {
             icon: "euro",
             label: "GESAMTEINNAHMEN",
-            value: `€${totalRevenue}`,
-            change: "+12%" // Mock growth for now
+            value: `€${totalRevenue}`
         },
         {
             icon: "calendar",
             label: "TERMINE",
-            value: totalAppointments.toString(),
-            change: "+5%"
+            value: totalAppointments.toString()
         },
         {
             icon: "users",
             label: "KUNDEN",
-            value: uniqueCustomers.toString(),
-            change: "+8%"
+            value: uniqueCustomers.toString()
         }
     ];
 
@@ -86,10 +83,6 @@ export default function StatsOverview() {
                         <div className="flex justify-between items-start mb-4 relative z-10">
                             <div className={cn("p-3 rounded-xl border", colorClass)}>
                                 <Icon size={24} />
-                            </div>
-                            <div className="flex items-center gap-1 text-green-400 text-sm font-medium bg-green-400/10 px-2 py-1 rounded-full border border-green-400/20">
-                                <TrendingUp size={12} />
-                                {stat.change}
                             </div>
                         </div>
 
