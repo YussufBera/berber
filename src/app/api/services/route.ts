@@ -69,6 +69,28 @@ export async function POST(request: Request) {
     }
 }
 
+// PUT: Update service
+export async function PUT(request: Request) {
+    try {
+        if (!prisma) return NextResponse.json({ error: 'DB Error' }, { status: 500 });
+        const body = await request.json();
+
+        if (!body.id) return NextResponse.json({ error: 'Missing ID' }, { status: 400 });
+
+        const service = await prisma.simpleService.update({
+            where: { id: body.id },
+            data: {
+                price: parseFloat(body.price),
+                duration: parseInt(body.duration)
+            }
+        });
+
+        return NextResponse.json({ success: true, service });
+    } catch (error) {
+        return NextResponse.json({ error: 'Failed to update' }, { status: 500 });
+    }
+}
+
 // DELETE: Remove service
 export async function DELETE(request: Request) {
     try {

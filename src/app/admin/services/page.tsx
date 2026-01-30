@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/admin/DashboardLayout";
 
 import { MOCK_SHOPS, Service } from "@/lib/mockData";
-import { Trash2, Plus, Save, X, RefreshCw } from "lucide-react";
+import { Trash2, Plus, Save, X, RefreshCw, Edit2 } from "lucide-react";
 
 export default function ServicesPage() {
     // 1. Storage Access (Replaced useStorage with API State)
@@ -63,6 +63,29 @@ export default function ServicesPage() {
             }
         } catch (e) {
             alert("Fehler beim Hinzufügen");
+        }
+    };
+
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [editForm, setEditForm] = useState<Partial<Service>>({});
+
+    const startEdit = (service: Service) => {
+        setEditingId(service.id);
+        setEditForm({ price: service.price, duration: service.duration });
+    };
+
+    const saveEdit = async (id: string) => {
+        try {
+            await fetch('/api/services', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, ...editForm })
+            });
+
+            setLocalServices(prev => prev.map(s => s.id === id ? { ...s, ...editForm } as Service : s));
+            setEditingId(null);
+        } catch (e) {
+            console.error("Failed to update", e);
         }
     };
 
@@ -151,15 +174,53 @@ export default function ServicesPage() {
                             </div>
                             <div className="flex items-center gap-6">
                                 <div className="text-right">
-                                    <p className="font-mono text-neon-blue font-bold">€{service.price}</p>
-                                    <p className="text-xs text-gray-400">{service.duration} min</p>
+                                    {editingId === service.id ? (
+                                        <div className="flex flex-col gap-1 w-24">
+                                            <input
+                                                type="number"
+                                                className="bg-black border border-neon-blue rounded px-2 py-1 text-right text-sm text-neon-blue font-mono"
+                                                value={editForm.price}
+                                                onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
+                                                autoFocus
+                                            />
+                                            <input
+                                                type="number"
+                                                className="bg-black border border-white/20 rounded px-2 py-1 text-right text-xs text-gray-400"
+                                                value={editForm.duration}
+                                                onChange={e => setEditForm({ ...editForm, duration: Number(e.target.value) })}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <p className="font-mono text-neon-blue font-bold">€{service.price}</p>
+                                            <p className="text-xs text-gray-400">{service.duration} min</p>
+                                        </>
+                                    )}
                                 </div>
-                                <button
-                                    onClick={() => handleDelete(service.id)}
-                                    className="p-2 hover:bg-red-500/20 text-gray-400 hover:text-red-500 rounded-lg transition-colors"
-                                >
-                                    <Trash2 size={18} />
-                                </button>
+                                <div className="flex gap-2">
+                                    {editingId === service.id ? (
+                                        <button
+                                            onClick={() => saveEdit(service.id)}
+                                            className="p-2 bg-neon-blue/10 text-neon-blue hover:bg-neon-blue hover:text-black rounded-lg transition-colors"
+                                        >
+                                            <Save size={18} />
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => startEdit(service)}
+                                            className="p-2 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-colors"
+                                        >
+                                            <Edit2 size={18} />
+                                        </button>
+                                    )}
+
+                                    <button
+                                        onClick={() => handleDelete(service.id)}
+                                        className="p-2 hover:bg-red-500/20 text-gray-400 hover:text-red-500 rounded-lg transition-colors"
+                                    >
+                                        <Trash2 size={18} />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     ))}

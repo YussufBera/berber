@@ -51,7 +51,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     ))}
                 </nav>
 
-                <button className="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition-colors mt-auto">
+                <button
+                    onClick={() => {
+                        document.cookie = "admin_session=; path=/; max-age=0";
+                        window.location.href = "/admin/login";
+                    }}
+                    className="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition-colors mt-auto"
+                >
                     <LogOut size={20} />
                     Abmelden
                 </button>

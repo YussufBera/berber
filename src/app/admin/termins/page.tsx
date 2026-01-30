@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/admin/DashboardLayout";
-import { Calendar, CheckCircle } from "lucide-react";
+import { Calendar, CheckCircle, Trash2 } from "lucide-react";
 
 
 export default function TerminsPage() {
@@ -14,6 +14,16 @@ export default function TerminsPage() {
             .then(data => setBookings(data))
             .catch(err => console.error(err));
     }, []);
+
+    const handleDelete = async (id: string) => {
+        if (!confirm("Termin endgültig löschen?")) return;
+        try {
+            await fetch(`/api/appointments?id=${id}`, { method: 'DELETE' });
+            window.location.reload();
+        } catch (error) {
+            console.error("Failed to delete", error);
+        }
+    };
 
     // Filter and sort bookings
     const approvedBookings = bookings
@@ -44,6 +54,7 @@ export default function TerminsPage() {
                                     <th className="p-4 font-medium">Kontakt</th>
                                     <th className="p-4 font-medium">Dienstleistungen</th>
                                     <th className="p-4 font-medium text-right">Gesamt</th>
+                                    <th className="p-4 font-medium w-10"></th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
@@ -67,6 +78,14 @@ export default function TerminsPage() {
                                         </td>
                                         <td className="p-4 text-right font-mono font-bold text-neon-purple">
                                             €{booking.total}
+                                        </td>
+                                        <td className="p-4">
+                                            <button
+                                                onClick={() => handleDelete(booking.id)}
+                                                className="p-2 text-gray-500 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                                            >
+                                                <Trash2 size={18} />
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}

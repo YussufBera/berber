@@ -44,9 +44,6 @@ export default function AdminDashboardPage() {
     const handleReject = async (id: string) => {
         if (!confirm("Termin wirklich ablehnen und löschen?")) return;
 
-        // Optimistic UI update (Remove from list)
-        setBookings(prev => prev.filter(b => b.id !== id));
-
         try {
             await fetch(`/api/appointments?id=${id}`, { method: 'DELETE' });
             window.location.reload();
