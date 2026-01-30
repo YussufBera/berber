@@ -63,7 +63,7 @@ export default function TerminsPage() {
                                             </div>
                                         </td>
                                         <td className="p-4 text-sm text-gray-300">
-                                            {booking.services.join(", ")}
+                                            {booking.services}
                                         </td>
                                         <td className="p-4 text-right font-mono font-bold text-neon-purple">
                                             €{booking.total}
