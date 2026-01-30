@@ -38,7 +38,16 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.required": "Bitte geben Sie Telefon oder E-Mail an.",
         "contact.disclaimer": "Bitte geben Sie Ihre E-Mail-Adresse oder Telefonnummer an, damit wir Sie kontaktieren können, falls Ihr Termin nicht bestätigt werden kann.",
         "book.another": "Weiteren Termin buchen",
-        "contact.name": "Vor- und Nachname"
+        "contact.name": "Vor- und Nachname",
+
+        "admin.login.title": "Admin Zugang",
+        "admin.login.subtitle": "Bitte Passwort eingeben",
+        "admin.login.button": "Anmelden",
+        "admin.login.error": "Falsches Passwort",
+        "admin.nav.dashboard": "Übersicht",
+        "admin.nav.termins": "Termine",
+        "admin.nav.services": "Dienstleistungen",
+        "admin.logout": "Abmelden"
     },
     en: {
         "hero.title": "YOUR APPOINTMENT.",
@@ -64,7 +73,16 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.required": "Please provide either phone or email.",
         "contact.disclaimer": "Please enter your email or number to be contacted in case your appointment is not approved.",
         "book.another": "Book Another",
-        "contact.name": "Full Name"
+        "contact.name": "Full Name",
+
+        "admin.login.title": "Admin Access",
+        "admin.login.subtitle": "Please enter password",
+        "admin.login.button": "Login",
+        "admin.login.error": "Wrong Password",
+        "admin.nav.dashboard": "Dashboard",
+        "admin.nav.termins": "Appointments",
+        "admin.nav.services": "Services",
+        "admin.logout": "Logout"
     },
     tr: {
         "hero.title": "RANDEVUNUZ.",
@@ -90,7 +108,16 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.required": "Lütfen telefon veya e-posta giriniz.",
         "contact.disclaimer": "Randevunuzun onaylanmaması durumunda size dönüş yapılabilmesi için lütfen e-posta veya telefon numaranızı giriniz.",
         "book.another": "Başka Randevu Al",
-        "contact.name": "Ad Soyad"
+        "contact.name": "Ad Soyad",
+
+        "admin.login.title": "Yönetici Girişi",
+        "admin.login.subtitle": "Lütfen şifreyi giriniz",
+        "admin.login.button": "Giriş Yap",
+        "admin.login.error": "Hatalı Şifre",
+        "admin.nav.dashboard": "Panel",
+        "admin.nav.termins": "Randevular",
+        "admin.nav.services": "Hizmetler",
+        "admin.logout": "Çıkış Yap"
     }
 };
 

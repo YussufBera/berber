@@ -5,22 +5,24 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
-    { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-    { label: "Termine", href: "/admin/termins", icon: Calendar }, // Replaced Calendar/Settings
-    { label: "Dienstleistungen", href: "/admin/services", icon: Scissors },
-];
+import { useLanguage } from "@/components/features/LanguageContext";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const { t } = useLanguage();
+
+    const NAV_ITEMS = [
+        { label: t("admin.nav.dashboard"), href: "/admin/dashboard", icon: LayoutDashboard },
+        { label: t("admin.nav.termins"), href: "/admin/termins", icon: Calendar },
+        { label: t("admin.nav.services"), href: "/admin/services", icon: Scissors },
+    ];
 
     const getPageTitle = (path: string) => {
         const segment = path.split('/').pop();
         switch (segment) {
-            case 'dashboard': return 'Übersicht';
-            case 'termins': return 'Termine';
-            case 'services': return 'Dienstleistungen';
-            case 'customers': return 'Kunden';
+            case 'dashboard': return t("admin.nav.dashboard");
+            case 'termins': return t("admin.nav.termins");
+            case 'services': return t("admin.nav.services");
             default: return segment;
         }
     };
@@ -59,7 +61,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     className="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-500/10 rounded-xl transition-colors mt-auto"
                 >
                     <LogOut size={20} />
-                    Abmelden
+                    {t("admin.logout")}
                 </button>
             </aside>
 
