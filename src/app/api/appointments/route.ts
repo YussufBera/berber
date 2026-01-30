@@ -77,3 +77,28 @@ export async function PATCH(request: Request) {
         return NextResponse.json({ error: 'Failed to update appointment' }, { status: 500 });
     }
 }
+
+// DELETE: Delete an appointment (Reject/Remove)
+export async function DELETE(request: Request) {
+    try {
+        if (!prisma) {
+            return NextResponse.json({ error: 'Database connection not initialized' }, { status: 500 });
+        }
+
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get('id');
+
+        if (!id) {
+            return NextResponse.json({ error: 'Missing id' }, { status: 400 });
+        }
+
+        const deleted = await prisma.simpleAppointment.delete({
+            where: { id }
+        });
+
+        return NextResponse.json(deleted);
+    } catch (error) {
+        console.error('Failed to delete appointment:', error);
+        return NextResponse.json({ error: 'Failed to delete appointment' }, { status: 500 });
+    }
+}
