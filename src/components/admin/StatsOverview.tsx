@@ -37,11 +37,12 @@ export default function StatsOverview() {
         fetchStats();
     }, []);
 
-    // Calculate Stats
-    const totalRevenue = bookings.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);
-    const totalAppointments = bookings.length;
-    // Count unique customers by email or phone
-    const uniqueCustomers = new Set(bookings.map((b: any) => b.email || b.phone)).size;
+    // Filter only approved bookings for stats
+    const approvedBookings = bookings.filter((b: any) => b.status === 'approved');
+
+    // Calculate Stats based on approved bookings
+    const totalRevenue = approvedBookings.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);
+    const totalAppointments = approvedBookings.length;
 
     const stats = [
         {
@@ -51,18 +52,13 @@ export default function StatsOverview() {
         },
         {
             icon: "calendar",
-            label: "TERMINE",
+            label: "BESTÄTIGTE TERMINE",
             value: totalAppointments.toString()
-        },
-        {
-            icon: "users",
-            label: "KUNDEN",
-            value: uniqueCustomers.toString()
         }
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {stats.map((stat, index) => {
                 const Icon = iconMap[stat.icon];
                 const colorClass = colorMap[stat.icon];
