@@ -7,10 +7,30 @@ import { motion } from "framer-motion";
 
 // Augmented mock data for admin context
 const INITIAL_SERVICES: Service[] = [
-    { id: "s1", name: "Haircut & Styling", price: 35, duration: 45 },
-    { id: "s2", name: "Beard Trim", price: 20, duration: 25 },
-    { id: "s3", name: "Full Package", price: 50, duration: 60 },
-    { id: "s4", name: "Hot Towel Shave", price: 25, duration: 30 },
+    {
+        id: "s1",
+        name: { en: "Haircut & Styling", de: "Haarschnitt & Styling", tr: "Saç Kesimi & Şekillendirme" },
+        price: 35,
+        duration: 45
+    },
+    {
+        id: "s2",
+        name: { en: "Beard Trim", de: "Bartpflege", tr: "Sakal Düzeltme" },
+        price: 20,
+        duration: 25
+    },
+    {
+        id: "s3",
+        name: { en: "Full Package", de: "Komplettpaket", tr: "Tam Paket" },
+        price: 50,
+        duration: 60
+    },
+    {
+        id: "s4",
+        name: { en: "Hot Towel Shave", de: "Heißtuch-Rasur", tr: "Sıcak Havlu Tıraşı" },
+        price: 25,
+        duration: 30
+    },
 ];
 
 export default function ServiceList() {
@@ -40,10 +60,10 @@ export default function ServiceList() {
                     >
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-lg bg-[#1a1a1a] flex items-center justify-center text-gray-400 font-bold border border-white/5 group-hover:text-white group-hover:border-neon-purple transition-colors">
-                                {service.name.charAt(0)}
+                                {service.name.en.charAt(0)}
                             </div>
                             <div>
-                                <h4 className="font-bold text-white group-hover:text-neon-purple transition-colors">{service.name}</h4>
+                                <h4 className="font-bold text-white group-hover:text-neon-purple transition-colors">{service.name.en}</h4>
                                 <div className="flex items-center gap-3 text-xs text-gray-400 mt-1">
                                     <span className="flex items-center gap-1"><Clock size={12} /> {service.duration} min</span>
                                     <span className="flex items-center gap-1"><Euro size={12} /> Fixed Price</span>

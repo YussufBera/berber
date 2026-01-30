@@ -95,7 +95,7 @@ export default function BookingModal({
                                                     {selectedServices.includes(service.id) && <Check size={14} className="text-black" />}
                                                 </div>
                                                 <div>
-                                                    <p className="font-medium text-white">{service.name}</p>
+                                                    <p className="font-medium text-white">{service.name.en}</p>
                                                     <p className="text-sm text-gray-500">{service.duration} mins</p>
                                                 </div>
                                             </div>
@@ -167,7 +167,7 @@ export default function BookingModal({
                                     <div className="bg-white/5 p-4 rounded-xl max-w-sm mx-auto">
                                         {shop.services.filter(s => selectedServices.includes(s.id)).map(s => (
                                             <div key={s.id} className="flex justify-between text-sm text-gray-300 mb-1">
-                                                <span>{s.name}</span>
+                                                <span>{s.name.en}</span>
                                                 <span>€{s.price}</span>
                                             </div>
                                         ))}
