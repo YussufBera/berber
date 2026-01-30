@@ -2,7 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type Language = 'de' | 'en' | 'tr';
+type LanguageCode = 'de' | 'en' | 'tr';
+type Language = LanguageCode | null;
 
 interface LanguageContextType {
     language: Language;
@@ -12,7 +13,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-const TRANSLATIONS: Record<Language, Record<string, string>> = {
+const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     de: {
         "hero.title": "DEIN TERMIN.",
         "hero.subtitle": "PREMIUM TERMINE FÜR DEN MODERNEN GENTLEMAN",
@@ -94,10 +95,11 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-    const [language, setLanguage] = useState<Language>('de');
+    const [language, setLanguage] = useState<Language>(null);
 
     const t = (key: string) => {
-        return TRANSLATIONS[language][key] || key;
+        if (!language) return key;
+        return TRANSLATIONS[language as LanguageCode][key] || key;
     };
 
     return (

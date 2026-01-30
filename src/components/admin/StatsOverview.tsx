@@ -1,15 +1,11 @@
 "use client";
 
-import { DASHBOARD_STATS as MOCK_STATS } from "@/lib/adminMockData";
+import { useStorage } from "@/hooks/useStorage";
 import { Euro, Calendar, Users, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
-const DASHBOARD_STATS = [
-    { icon: "euro", label: "GESAMTEINNAHMEN", value: "€0", change: "+0%" },
-    { icon: "calendar", label: "TERMINE", value: "0", change: "+0%" },
-    { icon: "users", label: "KUNDEN", value: "0", change: "+0%" }
-];
+
 
 const iconMap: Record<string, any> = {
     euro: Euro,
@@ -24,9 +20,38 @@ const colorMap: Record<string, string> = {
 };
 
 export default function StatsOverview() {
+    const [bookings] = useStorage<any[]>('barber_bookings', []);
+
+    // Calculate Stats
+    const totalRevenue = bookings.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);
+    const totalAppointments = bookings.length;
+    // Count unique customers by email or phone
+    const uniqueCustomers = new Set(bookings.map((b: any) => b.email || b.phone)).size;
+
+    const stats = [
+        {
+            icon: "euro",
+            label: "GESAMTEINNAHMEN",
+            value: `€${totalRevenue}`,
+            change: "+12%" // Mock growth for now
+        },
+        {
+            icon: "calendar",
+            label: "TERMINE",
+            value: totalAppointments.toString(),
+            change: "+5%"
+        },
+        {
+            icon: "users",
+            label: "KUNDEN",
+            value: uniqueCustomers.toString(),
+            change: "+8%"
+        }
+    ];
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {DASHBOARD_STATS.map((stat, index) => {
+            {stats.map((stat, index) => {
                 const Icon = iconMap[stat.icon];
                 const colorClass = colorMap[stat.icon];
 
