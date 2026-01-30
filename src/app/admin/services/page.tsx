@@ -2,30 +2,25 @@
 
 import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/admin/DashboardLayout";
-import { useStorage } from "@/hooks/useStorage";
+
 import { MOCK_SHOPS, Service } from "@/lib/mockData";
 import { Trash2, Plus, Save, X, RefreshCw } from "lucide-react";
 
 export default function ServicesPage() {
-    // 1. Storage Access (Source of Truth)
-    const [storedServices, setStoredServices] = useStorage<Service[]>('barber_services', MOCK_SHOPS[0].services);
+    // 1. Storage Access (Replaced useStorage with API State)
+    const [localServices, setLocalServices] = useState<Service[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    // 2. Local Editing State (Disconnected from live site until saved)
-    const [localServices, setLocalServices] = useState<Service[]>(storedServices);
-    const [hasChanges, setHasChanges] = useState(false);
-
-    // Sync local state with storage on initial load (only if local is empty or mismatch, but usually we want to start with stored)
+    // Fetch Services from API
     useEffect(() => {
-        // We only sync down if we haven't touched anything? 
-        // Or maybe we just initialize from it. 
-        // Let's just trust initial state, but if storage changes externally (other tab), we might want to know?
-        // For now, let's strictly load once.
+        fetch('/api/services')
+            .then(res => res.json())
+            .then(data => {
+                setLocalServices(data);
+                setIsLoading(false);
+            })
+            .catch(err => console.error(err));
     }, []);
-
-    // Effect to detect unsaved changes
-    useEffect(() => {
-        setHasChanges(JSON.stringify(localServices) !== JSON.stringify(storedServices));
-    }, [localServices, storedServices]);
 
     const [isEditing, setIsEditing] = useState(false);
 
@@ -36,31 +31,39 @@ export default function ServicesPage() {
         duration: 30
     });
 
-    const handleSaveToWebsite = () => {
-        setStoredServices(localServices); // This triggers the localStorage update + 'storage' event
-        setHasChanges(false);
-        alert("Webseite erfolgreich aktualisiert!");
-    };
-
-    const handleDelete = (id: string) => {
+    const handleDelete = async (id: string) => {
         if (confirm("Sind Sie sicher?")) {
+            // Optimistic Update
             setLocalServices(prev => prev.filter(s => s.id !== id));
+            await fetch(`/api/services?id=${id}`, { method: 'DELETE' });
         }
     };
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
         if (!newService.name?.de || !newService.price) return;
 
-        const serviceToAdd: Service = {
-            id: Date.now().toString(),
-            name: { ...newService.name, en: newService.name.en || newService.name.de, tr: newService.name.tr || newService.name.de } as any,
+        const payload = {
+            name: { ...newService.name, en: newService.name.en || newService.name.de, tr: newService.name.tr || newService.name.de },
             price: Number(newService.price),
             duration: Number(newService.duration)
         };
 
-        setLocalServices(prev => [...prev, serviceToAdd]);
-        setIsEditing(false);
-        setNewService({ name: { de: "", en: "", tr: "" }, price: 0, duration: 30 });
+        try {
+            const res = await fetch('/api/services', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                const addedService = await res.json();
+                setLocalServices(prev => [...prev, addedService]);
+                setIsEditing(false);
+                setNewService({ name: { de: "", en: "", tr: "" }, price: 0, duration: 30 });
+            }
+        } catch (e) {
+            alert("Fehler beim Hinzufügen");
+        }
     };
 
     return (
@@ -71,22 +74,10 @@ export default function ServicesPage() {
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                     <div>
                         <h3 className="text-xl font-bold text-white">Dienstleistungen verwalten</h3>
-                        <p className="text-gray-400 text-sm">Änderungen werden erst nach Klick auf "Webseite aktualisieren" übernommen.</p>
+                        <p className="text-gray-400 text-sm">Änderungen werden sofort gespeichert.</p>
                     </div>
 
                     <div className="flex gap-3">
-                        <button
-                            onClick={handleSaveToWebsite}
-                            disabled={!hasChanges}
-                            className={`px-6 py-2 rounded-lg font-bold flex items-center gap-2 transition-all ${hasChanges
-                                    ? "bg-green-500 text-black hover:bg-green-400 shadow-[0_0_20px_rgba(34,197,94,0.3)]"
-                                    : "bg-white/10 text-gray-500 cursor-not-allowed"
-                                }`}
-                        >
-                            <RefreshCw size={18} className={hasChanges ? "animate-spin-slow" : ""} />
-                            {hasChanges ? "Webseite aktualisieren" : "Aktuell"}
-                        </button>
-
                         <button
                             onClick={() => setIsEditing(true)}
                             className="bg-neon-blue text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-white transition-colors"
@@ -95,6 +86,8 @@ export default function ServicesPage() {
                         </button>
                     </div>
                 </div>
+
+                {isLoading && <p className="text-white">Lade Daten...</p>}
 
                 {/* Edit Form */}
                 {isEditing && (

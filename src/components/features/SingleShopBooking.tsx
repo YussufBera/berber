@@ -7,7 +7,7 @@ import { Check, Calendar, Clock, ChevronRight, Scissors, ArrowLeft } from "lucid
 import { cn } from "@/lib/utils";
 import { useLanguage } from "./LanguageContext";
 import { useRouter } from "next/navigation";
-import { useStorage } from "@/hooks/useStorage";
+
 
 // Use the first shop as the "Single" shop
 const SHOP = MOCK_SHOPS[0];
@@ -29,8 +29,17 @@ export default function SingleShopBooking() {
     const [contactInfo, setContactInfo] = useState({ name: "", phone: "", email: "" });
     const [error, setError] = useState("");
 
-    // Services State (Reactive)
-    const [services] = useStorage('barber_services', SHOP.services);
+    // Services State (Fetched from API)
+    const [services, setServices] = useState<any[]>(SHOP.services);
+
+    useEffect(() => {
+        fetch('/api/services')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.length > 0) setServices(data);
+            })
+            .catch(err => console.error("Failed to load services", err));
+    }, []);
 
     // Bookings State (Removed useStorage for bookings, as we now push to API)
     // const [bookings, setBookings] = useStorage<any[]>('barber_bookings', []);

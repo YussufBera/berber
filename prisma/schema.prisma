@@ -91,3 +91,14 @@ model SimpleAppointment {
   status    String   @default("pending")
   createdAt DateTime @default(now())
 }
+
+model SimpleService {
+  id        String   @id @default(cuid())
+  name_de   String
+  name_en   String
+  name_tr   String
+  price     Float
+  duration  Int      // minutes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

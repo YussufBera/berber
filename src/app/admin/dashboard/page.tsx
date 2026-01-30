@@ -24,10 +24,21 @@ export default function AdminDashboardPage() {
         fetchBookings();
     }, []);
 
-    const handleStatusUpdate = (id: string, status: 'approved' | 'rejected') => {
-        // Optimistic UI update - In real app, consider PATCH request to API
+    const handleStatusUpdate = async (id: string, status: 'approved' | 'rejected') => {
+        // Optimistic UI update
         const updatedBookings = bookings.map(b => b.id === id ? { ...b, status } : b);
         setBookings(updatedBookings);
+
+        try {
+            await fetch('/api/appointments', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, status })
+            });
+        } catch (error) {
+            console.error("Failed to update status", error);
+            // Revert on failure (optional, but good practice)
+        }
     };
 
     const pendingBookings = bookings.filter(b => b.status === 'pending');

@@ -53,3 +53,27 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Failed to create appointment' }, { status: 500 });
     }
 }
+
+// PATCH: Update appointment status
+export async function PATCH(request: Request) {
+    try {
+        if (!prisma) {
+            return NextResponse.json({ error: 'Database connection not initialized' }, { status: 500 });
+        }
+
+        const body = await request.json();
+        if (!body.id || !body.status) {
+            return NextResponse.json({ error: 'Missing id or status' }, { status: 400 });
+        }
+
+        const updated = await prisma.simpleAppointment.update({
+            where: { id: body.id },
+            data: { status: body.status }
+        });
+
+        return NextResponse.json(updated);
+    } catch (error) {
+        console.error('Failed to update appointment:', error);
+        return NextResponse.json({ error: 'Failed to update appointment' }, { status: 500 });
+    }
+}
