@@ -1,11 +1,30 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
-// GET: Fetch all services
+import { MOCK_SHOPS } from '@/lib/mockData';
+
+// GET: Fetch all services (with Seeding)
 export async function GET() {
     try {
         if (!prisma) return NextResponse.json([], { status: 500 });
-        const services = await prisma.simpleService.findMany({ orderBy: { price: 'asc' } });
+
+        let services = await prisma.simpleService.findMany({ orderBy: { price: 'asc' } });
+
+        // Seed if empty
+        if (services.length === 0) {
+            const defaults = MOCK_SHOPS[0].services;
+            await prisma.simpleService.createMany({
+                data: defaults.map(s => ({
+                    name_de: s.name.de,
+                    name_en: s.name.en,
+                    name_tr: s.name.tr,
+                    price: s.price,
+                    duration: s.duration
+                }))
+            });
+            // Fetch again after seeding
+            services = await prisma.simpleService.findMany({ orderBy: { price: 'asc' } });
+        }
 
         // Map to frontend structure
         const formatted = services.map(s => ({
@@ -17,6 +36,7 @@ export async function GET() {
 
         return NextResponse.json(formatted);
     } catch (error) {
+        console.error("Fetch Services Error:", error);
         return NextResponse.json({ error: 'Failed to fetch services' }, { status: 500 });
     }
 }
