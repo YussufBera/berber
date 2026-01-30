@@ -58,7 +58,9 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.dashboard.pending_subtitle": "Neue Buchungen erscheinen hier automatisch.",
         "admin.btn.approve": "Bestätigen",
         "admin.btn.reject": "Ablehnen",
-        "admin.btn.delete_confirm": "Termin wirklich ablehnen und löschen?"
+        "admin.btn.delete_confirm": "Termin wirklich ablehnen und löschen?",
+
+        "confirmation.cash_warning": "Bitte vergessen Sie nicht, den Betrag in bar mitzubringen."
     },
     en: {
         "hero.title": "YOUR APPOINTMENT.",
@@ -104,7 +106,9 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.dashboard.pending_subtitle": "New bookings will appear here automatically.",
         "admin.btn.approve": "Approve",
         "admin.btn.reject": "Reject",
-        "admin.btn.delete_confirm": "Really reject and delete appointment?"
+        "admin.btn.delete_confirm": "Really reject and delete appointment?",
+
+        "confirmation.cash_warning": "Please remember to bring the total amount in cash."
     },
     tr: {
         "hero.title": "RANDEVUNUZ.",
@@ -150,7 +154,9 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.dashboard.pending_subtitle": "Yeni talepler burada otomatik görünür.",
         "admin.btn.approve": "Onayla",
         "admin.btn.reject": "Reddet",
-        "admin.btn.delete_confirm": "Randevuyu reddedip silmek istiyor musunuz?"
+        "admin.btn.delete_confirm": "Randevuyu reddedip silmek istiyor musunuz?",
+
+        "confirmation.cash_warning": "Lütfen yanınızda tutar kadar nakit getirmeyi unutmayın."
     }
 };
 

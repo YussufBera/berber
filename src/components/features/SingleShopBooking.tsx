@@ -59,8 +59,18 @@ export default function SingleShopBooking() {
         if (step === 1 && selectedServices.length > 0) setStep(2);
         else if (step === 2 && selectedTime) setStep(3);
         else if (step === 3) {
-            if (!contactInfo.name || (!contactInfo.phone && !contactInfo.email)) {
-                setError(t("contact.required"));
+            // Validate Name
+            if (!contactInfo.name.trim()) {
+                setError(t("contact.required")); // Or generic required message
+                return;
+            }
+
+            // Validate Phone: Optional +, then 10-12 digits. No other chars allow.
+            const phoneRegex = /^\+?[0-9]{10,12}$/;
+            if (!contactInfo.phone || !phoneRegex.test(contactInfo.phone.replace(/\s/g, ''))) {
+                setError("Bitte eine gültige Telefonnummer eingeben (10-12 Ziffern)."); // You might want to translate this too if strict localization is needed, but user didn't ask explicitly for validation error translation. Using German default as base or English based on context. Let's stick to a generic error or hardcoded for now if t() key missing.
+                // Actually, let's use a generic error if possible or just hardcode for now.
+                // User asked for specific validation rules.
                 return;
             }
 
@@ -346,11 +356,23 @@ export default function SingleShopBooking() {
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ delay: 0.6 }}
-                                    className="text-xl text-gray-300 mb-10 max-w-md mx-auto leading-relaxed"
+                                    className="text-xl text-gray-300 mb-6 max-w-md mx-auto leading-relaxed"
                                 >
                                     Your appointment is confirmed for <br />
                                     <span className="text-neon-blue font-bold text-2xl">{selectedTime}</span> on <span className="text-neon-purple font-bold text-2xl">{new Date(selectedDate).toLocaleDateString()}</span>.
                                 </motion.p>
+
+                                {/* Cash Warning */}
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.7 }}
+                                    className="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-xl max-w-md mx-auto mb-10"
+                                >
+                                    <p className="text-yellow-500 font-bold flex items-center justify-center gap-2">
+                                        ⚠️ {t('confirmation.cash_warning')}
+                                    </p>
+                                </motion.div>
 
                                 <motion.button
                                     initial={{ opacity: 0, y: 20 }}
