@@ -35,6 +35,7 @@ export default function AdminDashboardPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id, status: 'approved' })
             });
+            window.location.reload();
         } catch (error) {
             console.error("Failed to approve", error);
         }
@@ -48,6 +49,7 @@ export default function AdminDashboardPage() {
 
         try {
             await fetch(`/api/appointments?id=${id}`, { method: 'DELETE' });
+            window.location.reload();
         } catch (error) {
             console.error("Failed to delete", error);
         }

@@ -1,22 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Euro, Calendar, Users, TrendingUp } from "lucide-react";
+import { Calendar, Users, TrendingUp, DollarSign, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 
 
 
-const iconMap: Record<string, any> = {
-    euro: Euro,
+const iconMap: any = {
     calendar: Calendar,
     users: Users,
+    euro: DollarSign,
+    clock: Clock
 };
 
-const colorMap: Record<string, string> = {
-    euro: "text-green-400 bg-green-400/10 border-green-400/20",
-    calendar: "text-neon-blue bg-neon-blue/10 border-neon-blue/20",
-    users: "text-neon-purple bg-neon-purple/10 border-neon-purple/20",
+const colorMap: any = {
+    calendar: "bg-blue-500/10 text-blue-500 border-blue-500/20",
+    users: "bg-purple-500/10 text-purple-500 border-purple-500/20",
+    euro: "bg-green-500/10 text-green-500 border-green-500/20",
+    clock: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20"
 };
 
 export default function StatsOverview() {
@@ -39,10 +41,12 @@ export default function StatsOverview() {
 
     // Filter only approved bookings for stats
     const approvedBookings = bookings.filter((b: any) => b.status === 'approved');
+    const pendingBookings = bookings.filter((b: any) => b.status === 'pending');
 
     // Calculate Stats based on approved bookings
     const totalRevenue = approvedBookings.reduce((acc: number, curr: any) => acc + (curr.total || 0), 0);
     const totalAppointments = approvedBookings.length;
+    const totalPending = pendingBookings.length;
 
     const stats = [
         {
@@ -54,11 +58,16 @@ export default function StatsOverview() {
             icon: "calendar",
             label: "BESTÄTIGTE TERMINE",
             value: totalAppointments.toString()
+        },
+        {
+            icon: "clock",
+            label: "ONAY BEKLEYENLER",
+            value: totalPending.toString()
         }
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {stats.map((stat, index) => {
                 const Icon = iconMap[stat.icon];
                 const colorClass = colorMap[stat.icon];
