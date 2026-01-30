@@ -21,14 +21,17 @@ export default function SingleShopBooking() {
     const { t, language } = useLanguage();
     const [step, setStep] = useState(1); // 1: Services, 2: Date/Time, 3: Contact, 4: Success
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
-    const [selectedDate, setSelectedDate] = useState<number>(new Date().getDate());
+    const [selectedDate, setSelectedDate] = useState<string>("");
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [contactInfo, setContactInfo] = useState({ name: "", phone: "", email: "" });
     const [error, setError] = useState("");
 
     // Hydration fix
     const [mounted, setMounted] = useState(false);
-    useEffect(() => setMounted(true), []);
+    useEffect(() => {
+        setMounted(true);
+        setSelectedDate(new Date().toISOString());
+    }, []);
 
     // Services State (Fetched from API)
     const [services, setServices] = useState<any[]>(SHOP.services);
@@ -69,7 +72,7 @@ export default function SingleShopBooking() {
                     phone: contactInfo.phone,
                     services: services.filter(s => selectedServices.includes(s.id)).map(s => s.name.en),
                     total: total,
-                    date: new Date().toISOString(),
+                    date: selectedDate, // Use selected ISO Date
                     time: selectedTime,
                 };
 
@@ -198,11 +201,14 @@ export default function SingleShopBooking() {
                                         {Array.from({ length: 30 }, (_, i) => i).map(i => {
                                             const d = new Date(today); // Use safe 'today'
                                             d.setDate(today.getDate() + i);
-                                            const isSelected = selectedDate === d.getDate();
+                                            const dIso = d.toISOString();
+                                            // Compare just the date part (YYYY-MM-DD)
+                                            const isSelected = selectedDate.split('T')[0] === dIso.split('T')[0];
+
                                             return (
                                                 <button
                                                     key={i}
-                                                    onClick={() => setSelectedDate(d.getDate())}
+                                                    onClick={() => setSelectedDate(dIso)}
                                                     className={cn(
                                                         "min-w-[100px] p-4 rounded-xl border flex flex-col items-center gap-2 transition-all shrink-0 snap-start",
                                                         isSelected
@@ -212,6 +218,7 @@ export default function SingleShopBooking() {
                                                 >
                                                     <span className="text-sm font-medium uppercase">{d.toLocaleDateString(currentLocale, { weekday: 'short' })}</span>
                                                     <span className="text-3xl font-bold">{d.getDate()}</span>
+                                                    <span className="text-xs opacity-50">{d.toLocaleDateString(currentLocale, { month: 'short' })}</span>
                                                 </button>
                                             )
                                         })}
@@ -342,7 +349,7 @@ export default function SingleShopBooking() {
                                     className="text-xl text-gray-300 mb-10 max-w-md mx-auto leading-relaxed"
                                 >
                                     Your appointment is confirmed for <br />
-                                    <span className="text-neon-blue font-bold text-2xl">{selectedTime}</span> on <span className="text-neon-purple font-bold text-2xl">{selectedDate}.</span>
+                                    <span className="text-neon-blue font-bold text-2xl">{selectedTime}</span> on <span className="text-neon-purple font-bold text-2xl">{new Date(selectedDate).toLocaleDateString()}</span>.
                                 </motion.p>
 
                                 <motion.button
