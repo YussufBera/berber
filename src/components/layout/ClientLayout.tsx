@@ -41,20 +41,35 @@ export default function ClientLayout({
 // Inner component to consume Context
 function MainContent({ children }: { children: React.ReactNode }) {
     const { language } = useLanguage();
-    // Only for non-admin pages: wait for language
+    // Start with intro shown
+    const [showIntro, setShowIntro] = useState(true);
 
     return (
         <>
-            {!language && <LanguageSelector onSelect={() => { }} />}
-            {language && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    {children}
-                </motion.div>
-            )}
+            <AnimatePresence mode="wait">
+                {showIntro && (
+                    <motion.div key="intro">
+                        <IntroAnimation onComplete={() => setShowIntro(false)} />
+                    </motion.div>
+                )}
+
+                {!showIntro && !language && (
+                    <motion.div key="lang-select">
+                        <LanguageSelector onSelect={() => { }} />
+                    </motion.div>
+                )}
+
+                {!showIntro && language && (
+                    <motion.div
+                        key="content"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        {children}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }
