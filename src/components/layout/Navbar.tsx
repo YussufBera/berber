@@ -6,7 +6,7 @@ import { Scissors, Menu, X } from "lucide-react";
 import { useLanguage } from "../features/LanguageContext";
 
 export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
-    const { t } = useLanguage();
+    const { t, language, setLanguage } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
     const [hidden, setHidden] = useState(false);
     const { scrollY } = useScroll();
@@ -72,6 +72,22 @@ export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
                                 {link.name}
                             </button>
                         ))}
+
+                        {/* Language Switcher Desktop */}
+                        <div className="flex items-center gap-3 border-l border-white/20 pl-6 ml-2">
+                            {(['de', 'en', 'tr'] as const).map((lang) => (
+                                <button
+                                    key={lang}
+                                    onClick={() => setLanguage(lang)}
+                                    className={`text-xs font-bold transition-all ${language === lang
+                                        ? "text-neon-blue"
+                                        : "text-gray-500 hover:text-white"
+                                        }`}
+                                >
+                                    {lang.toUpperCase()}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Mobile Menu Toggle */}
@@ -101,6 +117,26 @@ export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
                             {link.name}
                         </button>
                     ))}
+
+                    {/* Language Switcher Mobile */}
+                    <div className="flex items-center gap-6 mt-8">
+                        {(['de', 'en', 'tr'] as const).map((lang) => (
+                            <button
+                                key={lang}
+                                onClick={() => {
+                                    setLanguage(lang);
+                                    setIsOpen(false);
+                                }}
+                                className={`text-xl font-bold transition-all ${language === lang
+                                    ? "text-neon-blue"
+                                    : "text-gray-500 hover:text-white"
+                                    }`}
+                            >
+                                {lang.toUpperCase()}
+                            </button>
+                        ))}
+                    </div>
+
                     <button
                         onClick={() => setIsOpen(false)}
                         className="absolute bottom-10 text-gray-500 hover:text-white"

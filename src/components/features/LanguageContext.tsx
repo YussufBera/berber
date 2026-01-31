@@ -169,9 +169,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         const saved = localStorage.getItem('berber_language') as LanguageCode;
         if (saved && ['de', 'en', 'tr'].includes(saved)) {
             setLanguageState(saved);
-        } else {
-            // Default to 'de' if nothing saved
-            setLanguageState('de');
         }
     }, []);
 
