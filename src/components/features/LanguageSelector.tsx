@@ -12,7 +12,7 @@ export default function LanguageSelector({ onSelect }: { onSelect: () => void })
     // Do not show on admin pages
     if (pathname?.startsWith('/admin')) return null;
 
-    const handleSelect = (lang: 'de' | 'en' | 'tr') => {
+    const handleSelect = (lang: 'de' | 'en' | 'tr' | 'ku') => {
         setLanguage(lang);
         onSelect();
     };
@@ -46,7 +46,7 @@ export default function LanguageSelector({ onSelect }: { onSelect: () => void })
 
             {/* Türkçe */}
             <motion.div
-                className="flex-1 flex items-center justify-center cursor-pointer hover:bg-white/5 transition-colors group relative overflow-hidden"
+                className="flex-1 border-r border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/5 transition-colors group relative overflow-hidden"
                 onClick={() => handleSelect('tr')}
                 initial={{ opacity: 0, y: 100 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -54,6 +54,18 @@ export default function LanguageSelector({ onSelect }: { onSelect: () => void })
             >
                 <span className="text-4xl md:text-6xl font-bold text-gray-500 group-hover:text-neon-purple transition-colors">TR</span>
                 <span className="absolute bottom-10 text-sm tracking-widest opacity-0 group-hover:opacity-100 transition-opacity text-neon-purple">TÜRKÇE</span>
+            </motion.div>
+
+            {/* Kürtçe */}
+            <motion.div
+                className="flex-1 flex items-center justify-center cursor-pointer hover:bg-white/5 transition-colors group relative overflow-hidden"
+                onClick={() => handleSelect('ku')}
+                initial={{ opacity: 0, y: 100 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+            >
+                <span className="text-4xl md:text-6xl font-bold text-gray-500 group-hover:text-yellow-500 transition-colors">KU</span>
+                <span className="absolute bottom-10 text-sm tracking-widest opacity-0 group-hover:opacity-100 transition-opacity text-yellow-500">KURDÎ</span>
             </motion.div>
 
         </div>

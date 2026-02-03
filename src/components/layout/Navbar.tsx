@@ -75,7 +75,7 @@ export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
 
                         {/* Language Switcher Desktop */}
                         <div className="flex items-center gap-3 border-l border-white/20 pl-6 ml-2">
-                            {(['de', 'en', 'tr'] as const).map((lang) => (
+                            {(['de', 'en', 'tr', 'ku'] as const).map((lang) => (
                                 <button
                                     key={lang}
                                     onClick={() => setLanguage(lang)}

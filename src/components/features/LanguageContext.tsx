@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type LanguageCode = 'de' | 'en' | 'tr';
+type LanguageCode = 'de' | 'en' | 'tr' | 'ku';
 type Language = LanguageCode | null;
 
 interface LanguageContextType {
@@ -157,6 +157,54 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.btn.delete_confirm": "Randevuyu reddedip silmek istiyor musunuz?",
 
         "confirmation.cash_warning": "Lütfen yanınızda tutar kadar nakit getirmeyi unutmayın."
+    },
+    ku: {
+        "hero.title": "RANDEVÛYA TE.",
+        "hero.subtitle": "RANDEVÛYÊN BI KALÎTE BO CAMÊRÊN MODERN",
+        "book.button": "RANDEVÛ BIGIRE",
+        "select.services": "XIZMETAN HILBIJÊRE",
+        "select.time": "DEM HILBIJÊRE",
+        "select.date": "TARÎX HILBIJÊRE",
+        "confirmed": "HAT ERÊKIRIN",
+        "summary": "Kurte",
+        "total": "Giştî",
+        "next": "Pêşve",
+        "confirm": "Erê Bike",
+        "back": "Paşve",
+        "nav.home": "DESTPÊK",
+        "nav.info": "AGAHÎ",
+        "nav.gallery": "GALERÎ",
+        "nav.book": "RANDEVÛ",
+        "contact.details": "TÊKILÎ",
+        "contact.title": "Agahiyên Têkiliyê",
+        "contact.phone": "Hejmara Telefonê",
+        "contact.email": "E-Posta",
+        "contact.required": "Zehmet nebe telefon an e-posta binivîse.",
+        "contact.disclaimer": "Heke randevûya te neyê erêkirin, ji bo em karibin li te vegerin ji kerema xwe e-posta an hejmara xwe binivîse.",
+        "book.another": "Randevûyek Din Bigire",
+        "contact.name": "Nav û Paşnav",
+
+        "admin.login.title": "Têketina Rêveber",
+        "admin.login.subtitle": "Zehmet nebe şîfreyê binivîse",
+        "admin.login.button": "Têkeve",
+        "admin.login.error": "Şîfre Çewt e",
+        "admin.nav.dashboard": "Panel",
+        "admin.nav.termins": "Randevû",
+        "admin.nav.services": "Xizmet",
+        "admin.logout": "Derkeve",
+
+        "admin.stats.total_revenue": "DAHATIN",
+        "admin.stats.confirmed_appointments": "RANDEVÛYÊN ERÊKIRÎ",
+        "admin.stats.pending_approvals": "YÊN LI BENDA ERÊKIRINÊ",
+
+        "admin.dashboard.pending_title": "Daxwazên Li Bendê",
+        "admin.dashboard.pending_empty": "Randevûyên li bendê tune ne.",
+        "admin.dashboard.pending_subtitle": "Daxwazên nû dê li vir xuya bibin.",
+        "admin.btn.approve": "Erê Bike",
+        "admin.btn.reject": "Red Bike",
+        "admin.btn.delete_confirm": "Tu dixwazî randevûyê red bikî û jê bibî?",
+
+        "confirmation.cash_warning": "Ji kerema xwe ji bîr neke ku hûn drav bi xwe re bînin."
     }
 };
 
@@ -167,7 +215,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     // Load from localStorage on mount
     useEffect(() => {
         const saved = localStorage.getItem('berber_language') as LanguageCode;
-        if (saved && ['de', 'en', 'tr'].includes(saved)) {
+        if (saved && ['de', 'en', 'tr', 'ku'].includes(saved)) {
             setLanguageState(saved);
         }
     }, []);
