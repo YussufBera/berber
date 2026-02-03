@@ -60,7 +60,19 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.btn.reject": "Ablehnen",
         "admin.btn.delete_confirm": "Termin wirklich ablehnen und löschen?",
 
-        "confirmation.cash_warning": "Bitte vergessen Sie nicht, den Betrag in bar mitzubringen."
+        "confirmation.cash_warning": "Bitte vergessen Sie nicht, den Betrag in bar mitzubringen.",
+
+        "info.location": "Standort",
+        "info.opening_hours": "Öffnungszeiten",
+        "info.get_directions": "Wegbeschreibung",
+        "info.closed": "Geschlossen",
+        "days.monday": "Montag",
+        "days.tuesday": "Dienstag",
+        "days.wednesday": "Mittwoch",
+        "days.thursday": "Donnerstag",
+        "days.friday": "Freitag",
+        "days.saturday": "Samstag",
+        "days.sunday": "Sonntag"
     },
     en: {
         "hero.title": "YOUR APPOINTMENT.",
@@ -108,7 +120,19 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.btn.reject": "Reject",
         "admin.btn.delete_confirm": "Really reject and delete appointment?",
 
-        "confirmation.cash_warning": "Please remember to bring the total amount in cash."
+        "confirmation.cash_warning": "Please remember to bring the total amount in cash.",
+
+        "info.location": "Location",
+        "info.opening_hours": "Opening Hours",
+        "info.get_directions": "Get Directions",
+        "info.closed": "Closed",
+        "days.monday": "Monday",
+        "days.tuesday": "Tuesday",
+        "days.wednesday": "Wednesday",
+        "days.thursday": "Thursday",
+        "days.friday": "Friday",
+        "days.saturday": "Saturday",
+        "days.sunday": "Sunday"
     },
     tr: {
         "hero.title": "RANDEVUNUZ.",
@@ -156,7 +180,19 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.btn.reject": "Reddet",
         "admin.btn.delete_confirm": "Randevuyu reddedip silmek istiyor musunuz?",
 
-        "confirmation.cash_warning": "Lütfen yanınızda tutar kadar nakit getirmeyi unutmayın."
+        "confirmation.cash_warning": "Lütfen yanınızda tutar kadar nakit getirmeyi unutmayın.",
+
+        "info.location": "Konum",
+        "info.opening_hours": "Çalışma Saatleri",
+        "info.get_directions": "Yol Tarifi Al",
+        "info.closed": "Kapalı",
+        "days.monday": "Pazartesi",
+        "days.tuesday": "Salı",
+        "days.wednesday": "Çarşamba",
+        "days.thursday": "Perşembe",
+        "days.friday": "Cuma",
+        "days.saturday": "Cumartesi",
+        "days.sunday": "Pazar"
     },
     ku: {
         "hero.title": "RANDEVÛYA TE.",
@@ -204,7 +240,19 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.btn.reject": "Red Bike",
         "admin.btn.delete_confirm": "Tu dixwazî randevûyê red bikî û jê bibî?",
 
-        "confirmation.cash_warning": "Ji kerema xwe ji bîr neke ku hûn drav bi xwe re bînin."
+        "confirmation.cash_warning": "Ji kerema xwe ji bîr neke ku hûn drav bi xwe re bînin.",
+
+        "info.location": "Cih",
+        "info.opening_hours": "Demjimêrên Xebatê",
+        "info.get_directions": "Rê Tarîf Bike",
+        "info.closed": "Girtî",
+        "days.monday": "Duşem",
+        "days.tuesday": "Sêşem",
+        "days.wednesday": "Çarşem",
+        "days.thursday": "Pêncşem",
+        "days.friday": "În",
+        "days.saturday": "Şemî",
+        "days.sunday": "Yekşem"
     }
 };
 

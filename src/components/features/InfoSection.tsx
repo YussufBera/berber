@@ -8,13 +8,13 @@ export default function InfoSection() {
     const { t } = useLanguage();
 
     const hours = [
-        { day: "Pazartesi", time: "09:00–20:00" },
-        { day: "Salı", time: "09:00–20:00" },
-        { day: "Çarşamba", time: "09:00–20:00" },
-        { day: "Perşembe", time: "09:00–20:00" },
-        { day: "Cuma", time: "09:00–20:00" },
-        { day: "Cumartesi", time: "09:00–20:00" },
-        { day: "Pazar", time: "Kapalı", closed: true },
+        { day: t("days.monday"), time: "09:00–20:00" },
+        { day: t("days.tuesday"), time: "09:00–20:00" },
+        { day: t("days.wednesday"), time: "09:00–20:00" },
+        { day: t("days.thursday"), time: "09:00–20:00" },
+        { day: t("days.friday"), time: "09:00–20:00" },
+        { day: t("days.saturday"), time: "09:00–20:00" },
+        { day: t("days.sunday"), time: t("info.closed"), closed: true },
     ];
 
     return (
@@ -36,7 +36,7 @@ export default function InfoSection() {
                             <MapPin className="text-neon-blue w-8 h-8" />
                         </div>
 
-                        <h2 className="text-3xl font-bold text-white mb-4">Location</h2>
+                        <h2 className="text-3xl font-bold text-white mb-4">{t("info.location")}</h2>
                         <p className="text-gray-300 text-lg leading-relaxed mb-6">
                             Gröpelinger Heerstraße 209<br />
                             28239 Bremen
@@ -48,7 +48,7 @@ export default function InfoSection() {
                             rel="noopener noreferrer"
                             className="inline-flex items-center text-neon-blue font-bold hover:text-white transition-colors"
                         >
-                            Get Directions &rarr;
+                            {t("info.get_directions")} &rarr;
                         </a>
                     </div>
                 </motion.div>
@@ -68,7 +68,7 @@ export default function InfoSection() {
                             <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:border-neon-purple/50 transition-colors">
                                 <Clock className="text-neon-purple w-8 h-8" />
                             </div>
-                            <h2 className="text-3xl font-bold text-white">Opening Hours</h2>
+                            <h2 className="text-3xl font-bold text-white">{t("info.opening_hours")}</h2>
                         </div>
 
                         <div className="space-y-3">
