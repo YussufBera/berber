@@ -15,6 +15,17 @@ const TIME_SLOTS = [
     "10:00", "10:45", "11:30", "13:00", "13:45", "14:30", "15:15", "16:00", "16:45", "17:30", "18:15", "19:00"
 ];
 
+const scrollToElement = (id: string, offset = 100) => {
+    const element = document.getElementById(id);
+    if (element) {
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({
+            top: elementPosition - offset,
+            behavior: "smooth"
+        });
+    }
+};
+
 export default function SingleShopBooking() {
     const router = useRouter();
     const { t, language } = useLanguage();
@@ -53,6 +64,11 @@ export default function SingleShopBooking() {
             })
             .catch(err => console.error("Failed to load barbers", err));
     }, []);
+
+    useEffect(() => {
+        // Scroll to top of content when step changes
+        scrollToElement('booking-content-top', 120);
+    }, [step]);
 
     const toggleService = (id: string) => {
         setSelectedServices(prev =>
@@ -173,6 +189,7 @@ export default function SingleShopBooking() {
 
             {/* Header content - Scroll Entrance */}
             <motion.div
+                id="booking-content-top" // Anchor for scrolling
                 initial={{ opacity: 0, y: -20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -260,7 +277,11 @@ export default function SingleShopBooking() {
                                             return (
                                                 <button
                                                     key={i}
-                                                    onClick={() => setSelectedDate(d)}
+                                                    onClick={() => {
+                                                        setSelectedDate(d);
+                                                        // Scroll to Time Picker slightly later to allow render
+                                                        setTimeout(() => scrollToElement('time-picker-section', 140), 100);
+                                                    }}
                                                     className={cn(
                                                         "min-w-[100px] p-4 rounded-xl border flex flex-col items-center gap-2 transition-all shrink-0 snap-start",
                                                         isSelected
@@ -278,13 +299,16 @@ export default function SingleShopBooking() {
                                 </div>
 
                                 {/* Time Picker */}
-                                <div className="bg-white/5 p-6 rounded-2xl border border-white/10">
+                                <div id="time-picker-section" className="bg-white/5 p-6 rounded-2xl border border-white/10">
                                     <h3 className="text-lg font-bold text-gray-300 mb-4 flex items-center gap-2"><Clock className="text-neon-blue" /> {t('select.time')}</h3>
                                     <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
                                         {TIME_SLOTS.map(time => (
                                             <button
                                                 key={time}
-                                                onClick={() => setSelectedTime(time)}
+                                                onClick={() => {
+                                                    setSelectedTime(time);
+                                                    setTimeout(() => scrollToElement('action-bar-bottom'), 100);
+                                                }}
                                                 className={cn(
                                                     "py-3 rounded-xl text-center font-bold border transition-all duration-300",
                                                     selectedTime === time
@@ -313,7 +337,12 @@ export default function SingleShopBooking() {
                                     return (
                                         <div
                                             key={barber.id}
-                                            onClick={() => !isOff && setSelectedBarber(barber.id)}
+                                            onClick={() => {
+                                                if (!isOff) {
+                                                    setSelectedBarber(barber.id);
+                                                    setTimeout(() => scrollToElement('action-bar-bottom'), 100);
+                                                }
+                                            }}
                                             className={`
                                                 relative p-4 rounded-xl border-2 cursor-pointer transition-all group overflow-hidden
                                                 ${selectedBarber === barber.id
@@ -405,12 +434,6 @@ export default function SingleShopBooking() {
                                     {error && (
                                         <p className="text-red-500 text-sm font-medium">{error}</p>
                                     )}
-
-                                    <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4">
-                                        <p className="text-blue-200 text-sm leading-relaxed">
-                                            {t('contact.disclaimer')}
-                                        </p>
-                                    </div>
                                 </div>
                             </motion.div>
                         )}
@@ -517,7 +540,7 @@ export default function SingleShopBooking() {
                             </div>
                         )}
 
-                        <div className="mt-8">
+                        <div className="mt-8" id="action-bar-bottom">
                             {step < 5 && (
                                 <button
                                     disabled={step === 1 ? selectedServices.length === 0 : step === 2 ? !selectedTime : step === 3 ? !selectedBarber : false}
