@@ -51,6 +51,7 @@ export default function TerminsPage() {
                                 <tr className="border-b border-white/10 text-gray-400 text-sm uppercase tracking-wider">
                                     <th className="p-4 font-medium">Datum & Zeit</th>
                                     <th className="p-4 font-medium">Kunde</th>
+                                    <th className="p-4 font-medium">Barber</th>
                                     <th className="p-4 font-medium">Kontakt</th>
                                     <th className="p-4 font-medium">Dienstleistungen</th>
                                     <th className="p-4 font-medium text-right">Gesamt</th>
@@ -66,6 +67,9 @@ export default function TerminsPage() {
                                         </td>
                                         <td className="p-4">
                                             <span className="text-white font-medium">{booking.name}</span>
+                                        </td>
+                                        <td className="p-4">
+                                            <span className="text-white font-medium">{booking.barber || "-"}</span>
                                         </td>
                                         <td className="p-4 text-sm text-gray-300">
                                             <div className="flex flex-col">

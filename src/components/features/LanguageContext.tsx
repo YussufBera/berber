@@ -74,6 +74,8 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.btn.delete_confirm": "Termin wirklich ablehnen und löschen?",
 
         "confirmation.cash_warning": "Bitte vergessen Sie nicht, den Betrag in bar mitzubringen.",
+        "confirmation.message": "Ihr Termin ist bestätigt für {time} am {date}",
+        "confirmation.barber": "Barbier: {name}",
 
         "info.location": "Standort",
         "info.opening_hours": "Öffnungszeiten",
@@ -147,6 +149,8 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.btn.delete_confirm": "Really reject and delete appointment?",
 
         "confirmation.cash_warning": "Please remember to bring the total amount in cash.",
+        "confirmation.message": "Your appointment is confirmed for {time} on {date}",
+        "confirmation.barber": "Barber: {name}",
 
         "info.location": "Location",
         "info.opening_hours": "Opening Hours",
@@ -220,6 +224,8 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.btn.delete_confirm": "Randevuyu reddedip silmek istiyor musunuz?",
 
         "confirmation.cash_warning": "Lütfen yanınızda tutar kadar nakit getirmeyi unutmayın.",
+        "confirmation.message": "{date} tarihinde saat {time} için randevunuz onaylandı",
+        "confirmation.barber": "Berber: {name}",
 
         "info.location": "Konum",
         "info.opening_hours": "Çalışma Saatleri",
@@ -293,6 +299,8 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.btn.delete_confirm": "Tu dixwazî randevûyê red bikî û jê bibî?",
 
         "confirmation.cash_warning": "Ji kerema xwe ji bîr neke ku hûn drav bi xwe re bînin.",
+        "confirmation.message": "Randevûya we ji bo {date} saet {time} hat erêkirin",
+        "confirmation.barber": "Berber: {name}",
 
         "info.location": "Cih",
         "info.opening_hours": "Demjimêrên Xebatê",

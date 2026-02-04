@@ -408,12 +408,14 @@ export default function SingleShopBooking() {
                                     transition={{ delay: 0.6 }}
                                     className="text-xl text-gray-300 mb-6 max-w-md mx-auto leading-relaxed"
                                 >
-                                    Your appointment is confirmed for <br />
-                                    <div className="my-4">
-                                        <span className="text-neon-blue font-bold text-2xl">{selectedTime}</span> on <span className="text-neon-purple font-bold text-2xl">{new Date(selectedDate).toLocaleDateString()}</span>
-                                    </div>
+                                    <span className="block mb-4 text-2xl text-white font-medium">
+                                        {t('confirmation.message')
+                                            .replace('{time}', selectedTime || '')
+                                            .replace('{date}', new Date(selectedDate).toLocaleDateString())
+                                        }
+                                    </span>
                                     <div className="text-sm text-gray-400">
-                                        Barber: <span className="text-white font-bold">{barbers.find(b => b.id === selectedBarber)?.name}</span>
+                                        {t('confirmation.barber').replace('{name}', barbers.find(b => b.id === selectedBarber)?.name || '')}
                                     </div>
                                 </motion.p>
 

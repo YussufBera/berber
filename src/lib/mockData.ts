@@ -29,10 +29,10 @@ export type Barber = {
 
 // Initial Barber Data
 export const MOCK_BARBERS: Barber[] = [
-    { id: "b1", name: "Ahmet", specialty: "Master Barber", image: "/team/ahmet.jpg", shopId: "1" },
-    { id: "b2", name: "Mahmut", specialty: "Fade Specialist", image: "/team/mahmut.jpg", shopId: "1" },
-    { id: "b3", name: "John", specialty: "Colorist", image: "/team/john.jpg", shopId: "1" },
-    { id: "b4", name: "Hans", specialty: "Classic Cuts", image: "/team/hans.jpg", shopId: "1" },
+    { id: "b1", name: "Ahmet", specialty: "Master Barber", image: "/team/default-barber.png", shopId: "1" },
+    { id: "b2", name: "Mahmut", specialty: "Fade Specialist", image: "/team/default-barber.png", shopId: "1" },
+    { id: "b3", name: "John", specialty: "Colorist", image: "/team/default-barber.png", shopId: "1" },
+    { id: "b4", name: "Hans", specialty: "Classic Cuts", image: "/team/default-barber.png", shopId: "1" },
 ];
 
 export const MOCK_SHOPS: BarberShop[] = [

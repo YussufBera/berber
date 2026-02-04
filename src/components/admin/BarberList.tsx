@@ -32,7 +32,7 @@ export default function BarberList() {
         const specialty = prompt("Specialty (e.g. Master Barber):") || "Barber";
 
         // Random placeholder image from existing pattern or generic
-        const image = `/team/ahmet.jpg`;
+        const image = `/team/default-barber.png`;
 
         try {
             const res = await fetch('/api/barbers', {
