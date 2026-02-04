@@ -40,6 +40,17 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "book.another": "Weiteren Termin buchen",
         "contact.name": "Vor- und Nachname",
 
+        "gallery.interior": "Barber Interieur",
+        "gallery.tools": "Professionelle Werkzeuge",
+        "gallery.lounge": "Wartebereich",
+
+        "select.service_prompt": "Wählen Sie eine Dienstleistung, um zu beginnen.",
+        "unit.mins": "Min",
+
+        "contact.placeholder_name": "Max Mustermann",
+        "contact.placeholder_phone": "+49 123 4567890",
+        "contact.placeholder_email": "beispiel@mail.com",
+
         "admin.login.title": "Admin Zugang",
         "admin.login.subtitle": "Bitte Passwort eingeben",
         "admin.login.button": "Anmelden",
@@ -99,6 +110,17 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.disclaimer": "Please enter your email or number to be contacted in case your appointment is not approved.",
         "book.another": "Book Another",
         "contact.name": "Full Name",
+
+        "gallery.interior": "Barber Interior",
+        "gallery.tools": "Professional Tools",
+        "gallery.lounge": "Waiting Lounge",
+
+        "select.service_prompt": "Select a service to start.",
+        "unit.mins": "mins",
+
+        "contact.placeholder_name": "John Doe",
+        "contact.placeholder_phone": "+1 234 567 890",
+        "contact.placeholder_email": "example@mail.com",
 
         "admin.login.title": "Admin Access",
         "admin.login.subtitle": "Please enter password",
@@ -160,6 +182,17 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "book.another": "Başka Randevu Al",
         "contact.name": "Ad Soyad",
 
+        "gallery.interior": "Berber İç Mekan",
+        "gallery.tools": "Profesyonel Ekipmanlar",
+        "gallery.lounge": "Bekleme Alanı",
+
+        "select.service_prompt": "Başlamak için bir hizmet seçin.",
+        "unit.mins": "dk",
+
+        "contact.placeholder_name": "Ahmet Yılmaz",
+        "contact.placeholder_phone": "+90 555 123 4567",
+        "contact.placeholder_email": "ornek@mail.com",
+
         "admin.login.title": "Yönetici Girişi",
         "admin.login.subtitle": "Lütfen şifreyi giriniz",
         "admin.login.button": "Giriş Yap",
@@ -219,6 +252,17 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.disclaimer": "Heke randevûya te neyê erêkirin, ji bo em karibin li te vegerin ji kerema xwe e-posta an hejmara xwe binivîse.",
         "book.another": "Randevûyek Din Bigire",
         "contact.name": "Nav û Paşnav",
+
+        "gallery.interior": "Navxweya Berber",
+        "gallery.tools": "Amûrên Profesyonel",
+        "gallery.lounge": "Cihê Bendewarîyê",
+
+        "select.service_prompt": "Ji bo destpêkirinê xizmetek hilbijêre.",
+        "unit.mins": "xûlek",
+
+        "contact.placeholder_name": "Azad Şêrgo",
+        "contact.placeholder_phone": "+49 ...",
+        "contact.placeholder_email": "mînak@mail.com",
 
         "admin.login.title": "Têketina Rêveber",
         "admin.login.subtitle": "Zehmet nebe şîfreyê binivîse",

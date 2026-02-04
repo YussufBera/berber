@@ -106,14 +106,15 @@ export default function SingleShopBooking() {
     const localeMap: Record<string, string> = {
         'de': 'de-DE',
         'en': 'en-US',
-        'tr': 'tr-TR'
+        'tr': 'tr-TR',
+        'ku': 'ku-TR' // Fallback to Turkish locale region for Kurdish if 'ku' isn't fully supported, or 'ku' if available in environment
     };
     const currentLocale = localeMap[language || 'de'];
 
     // Helper for safe service name access
     const getServiceName = (s: any) => {
-        // Handle both object structure from Mock and potential DB structure if different, mainly ensuring null safety
         if (!s.name) return "Service";
+        // Check language specific name, fallback to German
         return s.name[language || 'de'] || s.name['de'] || "Service";
     };
 
@@ -184,7 +185,7 @@ export default function SingleShopBooking() {
                                             <h3 className="text-xl font-bold text-white">{getServiceName(service)}</h3>
                                             <span className="text-neon-blue font-mono text-lg">€{service.price}</span>
                                         </div>
-                                        <p className="text-gray-400 text-sm">{service.duration} mins</p>
+                                        <p className="text-gray-400 text-sm">{service.duration} {t('unit.mins')}</p>
 
                                         {selectedServices.includes(service.id) && (
                                             <div className="absolute right-4 bottom-4 w-8 h-8 bg-neon-blue rounded-full flex items-center justify-center text-black">
@@ -279,7 +280,7 @@ export default function SingleShopBooking() {
                                                 setError("");
                                             }}
                                             className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white focus:border-neon-blue focus:outline-none transition-colors"
-                                            placeholder="John Doe"
+                                            placeholder={t('contact.placeholder_name')}
                                         />
                                     </div>
                                     <div>
@@ -292,7 +293,7 @@ export default function SingleShopBooking() {
                                                 setError("");
                                             }}
                                             className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white focus:border-neon-blue focus:outline-none transition-colors"
-                                            placeholder="+49 ..."
+                                            placeholder={t('contact.placeholder_phone')}
                                         />
                                     </div>
 
@@ -306,7 +307,7 @@ export default function SingleShopBooking() {
                                                 setError("");
                                             }}
                                             className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white focus:border-neon-purple focus:outline-none transition-colors"
-                                            placeholder="example@mail.com"
+                                            placeholder={t('contact.placeholder_email')}
                                         />
                                     </div>
 
@@ -402,7 +403,7 @@ export default function SingleShopBooking() {
                         </h3>
 
                         {selectedServices.length === 0 ? (
-                            <p className="text-gray-500 text-sm italic">Select a service to start.</p>
+                            <p className="text-gray-500 text-sm italic">{t('select.service_prompt')}</p>
                         ) : (
                             <div className="space-y-4">
                                 {services.filter(s => selectedServices.includes(s.id)).map(s => (

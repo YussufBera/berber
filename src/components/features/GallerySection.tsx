@@ -7,9 +7,9 @@ export default function GallerySection() {
     const { t } = useLanguage();
 
     const images = [
-        { src: "/gallery/real-interior.png", alt: "Barber Interior", span: "col-span-1 md:col-span-2 row-span-2" },
-        { src: "/gallery/real-tools.png", alt: "Professional Tools", span: "col-span-1 row-span-1" },
-        { src: "/gallery/real-lounge.png", alt: "Waiting Lounge", span: "col-span-1 row-span-1" },
+        { src: "/gallery/real-interior.png", alt: t('gallery.interior'), span: "col-span-1 md:col-span-2 row-span-2" },
+        { src: "/gallery/real-tools.png", alt: t('gallery.tools'), span: "col-span-1 row-span-1" },
+        { src: "/gallery/real-lounge.png", alt: t('gallery.lounge'), span: "col-span-1 row-span-1" },
     ];
 
     return (
