@@ -136,118 +136,122 @@ export default function BarberAvailability() {
         return days;
     };
 
-    const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]; // Could localized if needed
+    return days;
+};
 
-    return (
-        <div className="space-y-6">
-            {/* Barber Selector */}
-            <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                    <User className="text-neon-blue" />
-                    Select Barber
-                </h3>
-                <div className="flex gap-4 overflow-x-auto pb-2 custom-scrollbar">
-                    {barbers.map(barber => (
-                        <button
-                            key={barber.id}
-                            onClick={() => {
-                                setSelectedBarberId(barber.id);
-                                setIsModalOpen(false);
-                            }}
-                            className={`
+const MONTH_NAMES = t('admin.months').split(',');
+
+
+return (
+    <div className="space-y-6">
+        {/* Barber Selector */}
+        <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
+            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <User className="text-neon-blue" />
+                {t('admin.calendar.select_barber')}
+            </h3>
+            <div className="flex gap-4 overflow-x-auto pb-2 custom-scrollbar">
+                {barbers.map(barber => (
+                    <button
+                        key={barber.id}
+                        onClick={() => {
+                            setSelectedBarberId(barber.id);
+                            setIsModalOpen(false);
+                        }}
+                        className={`
                                 flex items-center gap-3 px-4 py-3 rounded-xl border transition-all min-w-[200px]
                                 ${selectedBarberId === barber.id
-                                    ? "bg-neon-blue/10 border-neon-blue text-white"
-                                    : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10"}
+                                ? "bg-neon-blue/10 border-neon-blue text-white"
+                                : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10"}
                             `}
-                        >
-                            <div className="w-10 h-10 rounded-full bg-gray-800 overflow-hidden">
-                                <img src={barber.image} alt={barber.name} className="w-full h-full object-cover" />
-                            </div>
-                            <div className="text-left">
-                                <div className="font-bold">{barber.name}</div>
-                                <div className="text-xs opacity-70">{barber.specialty}</div>
-                            </div>
-                        </button>
-                    ))}
-                </div>
+                    >
+                        <div className="w-10 h-10 rounded-full bg-gray-800 overflow-hidden">
+                            <img src={barber.image} alt={barber.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="text-left">
+                            <div className="font-bold">{barber.name}</div>
+                            <div className="text-xs opacity-70">{barber.specialty}</div>
+                        </div>
+                    </button>
+                ))}
             </div>
-
-            {/* Calendar */}
-            <AnimatePresence mode="wait">
-                {!selectedBarberId ? (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#111] border border-white/5 rounded-2xl p-20 text-center">
-                        <User size={48} className="mx-auto mb-4 text-gray-600" />
-                        <h3 className="text-2xl text-white font-bold mb-2">Select a Barber</h3>
-                        <p className="text-gray-500">Select a team member to manage their working days.</p>
-                    </motion.div>
-                ) : (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#111] border border-white/5 rounded-2xl p-6">
-                        <div className="flex items-center justify-between mb-8">
-                            <h2 className="text-3xl font-bold text-white">
-                                {MONTH_NAMES[currentMonth.getMonth()]} <span className="text-gray-500">{currentMonth.getFullYear()}</span>
-                            </h2>
-                            <div className="flex gap-2">
-                                <button onClick={prevMonth} className="p-2 hover:bg-white/10 rounded-full text-white transition-colors"><ChevronLeft /></button>
-                                <button onClick={nextMonth} className="p-2 hover:bg-white/10 rounded-full text-white transition-colors"><ChevronRight /></button>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-7 gap-4 mb-4">
-                            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-                                <div key={day} className="text-gray-500 font-medium text-sm text-center uppercase tracking-wider">{day}</div>
-                            ))}
-                        </div>
-                        <div className="grid grid-cols-7 gap-4">
-                            {renderCalendar()}
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            {/* Action Modal */}
-            <AnimatePresence>
-                {isModalOpen && selectedDay && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                        <motion.div
-                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-                            onClick={() => setIsModalOpen(false)}
-                        />
-                        <motion.div
-                            initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }}
-                            className="relative bg-[#222] border border-white/10 rounded-2xl p-8 w-full max-w-sm shadow-2xl z-10"
-                        >
-                            <h3 className="text-2xl font-bold text-white mb-2 text-center">
-                                {selectedDay.toLocaleDateString()}
-                            </h3>
-                            <p className="text-gray-400 text-center mb-8">
-                                Manage availability for <br /><span className="text-neon-blue font-bold">{barbers.find(b => b.id === selectedBarberId)?.name}</span>
-                            </p>
-
-                            <div className="flex flex-col gap-3">
-                                <button
-                                    onClick={() => updateAvailability(true)}
-                                    className="w-full py-4 rounded-xl bg-red-500/20 text-red-500 border border-red-500 hover:bg-red-500 hover:text-white transition-all font-bold flex items-center justify-center gap-2"
-                                >
-                                    <XCircle /> {t('av.day_off', 'Day Off')}
-                                </button>
-                                <button
-                                    onClick={() => updateAvailability(false)}
-                                    className="w-full py-4 rounded-xl bg-green-500/20 text-green-500 border border-green-500 hover:bg-green-500 hover:text-white transition-all font-bold flex items-center justify-center gap-2"
-                                >
-                                    <CheckCircle /> {t('av.working', 'Working')}
-                                </button>
-                                <button
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="w-full py-4 rounded-xl bg-white/5 text-gray-400 hover:bg-white/10 transition-all font-bold mt-2"
-                                >
-                                    {t('av.cancel', 'Cancel')}
-                                </button>
-                            </div>
-                        </motion.div>
-                    </div>
-                )}
-            </AnimatePresence>
         </div>
-    );
+
+        {/* Calendar */}
+        <AnimatePresence mode="wait">
+            {!selectedBarberId ? (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#111] border border-white/5 rounded-2xl p-20 text-center">
+                    <User size={48} className="mx-auto mb-4 text-gray-600" />
+                    <h3 className="text-2xl text-white font-bold mb-2">{t('admin.calendar.select_barber')}</h3>
+                    <p className="text-gray-500">{t('admin.calendar.select_barber_msg')}</p>
+                </motion.div>
+            ) : (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-[#111] border border-white/5 rounded-2xl p-6">
+                    <div className="flex items-center justify-between mb-8">
+                        <h2 className="text-3xl font-bold text-white">
+                            {MONTH_NAMES[currentMonth.getMonth()]} <span className="text-gray-500">{currentMonth.getFullYear()}</span>
+                        </h2>
+                        <div className="flex gap-2">
+                            <button onClick={prevMonth} className="p-2 hover:bg-white/10 rounded-full text-white transition-colors"><ChevronLeft /></button>
+                            <button onClick={nextMonth} className="p-2 hover:bg-white/10 rounded-full text-white transition-colors"><ChevronRight /></button>
+                        </div>
+                    </div>
+                    <div className="grid grid-cols-7 gap-4 mb-4">
+                        {t('admin.days.short').split(',').map(day => (
+                            <div key={day} className="text-gray-500 font-medium text-sm text-center uppercase tracking-wider">{day}</div>
+                        ))}
+                    </div>
+                    <div className="grid grid-cols-7 gap-4">
+                        {renderCalendar()}
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+
+        {/* Action Modal */}
+        <AnimatePresence>
+            {isModalOpen && selectedDay && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <motion.div
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                        onClick={() => setIsModalOpen(false)}
+                    />
+                    <motion.div
+                        initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }}
+                        className="relative bg-[#222] border border-white/10 rounded-2xl p-8 w-full max-w-sm shadow-2xl z-10"
+                    >
+                        <h3 className="text-2xl font-bold text-white mb-2 text-center">
+                            {selectedDay.toLocaleDateString()}
+                        </h3>
+                        <p className="text-gray-400 text-center mb-8">
+                            {t('admin.calendar.manage_for')} <br /><span className="text-neon-blue font-bold">{barbers.find(b => b.id === selectedBarberId)?.name}</span>
+                        </p>
+
+                        <div className="flex flex-col gap-3">
+                            <button
+                                onClick={() => updateAvailability(true)}
+                                className="w-full py-4 rounded-xl bg-red-500/20 text-red-500 border border-red-500 hover:bg-red-500 hover:text-white transition-all font-bold flex items-center justify-center gap-2"
+                            >
+                                <XCircle /> {t('av.day_off', 'Day Off')}
+                            </button>
+                            <button
+                                onClick={() => updateAvailability(false)}
+                                className="w-full py-4 rounded-xl bg-green-500/20 text-green-500 border border-green-500 hover:bg-green-500 hover:text-white transition-all font-bold flex items-center justify-center gap-2"
+                            >
+                                <CheckCircle /> {t('av.working', 'Working')}
+                            </button>
+                            <button
+                                onClick={() => setIsModalOpen(false)}
+                                className="w-full py-4 rounded-xl bg-white/5 text-gray-400 hover:bg-white/10 transition-all font-bold mt-2"
+                            >
+                                {t('av.cancel', 'Cancel')}
+                            </button>
+                        </div>
+                    </motion.div>
+                </div>
+            )}
+        </AnimatePresence>
+    </div>
+);
 }

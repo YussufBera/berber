@@ -4,10 +4,12 @@ import { MOCK_APPOINTMENTS } from "@/lib/adminMockData";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "../features/LanguageContext";
 
 const HOURS = Array.from({ length: 11 }, (_, i) => i + 9); // 09:00 to 19:00
 
 export default function CalendarView() {
+    const { t } = useLanguage();
     const getPosition = (time: string) => {
         const [h, m] = time.split(':').map(Number);
         return ((h - 9) * 120) + (m * 2) + 60; // 120px per hour + 60px header offset
@@ -19,7 +21,7 @@ export default function CalendarView() {
             <div className="p-4 border-b border-white/10 flex items-center justify-between bg-[#151515]">
                 <h3 className="text-lg font-bold flex items-center gap-2">
                     <Clock size={18} className="text-neon-blue" />
-                    Daily Schedule
+                    {t('admin.calendar.daily_title')}
                 </h3>
                 <div className="flex items-center gap-4">
                     <p className="text-sm font-medium text-gray-300">Jan 30, 2026</p>

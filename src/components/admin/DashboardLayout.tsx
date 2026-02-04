@@ -78,7 +78,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <div className="flex items-center gap-6">
                         {/* Compact Language Selector */}
                         <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1 border border-white/10">
-                            {['de', 'en', 'tr', 'ku'].map((lang) => (
+                            {['de', 'en', 'tr', 'ku', 'ar'].map((lang) => (
                                 <button
                                     key={lang}
                                     onClick={() => setLanguage(lang as any)}

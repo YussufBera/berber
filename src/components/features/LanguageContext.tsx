@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-type LanguageCode = 'de' | 'en' | 'tr' | 'ku';
+type LanguageCode = 'de' | 'en' | 'tr' | 'ku' | 'ar';
 type Language = LanguageCode | null;
 
 interface LanguageContextType {
@@ -82,7 +82,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 
         "admin.stats.total_revenue": "GESAMTEINNAHMEN",
         "admin.stats.confirmed_appointments": "BESTÄTIGTE TERMINE",
-        "admin.stats.pending_approvals": "ONAY BEKLEYENLER",
+        "admin.stats.pending_approvals": "AUSSTEHENDE GENEHMIGUNGEN",
 
         "admin.dashboard.pending_title": "Ausstehende Anfragen",
         "admin.dashboard.pending_empty": "Keine ausstehenden Termine.",
@@ -117,7 +117,25 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.barbers.specialty_label": "Spezialgebiet",
         "admin.barbers.specialty_placeholder": "z.B. Meisterbarbier",
         "admin.barbers.save": "Speichern",
-        "admin.barbers.cancel": "Abbrechen"
+        "admin.barbers.cancel": "Abbrechen",
+
+        "admin.termins.title": "Bestätigte Termine",
+        "admin.termins.empty": "Noch keine bestätigten Termine.",
+        "admin.termins.empty_sub": "Bestätigte Buchungen erscheinen hier.",
+        "admin.termins.date": "Datum & Zeit",
+        "admin.termins.customer": "Kunde",
+        "admin.termins.barber": "Barbier",
+        "admin.termins.contact": "Kontakt",
+        "admin.termins.services": "Dienstleistungen",
+        "admin.termins.total": "Gesamt",
+        "admin.termins.delete_confirm": "Termin endgültig löschen?",
+
+        "admin.calendar.daily_title": "Tagesplan",
+        "admin.calendar.select_barber": "Barbier wählen",
+        "admin.calendar.select_barber_msg": "Wählen Sie ein Teammitglied, um dessen Arbeitstage zu verwalten.",
+        "admin.calendar.manage_for": "Verfügbarkeit verwalten für",
+        "admin.months": "Januar,Februar,März,April,Mai,Juni,Juli,August,September,Oktober,November,Dezember",
+        "admin.days.short": "Mo,Di,Mi,Do,Fr,Sa,So"
     },
     en: {
         "hero.title": "YOUR APPOINTMENT.",
@@ -222,7 +240,25 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.barbers.specialty_label": "Specialty",
         "admin.barbers.specialty_placeholder": "e.g. Master Barber",
         "admin.barbers.save": "Save",
-        "admin.barbers.cancel": "Cancel"
+        "admin.barbers.cancel": "Cancel",
+
+        "admin.termins.title": "Confirmed Appointments",
+        "admin.termins.empty": "No confirmed appointments yet.",
+        "admin.termins.empty_sub": "Confirmed bookings will appear here.",
+        "admin.termins.date": "Date & Time",
+        "admin.termins.customer": "Customer",
+        "admin.termins.barber": "Barber",
+        "admin.termins.contact": "Contact",
+        "admin.termins.services": "Services",
+        "admin.termins.total": "Total",
+        "admin.termins.delete_confirm": "Permanently delete appointment?",
+
+        "admin.calendar.daily_title": "Daily Schedule",
+        "admin.calendar.select_barber": "Select Barber",
+        "admin.calendar.select_barber_msg": "Select a team member to manage their working days.",
+        "admin.calendar.manage_for": "Manage availability for",
+        "admin.months": "January,February,March,April,May,June,July,August,September,October,November,December",
+        "admin.days.short": "Mon,Tue,Wed,Thu,Fri,Sat,Sun"
     },
     tr: {
         "hero.title": "RANDEVUNUZ.",
@@ -327,7 +363,25 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.barbers.specialty_label": "Uzmanlık",
         "admin.barbers.specialty_placeholder": "Örn. Usta Berber",
         "admin.barbers.save": "Kaydet",
-        "admin.barbers.cancel": "İptal"
+        "admin.barbers.cancel": "İptal",
+
+        "admin.termins.title": "Onaylanan Randevular",
+        "admin.termins.empty": "Henüz onaylanmış randevu yok.",
+        "admin.termins.empty_sub": "Onaylananlar burada görünür.",
+        "admin.termins.date": "Tarih & Saat",
+        "admin.termins.customer": "Müşteri",
+        "admin.termins.barber": "Berber",
+        "admin.termins.contact": "İletişim",
+        "admin.termins.services": "Hizmetler",
+        "admin.termins.total": "Toplam",
+        "admin.termins.delete_confirm": "Randevuyu kalıcı olarak sil?",
+
+        "admin.calendar.daily_title": "Günlük Program",
+        "admin.calendar.select_barber": "Berber Seç",
+        "admin.calendar.select_barber_msg": "Çalışma günlerini yönetmek için birini seçin.",
+        "admin.calendar.manage_for": "Yönetilen kişi:",
+        "admin.months": "Ocak,Şubat,Mart,Nisan,Mayıs,Haziran,Temmuz,Ağustos,Eylül,Ekim,Kasım,Aralık",
+        "admin.days.short": "Pzt,Sal,Çar,Per,Cum,Cmt,Paz"
     },
     ku: {
         "hero.title": "RANDEVÛYA TE.",
@@ -432,7 +486,147 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.barbers.specialty_label": "Pisporî",
         "admin.barbers.specialty_placeholder": "mînak. Hostayê Berber",
         "admin.barbers.save": "Tomar Bike",
-        "admin.barbers.cancel": "Betal Bike"
+        "admin.barbers.cancel": "Betal Bike",
+
+        "admin.termins.title": "Randevûyên Erêkirî",
+        "admin.termins.empty": "Hêj randevûyên erêkirî tune ne.",
+        "admin.termins.empty_sub": "Randevûyên erêkirî dê li vir xuya bibin.",
+        "admin.termins.date": "Dîrok & Dem",
+        "admin.termins.customer": "Mişterî",
+        "admin.termins.barber": "Berber",
+        "admin.termins.contact": "Têkilî",
+        "admin.termins.services": "Xizmet",
+        "admin.termins.total": "Giştî",
+        "admin.termins.delete_confirm": "Randevû bi temamî jê bibe?",
+
+        "admin.calendar.daily_title": "Bernameya Rojane",
+        "admin.calendar.select_barber": "Berber Hilbijêre",
+        "admin.calendar.select_barber_msg": "Ji bo rêvebirina rojên xebatê endamek hilbijêre.",
+        "admin.calendar.manage_for": "Rêveberiya berdestbûnê ji bo",
+        "admin.months": "Rêbendan,Reşemî,Adar,Avrêl,Gulan,Pûşper,Tîrmeh,Gelawêj,Rezber,Cotmeh,Mijdar,Berfanbar",
+        "admin.days.short": "Duş,Sêş,Çar,Pên,În,Şem,Yek"
+    },
+    ar: {
+        "hero.title": "موعدك.",
+        "hero.subtitle": "مواعيد متميزة للرجل العصري",
+        "book.button": "حجز موعد",
+        "select.services": "اختر الخدمات",
+        "select.time": "اختر الوقت",
+        "select.barber": "اختر الحلاق",
+        "select.date": "اختر التاريخ",
+        "confirmed": "تم التأكيد",
+        "summary": "ملخص",
+        "total": "الإجمالي",
+        "next": "التالي",
+        "confirm": "تأكيد",
+        "back": "عودة",
+        "nav.home": "الرئيسية",
+        "nav.info": "معلومات",
+        "nav.gallery": "المعرض",
+        "nav.book": "حجز",
+        "nav.manage": "إدارة الحجز",
+        "manage.title": "إدارة المواعيد",
+        "manage.subtitle": "أدخل رقم هاتفك لعرض مواعيدك.",
+        "manage.placeholder": "رقم الهاتف",
+        "manage.find": "بحث",
+        "manage.no_appts": "لم يتم العثور على مواعيد.",
+        "manage.cancel": "إلغاء",
+        "manage.cancel_confirm": "هل أنت متأكد أنك تريد إلغاء هذا الموعد؟",
+        "manage.cancel_too_late": "لا يمكن إلغاء المواعيد التي تقل عن 24 ساعة.",
+        "contact.details": "اتصال",
+        "contact.title": "تفاصيل الاتصال",
+        "contact.phone": "رقم الهاتف",
+        "contact.email": "البريد الإلكتروني",
+        "contact.required": "يرجى تقديم الهاتف أو البريد الإلكتروني.",
+        "contact.disclaimer": "يرجى إدخال بريدك الإلكتروني أو رقم هاتفك ليتم الاتصال بك في حال عدم الموافقة على موعدك.",
+        "book.another": "حجز موعد آخر",
+        "contact.name": "الاسم الكامل",
+
+        "gallery.interior": "تصميم الصالون",
+        "gallery.tools": "أدوات احترافية",
+        "gallery.lounge": "صالة الانتظار",
+
+        "select.service_prompt": "اختر خدمة للبدء.",
+        "unit.mins": "دقيقة",
+
+        "contact.placeholder_name": "الاسم",
+        "contact.placeholder_phone": "+90 ...",
+        "contact.placeholder_email": "example@mail.com",
+
+        "admin.login.title": "دخول المسؤول",
+        "admin.login.subtitle": "يرجى إدخال كلمة المرور",
+        "admin.login.button": "دخول",
+        "admin.login.error": "كلمة المرور غير صحيحة",
+        "admin.nav.dashboard": "لوحة التحكم",
+        "admin.nav.termins": "المواعيد",
+        "admin.nav.services": "الخدمات",
+        "admin.nav.barbers": "الحلاقين",
+        "admin.nav.plan": "خطة العمل",
+        "admin.nav.availability": "أيام العمل",
+        "admin.logout": "تسجيل خروج",
+
+        "av.day_off": "عطلة",
+        "av.working": "عمل",
+        "av.cancel": "إلغاء",
+        "av.set_off": "تحديد كعطلة",
+        "av.set_working": "تحديد كعمل",
+
+        "admin.stats.total_revenue": "إجمالي الإيرادات",
+        "admin.stats.confirmed_appointments": "مواعيد مؤكدة",
+        "admin.stats.pending_approvals": "طلبات قيد الانتظار",
+
+        "admin.dashboard.pending_title": "طلبات معلقة",
+        "admin.dashboard.pending_empty": "لا توجد مواعيد معلقة.",
+        "admin.dashboard.pending_subtitle": "ستظهر الحجوزات الجديدة هنا تلقائيًا.",
+        "admin.btn.approve": "موافقة",
+        "admin.btn.reject": "رفض",
+        "admin.btn.delete_confirm": "هل تريد حقًا رفض وحذف الموعد؟",
+
+        "confirmation.cash_warning": "يرجى تذكر إحضار المبلغ نقدًا.",
+        "confirmation.message": "تم تأكيد موعدك في {time} بتاريخ {date}",
+        "confirmation.barber": "الحلاق: {name}",
+
+        "info.location": "الموقع",
+        "info.opening_hours": "ساعات العمل",
+        "info.get_directions": "الحصول على الاتجاهات",
+        "info.closed": "مغلق",
+        "days.monday": "الاثنين",
+        "days.tuesday": "الثلاثاء",
+        "days.wednesday": "الأربعاء",
+        "days.thursday": "الخميس",
+        "days.friday": "الجمعة",
+        "days.saturday": "السبت",
+        "days.sunday": "الأحد",
+
+        "admin.barbers.title": "إدارة الفريق",
+        "admin.barbers.subtitle": "إدارة الحلاقين",
+        "admin.barbers.add_btn": "إضافة حلاق",
+        "admin.barbers.delete_confirm": "هل أنت متأكد أنك تريد حذف هذا الحلاق؟",
+        "admin.barbers.modal_title": "إضافة حلاق جديد",
+        "admin.barbers.edit_title": "تعديل حلاق",
+        "admin.barbers.name_label": "الاسم",
+        "admin.barbers.specialty_label": "التخصص",
+        "admin.barbers.specialty_placeholder": "مثال: حلاق محترف",
+        "admin.barbers.save": "حفظ",
+        "admin.barbers.cancel": "إلغاء",
+
+        "admin.termins.title": "مواعيد مؤكدة",
+        "admin.termins.empty": "لا توجد مواعيد مؤكدة بعد.",
+        "admin.termins.empty_sub": "ستظهر الحجوزات المؤكدة هنا.",
+        "admin.termins.date": "التاريخ والوقت",
+        "admin.termins.customer": "العميل",
+        "admin.termins.barber": "الحلاق",
+        "admin.termins.contact": "اتصال",
+        "admin.termins.services": "الخدمات",
+        "admin.termins.total": "الإجمالي",
+        "admin.termins.delete_confirm": "حذف الموعد نهائيًا؟",
+
+        "admin.calendar.daily_title": "الجدول اليومي",
+        "admin.calendar.select_barber": "اختر حلاق",
+        "admin.calendar.select_barber_msg": "اختر عضوًا في الفريق لإدارة أيام عمله.",
+        "admin.calendar.manage_for": "إدارة التوافر لـ",
+        "admin.months": "يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,أغسطس,سبتمبر,أكتوبر,نوفمبر,ديسمبر",
+        "admin.days.short": "ن,ث,ر,خ,ج,س,ح"
     }
 };
 
@@ -443,10 +637,21 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     // Load from localStorage on mount
     useEffect(() => {
         const saved = localStorage.getItem('berber_language') as LanguageCode;
-        if (saved && ['de', 'en', 'tr', 'ku'].includes(saved)) {
+        if (saved && ['de', 'en', 'tr', 'ku', 'ar'].includes(saved)) {
             setLanguageState(saved);
         }
     }, []);
+
+    // Handle RTL
+    useEffect(() => {
+        if (language === 'ar') {
+            document.documentElement.dir = 'rtl';
+            document.documentElement.lang = 'ar';
+        } else {
+            document.documentElement.dir = 'ltr';
+            document.documentElement.lang = language || 'de';
+        }
+    }, [language]);
 
     const setLanguage = (lang: Language) => {
         if (lang) {

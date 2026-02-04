@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/admin/DashboardLayout";
 import { Calendar, CheckCircle, Trash2 } from "lucide-react";
+import { useLanguage } from "@/components/features/LanguageContext";
 
 
 export default function TerminsPage() {
@@ -16,7 +17,7 @@ export default function TerminsPage() {
     }, []);
 
     const handleDelete = async (id: string) => {
-        if (!confirm("Termin endgültig löschen?")) return;
+        if (!confirm(t('admin.termins.delete_confirm'))) return;
         try {
             await fetch(`/api/appointments?id=${id}`, { method: 'DELETE' });
             window.location.reload();
@@ -30,31 +31,33 @@ export default function TerminsPage() {
         .filter((b: any) => b.status === 'approved')
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+    const { t } = useLanguage() as any; // Quick cast or use proper type import
+
     return (
         <DashboardLayout>
             <div className="bg-[#111] border border-white/5 rounded-2xl p-6 min-h-[600px]">
                 <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
                     <CheckCircle className="text-green-500" size={24} />
-                    Bestätigte Termine
+                    {t('admin.termins.title')}
                 </h3>
 
                 {approvedBookings.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-64 text-gray-500">
                         <Calendar size={48} className="mb-4 opacity-20" />
-                        <p>Noch keine bestätigten Termine.</p>
-                        <p className="text-xs mt-2">Bestätigte Buchungen erscheinen hier.</p>
+                        <p>{t('admin.termins.empty')}</p>
+                        <p className="text-xs mt-2">{t('admin.termins.empty_sub')}</p>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="border-b border-white/10 text-gray-400 text-sm uppercase tracking-wider">
-                                    <th className="p-4 font-medium">Datum & Zeit</th>
-                                    <th className="p-4 font-medium">Kunde</th>
-                                    <th className="p-4 font-medium">Barber</th>
-                                    <th className="p-4 font-medium">Kontakt</th>
-                                    <th className="p-4 font-medium">Dienstleistungen</th>
-                                    <th className="p-4 font-medium text-right">Gesamt</th>
+                                    <th className="p-4 font-medium">{t('admin.termins.date')}</th>
+                                    <th className="p-4 font-medium">{t('admin.termins.customer')}</th>
+                                    <th className="p-4 font-medium">{t('admin.termins.barber')}</th>
+                                    <th className="p-4 font-medium">{t('admin.termins.contact')}</th>
+                                    <th className="p-4 font-medium">{t('admin.termins.services')}</th>
+                                    <th className="p-4 font-medium text-right">{t('admin.termins.total')}</th>
                                     <th className="p-4 font-medium w-10"></th>
                                 </tr>
                             </thead>
