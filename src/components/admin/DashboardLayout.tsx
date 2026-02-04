@@ -9,7 +9,7 @@ import { useLanguage } from "@/components/features/LanguageContext";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const { t } = useLanguage();
+    const { t, language, setLanguage } = useLanguage();
 
     const NAV_ITEMS = [
         { label: t("admin.nav.dashboard"), href: "/admin/dashboard", icon: LayoutDashboard },
@@ -75,12 +75,32 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <main className="flex-1 ml-64 p-8">
                 <header className="flex justify-between items-center mb-8">
                     <h2 className="text-2xl font-bold capitalize">{getPageTitle(pathname)}</h2>
-                    <div className="flex items-center gap-4">
-                        <div className="text-right hidden md:block">
-                            <p className="font-bold">Makas Admin</p>
-                            <p className="text-xs text-gray-500">Administrator</p>
+                    <div className="flex items-center gap-6">
+                        {/* Compact Language Selector */}
+                        <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1 border border-white/10">
+                            {['de', 'en', 'tr', 'ku'].map((lang) => (
+                                <button
+                                    key={lang}
+                                    onClick={() => setLanguage(lang as any)}
+                                    className={cn(
+                                        "px-2 py-1 rounded text-xs font-bold uppercase transition-all",
+                                        language === lang
+                                            ? "bg-neon-blue text-black shadow-[0_0_10px_rgba(0,255,255,0.3)]"
+                                            : "text-gray-500 hover:text-white hover:bg-white/5"
+                                    )}
+                                >
+                                    {lang}
+                                </button>
+                            ))}
                         </div>
-                        <div className="w-10 h-10 rounded-full bg-neon-purple/20 border border-neon-purple/50" />
+
+                        <div className="flex items-center gap-4">
+                            <div className="text-right hidden md:block">
+                                <p className="font-bold">Makas Admin</p>
+                                <p className="text-xs text-gray-500">Administrator</p>
+                            </div>
+                            <div className="w-10 h-10 rounded-full bg-neon-purple/20 border border-neon-purple/50" />
+                        </div>
                     </div>
                 </header>
 

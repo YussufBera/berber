@@ -26,6 +26,30 @@ export async function POST(req: Request) {
     }
 }
 
+export async function PUT(req: Request) {
+    try {
+        const body = await req.json();
+        const { id, name, specialty, image, shopId } = body;
+
+        if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
+
+        const index = barbers.findIndex(b => b.id === id);
+        if (index === -1) return NextResponse.json({ error: 'Barber not found' }, { status: 404 });
+
+        barbers[index] = {
+            ...barbers[index],
+            name: name || barbers[index].name,
+            specialty: specialty || barbers[index].specialty,
+            image: image || barbers[index].image,
+            shopId: shopId || barbers[index].shopId
+        };
+
+        return NextResponse.json(barbers[index]);
+    } catch (error) {
+        return NextResponse.json({ error: 'Failed to update barber' }, { status: 500 });
+    }
+}
+
 export async function DELETE(req: Request) {
     try {
         const { searchParams } = new URL(req.url);
