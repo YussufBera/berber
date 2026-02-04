@@ -103,7 +103,18 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "days.thursday": "Donnerstag",
         "days.friday": "Freitag",
         "days.saturday": "Samstag",
-        "days.sunday": "Sonntag"
+        "days.sunday": "Sonntag",
+
+        "admin.barbers.title": "Teamverwaltung",
+        "admin.barbers.subtitle": "Verwalten Sie Ihre Barbiere",
+        "admin.barbers.add_btn": "Barbier hinzufügen",
+        "admin.barbers.delete_confirm": "Möchten Sie diesen Barbier wirklich entfernen?",
+        "admin.barbers.modal_title": "Neuen Barbier hinzufügen",
+        "admin.barbers.name_label": "Name",
+        "admin.barbers.specialty_label": "Spezialgebiet",
+        "admin.barbers.specialty_placeholder": "z.B. Meisterbarbier",
+        "admin.barbers.save": "Speichern",
+        "admin.barbers.cancel": "Abbrechen"
     },
     en: {
         "hero.title": "YOUR APPOINTMENT.",
@@ -194,7 +205,18 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "days.thursday": "Thursday",
         "days.friday": "Friday",
         "days.saturday": "Saturday",
-        "days.sunday": "Sunday"
+        "days.sunday": "Sunday",
+
+        "admin.barbers.title": "Team Management",
+        "admin.barbers.subtitle": "Manage your barbers",
+        "admin.barbers.add_btn": "Add Barber",
+        "admin.barbers.delete_confirm": "Are you sure you want to remove this barber?",
+        "admin.barbers.modal_title": "Add New Barber",
+        "admin.barbers.name_label": "Name",
+        "admin.barbers.specialty_label": "Specialty",
+        "admin.barbers.specialty_placeholder": "e.g. Master Barber",
+        "admin.barbers.save": "Save",
+        "admin.barbers.cancel": "Cancel"
     },
     tr: {
         "hero.title": "RANDEVUNUZ.",
@@ -285,7 +307,18 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "days.thursday": "Perşembe",
         "days.friday": "Cuma",
         "days.saturday": "Cumartesi",
-        "days.sunday": "Pazar"
+        "days.sunday": "Pazar",
+
+        "admin.barbers.title": "Takım Yönetimi",
+        "admin.barbers.subtitle": "Berberlerinizi yönetin",
+        "admin.barbers.add_btn": "Berber Ekle",
+        "admin.barbers.delete_confirm": "Bu berberi silmek istediğinize emin misiniz?",
+        "admin.barbers.modal_title": "Yeni Berber Ekle",
+        "admin.barbers.name_label": "Ad Soyad",
+        "admin.barbers.specialty_label": "Uzmanlık",
+        "admin.barbers.specialty_placeholder": "Örn. Usta Berber",
+        "admin.barbers.save": "Kaydet",
+        "admin.barbers.cancel": "İptal"
     },
     ku: {
         "hero.title": "RANDEVÛYA TE.",
@@ -376,7 +409,18 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "days.thursday": "Pêncşem",
         "days.friday": "În",
         "days.saturday": "Şemî",
-        "days.sunday": "Yekşem"
+        "days.sunday": "Yekşem",
+
+        "admin.barbers.title": "Rêveberiya Tîmê",
+        "admin.barbers.subtitle": "Berberên xwe birêve bibin",
+        "admin.barbers.add_btn": "Berber Zêde Bike",
+        "admin.barbers.delete_confirm": "Tu dixwazî vê berberê jê bibî?",
+        "admin.barbers.modal_title": "Berberekî Nû Zêde Bike",
+        "admin.barbers.name_label": "Nav û Paşnav",
+        "admin.barbers.specialty_label": "Pisporî",
+        "admin.barbers.specialty_placeholder": "mînak. Hostayê Berber",
+        "admin.barbers.save": "Tomar Bike",
+        "admin.barbers.cancel": "Betal Bike"
     }
 };
 
