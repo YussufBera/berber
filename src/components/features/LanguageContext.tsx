@@ -69,7 +69,14 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.services": "Dienstleistungen",
         "admin.nav.barbers": "Barbiere",
         "admin.nav.plan": "Plan",
+        "admin.nav.availability": "Arbeitstage",
         "admin.logout": "Abmelden",
+
+        "av.day_off": "Freier Tag",
+        "av.working": "Arbeitet",
+        "av.cancel": "Abbrechen",
+        "av.set_off": "Als freien Tag markieren",
+        "av.set_working": "Als Arbeitstag markieren",
 
         "admin.stats.total_revenue": "GESAMTEINNAHMEN",
         "admin.stats.confirmed_appointments": "BESTÄTIGTE TERMINE",
@@ -153,7 +160,14 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.services": "Services",
         "admin.nav.barbers": "Barbers",
         "admin.nav.plan": "Plan",
+        "admin.nav.availability": "Working Days",
         "admin.logout": "Logout",
+
+        "av.day_off": "Day Off",
+        "av.working": "Working",
+        "av.cancel": "Cancel",
+        "av.set_off": "Mark as Day Off",
+        "av.set_working": "Mark as Working",
 
         "admin.stats.total_revenue": "TOTAL REVENUE",
         "admin.stats.confirmed_appointments": "CONFIRMED APPOINTMENTS",
@@ -237,7 +251,14 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.services": "Hizmetler",
         "admin.nav.barbers": "Berberler",
         "admin.nav.plan": "Planlama",
+        "admin.nav.availability": "Çalışma Günleri",
         "admin.logout": "Çıkış Yap",
+
+        "av.day_off": "İzinli",
+        "av.working": "Çalışıyor",
+        "av.cancel": "Vazgeç",
+        "av.set_off": "İzinli Olarak İşaretle",
+        "av.set_working": "Çalışıyor Olarak İşaretle",
 
         "admin.stats.total_revenue": "TOPLAM GELİR",
         "admin.stats.confirmed_appointments": "ONAYLANAN RANDEVULAR",
@@ -321,7 +342,14 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.services": "Xizmet",
         "admin.nav.barbers": "Berber",
         "admin.nav.plan": "Plan",
+        "admin.nav.availability": "Rojên Xebatê",
         "admin.logout": "Derkeve",
+
+        "av.day_off": "bêhnvedan",
+        "av.working": "Dixebite",
+        "av.cancel": "Dev jê berde",
+        "av.set_off": "Weke Bêhnvedan Nîşan Bide",
+        "av.set_working": "Weke Dixebite Nîşan Bide",
 
         "admin.stats.total_revenue": "DAHATIN",
         "admin.stats.confirmed_appointments": "RANDEVÛYÊN ERÊKIRÎ",

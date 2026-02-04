@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, Calendar, Users, Settings, Scissors, LogOut } from "lucide-react";
+import { LayoutDashboard, Calendar, Users, Scissors, LogOut, Menu, X, Clock } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         { label: t("admin.nav.termins"), href: "/admin/termins", icon: Calendar },
         { label: t("admin.nav.barbers"), href: "/admin/barbers", icon: Users },
         { label: t("admin.nav.plan"), href: "/admin/plan", icon: Calendar },
+        { label: t("admin.nav.availability"), href: "/admin/availability", icon: Clock },
         { label: t("admin.nav.services"), href: "/admin/services", icon: Scissors },
     ];
 
@@ -26,6 +27,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             case 'termins': return t("admin.nav.termins");
             case 'barbers': return t("admin.nav.barbers");
             case 'plan': return t("admin.nav.plan");
+            case 'availability': return t("admin.nav.availability");
             case 'services': return t("admin.nav.services");
             default: return segment;
         }

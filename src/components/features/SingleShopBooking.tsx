@@ -21,17 +21,20 @@ export default function SingleShopBooking() {
     const { t, language } = useLanguage();
     const [step, setStep] = useState(1); // 1: Services, 2: Date/Time, 3: Barber, 4: Contact, 5: Success
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
-    const [selectedDate, setSelectedDate] = useState<string>("");
+    const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
-    const [selectedBarber, setSelectedBarber] = useState<string | null>(null);
+    const [selectedBarber, setSelectedBarber] = useState<string | null>(null); // Barber ID
+    const [unavailableBarbers, setUnavailableBarbers] = useState<string[]>([]); // Names of barbers who are off
     const [contactInfo, setContactInfo] = useState({ name: "", phone: "", email: "" });
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
 
     // Hydration fix
     const [mounted, setMounted] = useState(false);
     useEffect(() => {
         setMounted(true);
-        setSelectedDate(new Date().toISOString());
+        setSelectedDate(new Date());
     }, []);
 
     // Services State (Fetched from API)
@@ -63,6 +66,22 @@ export default function SingleShopBooking() {
     const total = services
         .filter(s => selectedServices.includes(s.id))
         .reduce((acc, s) => acc + s.price, 0);
+
+    useEffect(() => {
+        // Reset barber selection if date changes (optional, but good practice if availability changes)
+        // fetching availability for all barbers on this date
+        if (selectedDate) {
+            const dateStr = selectedDate.toISOString().split('T')[0];
+            fetch(`/api/availability?date=${dateStr}`)
+                .then(res => res.json())
+                .then((data: any[]) => {
+                    // Get list of barber names who are off
+                    const off = data.filter(d => d.isOff).map(d => d.barber);
+                    setUnavailableBarbers(off);
+                })
+                .catch(console.error);
+        }
+    }, [selectedDate]);
 
     const handleNext = async () => {
         if (step === 1 && selectedServices.length > 0) setStep(2);
@@ -224,14 +243,13 @@ export default function SingleShopBooking() {
                                         {Array.from({ length: 30 }, (_, i) => i).map(i => {
                                             const d = new Date(today); // Use safe 'today'
                                             d.setDate(today.getDate() + i);
-                                            const dIso = d.toISOString();
                                             // Compare just the date part (YYYY-MM-DD)
-                                            const isSelected = selectedDate.split('T')[0] === dIso.split('T')[0];
+                                            const isSelected = selectedDate ? selectedDate.toISOString().split('T')[0] === d.toISOString().split('T')[0] : false;
 
                                             return (
                                                 <button
                                                     key={i}
-                                                    onClick={() => setSelectedDate(dIso)}
+                                                    onClick={() => setSelectedDate(d)}
                                                     className={cn(
                                                         "min-w-[100px] p-4 rounded-xl border flex flex-col items-center gap-2 transition-all shrink-0 snap-start",
                                                         isSelected
@@ -257,10 +275,10 @@ export default function SingleShopBooking() {
                                                 key={time}
                                                 onClick={() => setSelectedTime(time)}
                                                 className={cn(
-                                                    "py-3 px-2 rounded-xl border text-sm font-bold transition-all",
+                                                    "py-3 rounded-xl text-center font-bold border transition-all duration-300",
                                                     selectedTime === time
-                                                        ? "bg-neon-blue text-black border-neon-blue scale-105"
-                                                        : "bg-black/40 border-white/10 text-gray-400 hover:bg-white/5"
+                                                        ? "bg-neon-blue text-black border-neon-blue shadow-[0_0_15px_rgba(0,255,255,0.4)]"
+                                                        : "bg-white/5 border-white/10 text-white hover:border-neon-blue/50 hover:bg-white/10"
                                                 )}
                                             >
                                                 {time}
@@ -279,32 +297,45 @@ export default function SingleShopBooking() {
                                 exit={{ opacity: 0, x: 20 }}
                                 className="grid grid-cols-1 md:grid-cols-2 gap-6"
                             >
-                                {barbers.map(barber => (
-                                    <div
-                                        key={barber.id}
-                                        onClick={() => setSelectedBarber(barber.id)}
-                                        className={cn(
-                                            "relative group p-4 rounded-2xl border cursor-pointer transition-all duration-300 overflow-hidden flex items-center gap-4",
-                                            selectedBarber === barber.id
-                                                ? "bg-neon-purple/10 border-neon-purple"
-                                                : "bg-white/5 border-white/10 hover:border-white/30"
-                                        )}
-                                    >
-                                        <div className="w-16 h-16 rounded-full bg-gray-800 overflow-hidden border border-white/10 shrink-0">
-                                            <img src={barber.image} alt={barber.name} className="w-full h-full object-cover" />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-bold text-white group-hover:text-neon-purple transition-colors">{barber.name}</h3>
-                                            <p className="text-xs text-gray-400">{barber.specialty}</p>
-                                        </div>
-
-                                        {selectedBarber === barber.id && (
-                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-neon-purple rounded-full flex items-center justify-center text-black">
-                                                <Check size={18} />
+                                {barbers.map(barber => {
+                                    const isOff = unavailableBarbers.includes(barber.name);
+                                    return (
+                                        <div
+                                            key={barber.id}
+                                            onClick={() => !isOff && setSelectedBarber(barber.id)}
+                                            className={`
+                                                relative p-4 rounded-xl border-2 cursor-pointer transition-all group overflow-hidden
+                                                ${selectedBarber === barber.id
+                                                    ? "border-neon-blue bg-neon-blue/10"
+                                                    : isOff
+                                                        ? "border-white/5 bg-red-500/5 opacity-50 cursor-not-allowed" // Disabled style
+                                                        : "border-white/10 hover:border-white/30 bg-white/5"
+                                                }
+                                            `}
+                                        >
+                                            {/* Selection Indicator */}
+                                            <div className={`absolute top-3 right-3 w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${selectedBarber === barber.id ? "bg-neon-blue border-neon-blue" : "border-gray-500"}`}>
+                                                {selectedBarber === barber.id && <Check size={12} className="text-black" />}
                                             </div>
-                                        )}
-                                    </div>
-                                ))}
+
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-16 h-16 rounded-full bg-gray-800 overflow-hidden shrink-0">
+                                                    <img src={barber.image} alt={barber.name} className="w-full h-full object-cover" />
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-lg font-bold text-white group-hover:text-neon-blue transition-colors">{barber.name}</h3>
+                                                    <p className="text-sm text-gray-400">
+                                                        {isOff ? (
+                                                            <span className="text-red-500 font-bold uppercase text-xs">{t('av.day_off', 'Day Off')}</span>
+                                                        ) : (
+                                                            barber.specialty
+                                                        )}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </motion.div>
                         )}
 
@@ -411,7 +442,7 @@ export default function SingleShopBooking() {
                                     <span className="block mb-4 text-2xl text-white font-medium">
                                         {t('confirmation.message')
                                             .replace('{time}', selectedTime || '')
-                                            .replace('{date}', new Date(selectedDate).toLocaleDateString())
+                                            .replace('{date}', selectedDate ? selectedDate.toLocaleDateString() : '')
                                         }
                                     </span>
                                     <div className="text-sm text-gray-400">
