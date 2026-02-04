@@ -10,11 +10,11 @@ const services = [
         icon: Scissors,
         price: "35€",
         duration: "45 min",
-        image: "/gallery/real-tools.png" // Placeholder, using existing assets
+        image: "/gallery/real-tools.png"
     },
     {
         id: "beard",
-        icon: Zap, // Using Zap for styling/beard
+        icon: Zap,
         price: "20€",
         duration: "25 min",
         image: "/gallery/real-interior.png"
@@ -76,13 +76,13 @@ export default function ServicesShowcase() {
                                     </div>
                                     <h3 className="text-2xl font-bold text-white mb-2">{t(`services.${service.id}`)}</h3>
                                     <p className="text-gray-300 text-sm line-clamp-2 mb-4 opacity-0 group-hover:opacity-100 transition-opacity delay-100">
-                                        {/* Placeholder description logic or simplified */}
-                                        Professional care for your look.
+                                        {/* Optional: Add translated description here if needed in future */}
+                                        Professional care.
                                     </p>
                                 </div>
 
                                 <div className="flex items-center justify-between border-t border-white/10 pt-4">
-                                    <div className="flexItems-center gap-2 text-gray-300 text-sm">
+                                    <div className="flex items-center gap-2 text-gray-300 text-sm">
                                         <Clock size={14} className="text-neon-blue" />
                                         {service.duration}
                                     </div>
