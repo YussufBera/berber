@@ -41,10 +41,10 @@ export default function ServicesShowcase() {
                     className="text-center mb-16"
                 >
                     <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tighter">
-                        ERROR-FREE <span className="text-neon-blue">PRECISION</span>
+                        {t('services.title')} <span className="text-neon-blue">{t('services.highlight')}</span>
                     </h2>
                     <p className="text-gray-400 max-w-2xl mx-auto">
-                        Experience the art of modern grooming.
+                        {t('services.subtitle')}
                     </p>
                 </motion.div>
 

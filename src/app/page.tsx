@@ -43,6 +43,7 @@ export default function Home() {
       <CutTransition
         isActive={isTransitioning}
         onClosed={handleCutClosed}
+        onComplete={() => { }} // Dummy handler to satisfy type
       />
 
       {/* --- HERO SECTION --- */}
@@ -128,13 +129,11 @@ export default function Home() {
           >
             <Scissors className="w-12 h-12 text-neon-purple mx-auto opacity-80" />
             <h2 className="text-3xl md:text-5xl font-bold leading-tight">
-              "More than just a haircut. <br />
-              <span className="text-gray-500">It's a ritual of refinement."</span>
+              "{t('story.title')} <br />
+              <span className="text-gray-500">{t('story.subtitle')}</span>"
             </h2>
             <p className="text-gray-400 text-lg md:text-xl leading-relaxed max-w-2xl mx-auto">
-              At MAKAS, we blend traditional craftsmanship with modern aesthetics.
-              Every cut is tailored to your unique structure, ensuring you walk out
-              not just looking better, but feeling empowered.
+              {t('story.description')}
             </p>
           </motion.div>
         </div>

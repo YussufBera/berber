@@ -58,6 +58,19 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "select.service_prompt": "Wählen Sie eine Dienstleistung, um zu beginnen.",
         "unit.mins": "Min",
 
+        "story.title": "Mehr als nur ein Haarschnitt.",
+        "story.subtitle": "Es ist ein Ritual der Verfeinerung.",
+        "story.description": "Bei MAKAS verbinden wir traditionelle Handwerkskunst mit modernster Ästhetik. Jeder Schnitt ist individuell auf Ihre Struktur abgestimmt – damit Sie nicht nur besser aussehen, sondern sich auch gestärkt fühlen.",
+
+        "services.title": "FEHLERFREIE",
+        "services.highlight": "PRÄZISION",
+        "services.subtitle": "Erleben Sie die Kunst der modernen Pflege.",
+
+        "team.title": "TREFFEN SIE DIE",
+        "team.highlight": "MEISTER",
+        "team.join_title": "Werden Sie Teil der Elite",
+        "team.join_desc": "Wir sind immer auf der Suche nach Talenten.",
+
         "contact.placeholder_name": "Max Mustermann",
         "contact.placeholder_phone": "+49 123 4567890",
         "contact.placeholder_email": "beispiel@mail.com",
@@ -203,6 +216,19 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 
         "select.service_prompt": "Select a service to start.",
         "unit.mins": "mins",
+
+        "story.title": "More than just a haircut.",
+        "story.subtitle": "It's a ritual of refinement.",
+        "story.description": "At MAKAS, we blend traditional craftsmanship with modern aesthetics. Every cut is tailored to your unique structure, ensuring you walk out not just looking better, but feeling empowered.",
+
+        "services.title": "ERROR-FREE",
+        "services.highlight": "PRECISION",
+        "services.subtitle": "Experience the art of modern grooming.",
+
+        "team.title": "MEET THE",
+        "team.highlight": "MASTERS",
+        "team.join_title": "Join the Elite",
+        "team.join_desc": "We are always looking for talent.",
 
         "contact.placeholder_name": "John Doe",
         "contact.placeholder_phone": "+1 234 567 890",
@@ -350,6 +376,19 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "select.service_prompt": "Başlamak için bir hizmet seçin.",
         "unit.mins": "dk",
 
+        "story.title": "Sadece bir saç kesimi değil.",
+        "story.subtitle": "Bu bir incelik ritüeli.",
+        "story.description": "MAKAS'ta geleneksel ustalığı modern estetikle harmanlıyoruz. Her kesim, yapınıza özel olarak tasarlanır; böylece sadece daha iyi görünmekle kalmaz, aynı zamanda güçlenmiş hissederek ayrılırsınız.",
+
+        "services.title": "HATASIZ",
+        "services.highlight": "HASSASİYET",
+        "services.subtitle": "Modern bakım sanatını deneyimleyin.",
+
+        "team.title": "USTALARLA",
+        "team.highlight": "TANIŞIN",
+        "team.join_title": "Elitlere Katılın",
+        "team.join_desc": "Her zaman yetenekli isimleri arıyoruz.",
+
         "contact.placeholder_name": "Ahmet Yılmaz",
         "contact.placeholder_phone": "+90 555 123 4567",
         "contact.placeholder_email": "ornek@mail.com",
@@ -496,6 +535,19 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "select.service_prompt": "Ji bo destpêkirinê xizmetek hilbijêre.",
         "unit.mins": "xûlek",
 
+        "story.title": "Zêdetirî porbirînekê.",
+        "story.subtitle": "Rîtuela paqijiyê ye.",
+        "story.description": "Li MAKAS, em hunera kevneşopî bi estetîka nûjen re digihînin hev. Her birîn li gorî taybetmendiyên te tê çêkirin.",
+
+        "services.title": "BÊ KÊMASÎ",
+        "services.highlight": "HÛRGILÎ",
+        "services.subtitle": "Hunera nûjen a paqijiyê bibînin.",
+
+        "team.title": "BI USTAYAN RE",
+        "team.highlight": "HEVDÎTIN",
+        "team.join_title": "Tevlî Elîtan Bibin",
+        "team.join_desc": "Em her dem li talentan digerin.",
+
         "contact.placeholder_name": "Azad Şêrgo",
         "contact.placeholder_phone": "+49 ...",
         "contact.placeholder_email": "mînak@mail.com",
@@ -640,6 +692,19 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
 
         "select.service_prompt": "اختر خدمة للبدء.",
         "unit.mins": "دقيقة",
+
+        "story.title": "أكثر من مجرد قصة شعر.",
+        "story.subtitle": "إنه طقوس من التحسين.",
+        "story.description": "في MAKAS، نمزج الحرفية التقليدية مع الجماليات الحديثة. كل قصة مصممة لتناسب هيكلك الفريد.",
+
+        "services.title": "دقة",
+        "services.highlight": "خالية من الأخطاء",
+        "services.subtitle": "جرب فن العناية الحديثة.",
+
+        "team.title": "قابل",
+        "team.highlight": "الخبراء",
+        "team.join_title": "انضم للنخبة",
+        "team.join_desc": "نحن نبحث دائماً عن المواهب.",
 
         "contact.placeholder_name": "الاسم",
         "contact.placeholder_phone": "+90 ...",
