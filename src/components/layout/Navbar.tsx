@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { Scissors, Menu, X } from "lucide-react";
 import { useLanguage } from "../features/LanguageContext";
+import AppointmentManager from "../features/AppointmentManager";
 
 export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
     const { t, language, setLanguage } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
+    const [isManageOpen, setIsManageOpen] = useState(false);
     const [hidden, setHidden] = useState(false);
     const { scrollY } = useScroll();
 
@@ -73,6 +75,13 @@ export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
                             </button>
                         ))}
 
+                        <button
+                            onClick={() => setIsManageOpen(true)}
+                            className="text-sm font-medium text-neon-purple hover:text-white transition-all uppercase tracking-wide border border-neon-purple/50 px-3 py-1 rounded-full hover:bg-neon-purple hover:border-neon-purple"
+                        >
+                            {t('nav.manage')}
+                        </button>
+
                         {/* Language Switcher Desktop */}
                         <div className="flex items-center gap-3 border-l border-white/20 pl-6 ml-2">
                             {(['de', 'en', 'tr', 'ku'] as const).map((lang) => (
@@ -118,6 +127,16 @@ export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
                         </button>
                     ))}
 
+                    <button
+                        onClick={() => {
+                            setIsManageOpen(true);
+                            setIsOpen(false);
+                        }}
+                        className="text-xl font-bold text-neon-purple hover:text-white transition-all mt-4"
+                    >
+                        {t('nav.manage')}
+                    </button>
+
                     {/* Language Switcher Mobile */}
                     <div className="flex items-center gap-6 mt-8">
                         {(['de', 'en', 'tr', 'ku'] as const).map((lang) => (
@@ -145,6 +164,8 @@ export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
                     </button>
                 </motion.div>
             )}
+            {/* App Manager Modal */}
+            <AppointmentManager isOpen={isManageOpen} onClose={() => setIsManageOpen(false)} />
         </>
     );
 }

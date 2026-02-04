@@ -2,13 +2,31 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 // GET: Fetch all appointments from Real DB
-export async function GET() {
+export async function GET(request: Request) {
     try {
         if (!prisma) {
             return NextResponse.json({ error: 'Database connection not initialized' }, { status: 500 });
         }
 
+        const { searchParams } = new URL(request.url);
+        const phone = searchParams.get('phone');
+
+        let whereClause = {};
+        if (phone) {
+            // Basic cleaner similar to frontend regex just in case, but keep simple strict match for now
+            // Or better, matching contains or exact. Let's do exact match first.
+            whereClause = {
+                phone: {
+                    contains: phone // Allow partial match or exact? User said "enter phone". Exact is safer.
+                    // But user types "+49..." usually. Let's stick to simple equals or contains if consistent.
+                }
+            }
+            // Actually, prisma exact match is default.
+            whereClause = { phone: phone };
+        }
+
         const appointments = await prisma.simpleAppointment.findMany({
+            where: whereClause,
             orderBy: {
                 createdAt: 'desc'
             }
