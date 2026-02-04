@@ -120,7 +120,7 @@ export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
 
                     {/* Language Switcher Mobile */}
                     <div className="flex items-center gap-6 mt-8">
-                        {(['de', 'en', 'tr'] as const).map((lang) => (
+                        {(['de', 'en', 'tr', 'ku'] as const).map((lang) => (
                             <button
                                 key={lang}
                                 onClick={() => {

@@ -43,7 +43,8 @@ export async function POST(request: Request) {
                 time: body.time,
                 services: Array.isArray(body.services) ? body.services.join(", ") : body.services, // Ensure string storage
                 total: parseFloat(body.total),
-                status: 'pending'
+                status: 'pending',
+                barber: body.barber || null // Save barber name if present
             }
         });
 

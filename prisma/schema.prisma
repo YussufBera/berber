@@ -89,6 +89,7 @@ model SimpleAppointment {
   services  String   // JSON string or comma separated
   total     Float
   status    String   @default("pending")
+  barber    String?
   createdAt DateTime @default(now())
 }
 
