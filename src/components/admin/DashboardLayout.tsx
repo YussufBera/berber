@@ -15,6 +15,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         { label: t("admin.nav.dashboard"), href: "/admin/dashboard", icon: LayoutDashboard },
         { label: t("admin.nav.termins"), href: "/admin/termins", icon: Calendar },
         { label: t("admin.nav.barbers"), href: "/admin/barbers", icon: Users },
+        { label: t("admin.nav.plan"), href: "/admin/plan", icon: Calendar },
         { label: t("admin.nav.services"), href: "/admin/services", icon: Scissors },
     ];
 
@@ -24,6 +25,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             case 'dashboard': return t("admin.nav.dashboard");
             case 'termins': return t("admin.nav.termins");
             case 'barbers': return t("admin.nav.barbers");
+            case 'plan': return t("admin.nav.plan");
             case 'services': return t("admin.nav.services");
             default: return segment;
         }

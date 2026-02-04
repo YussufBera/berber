@@ -60,6 +60,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.termins": "Termine",
         "admin.nav.services": "Dienstleistungen",
         "admin.nav.barbers": "Barbiere",
+        "admin.nav.plan": "Plan",
         "admin.logout": "Abmelden",
 
         "admin.stats.total_revenue": "GESAMTEINNAHMEN",
@@ -135,6 +136,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.termins": "Appointments",
         "admin.nav.services": "Services",
         "admin.nav.barbers": "Barbers",
+        "admin.nav.plan": "Plan",
         "admin.logout": "Logout",
 
         "admin.stats.total_revenue": "TOTAL REVENUE",
@@ -210,6 +212,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.termins": "Randevular",
         "admin.nav.services": "Hizmetler",
         "admin.nav.barbers": "Berberler",
+        "admin.nav.plan": "Planlama",
         "admin.logout": "Çıkış Yap",
 
         "admin.stats.total_revenue": "TOPLAM GELİR",
@@ -285,6 +288,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.termins": "Randevû",
         "admin.nav.services": "Xizmet",
         "admin.nav.barbers": "Berber",
+        "admin.nav.plan": "Plan",
         "admin.logout": "Derkeve",
 
         "admin.stats.total_revenue": "DAHATIN",
