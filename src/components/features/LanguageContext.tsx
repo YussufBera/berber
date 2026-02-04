@@ -39,7 +39,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "manage.find": "Suchen",
         "manage.no_appts": "Keine Termine gefunden.",
         "manage.cancel": "Stornieren",
-        "manage.cancel": "Stornieren",
+
         "manage.cancel_confirm": "Möchten Sie diesen Termin wirklich stornieren?",
         "manage.cancel_too_late": "Termine, die in weniger als 24 Stunden stattfinden, können nicht storniert werden.",
         "contact.details": "KONTAKT",
@@ -135,7 +135,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.calendar.select_barber_msg": "Wählen Sie ein Teammitglied, um dessen Arbeitstage zu verwalten.",
         "admin.calendar.manage_for": "Verfügbarkeit verwalten für",
         "admin.months": "Januar,Februar,März,April,Mai,Juni,Juli,August,September,Oktober,November,Dezember",
-        "admin.days.short": "Mo,Di,Mi,Do,Fr,Sa,So"
+        "admin.days.short": "Mo,Di,Mi,Do,Fr,Sa,So",
         "admin.services.manage": "Dienstleistungen verwalten",
         "admin.services.auto_save": "Änderungen werden sofort gespeichert.",
         "admin.services.new": "Neu",
@@ -179,7 +179,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "manage.find": "Find",
         "manage.no_appts": "No appointments found.",
         "manage.cancel": "Cancel",
-        "manage.cancel": "Cancel",
+
         "manage.cancel_confirm": "Are you sure you want to cancel this appointment?",
         "manage.cancel_too_late": "Appointments less than 24 hours away cannot be cancelled.",
         "contact.details": "CONTACT",
@@ -275,7 +275,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.calendar.select_barber_msg": "Select a team member to manage their working days.",
         "admin.calendar.manage_for": "Manage availability for",
         "admin.months": "January,February,March,April,May,June,July,August,September,October,November,December",
-        "admin.days.short": "Mon,Tue,Wed,Thu,Fri,Sat,Sun"
+        "admin.days.short": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
         "admin.services.manage": "Manage Services",
         "admin.services.auto_save": "Changes are saved immediately.",
         "admin.services.new": "New",
@@ -319,7 +319,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "manage.find": "Bul",
         "manage.no_appts": "Randevu bulunamadı.",
         "manage.cancel": "İptal Et",
-        "manage.cancel": "İptal Et",
+
         "manage.cancel_confirm": "Bu randevuyu iptal etmek istediğinize emin misiniz?",
         "manage.cancel_too_late": "24 saatten az kalan randevular iptal edilemez.",
         "contact.details": "İLETİŞİM",
@@ -415,7 +415,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.calendar.select_barber_msg": "Çalışma günlerini yönetmek için birini seçin.",
         "admin.calendar.manage_for": "Yönetilen kişi:",
         "admin.months": "Ocak,Şubat,Mart,Nisan,Mayıs,Haziran,Temmuz,Ağustos,Eylül,Ekim,Kasım,Aralık",
-        "admin.days.short": "Pzt,Sal,Çar,Per,Cum,Cmt,Paz"
+        "admin.days.short": "Pzt,Sal,Çar,Per,Cum,Cmt,Paz",
         "admin.services.manage": "Hizmetleri Yönet",
         "admin.services.auto_save": "Değişiklikler anında kaydedilir.",
         "admin.services.new": "Yeni",
@@ -459,7 +459,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "manage.find": "Bibîne",
         "manage.no_appts": "Randevû nehat dîtin.",
         "manage.cancel": "Betal Bike",
-        "manage.cancel": "Betal Bike",
+
         "manage.cancel_confirm": "Tu dixwazî vê randevûyê betal bikî?",
         "manage.cancel_too_late": "Randevûyên ku ji 24 saetan kêmtir dem mane nayên betalkirin.",
         "contact.details": "TÊKILÎ",
@@ -555,7 +555,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.calendar.select_barber_msg": "Ji bo rêvebirina rojên xebatê endamek hilbijêre.",
         "admin.calendar.manage_for": "Rêveberiya berdestbûnê ji bo",
         "admin.months": "Rêbendan,Reşemî,Adar,Avrêl,Gulan,Pûşper,Tîrmeh,Gelawêj,Rezber,Cotmeh,Mijdar,Berfanbar",
-        "admin.days.short": "Duş,Sêş,Çar,Pên,În,Şem,Yek"
+        "admin.days.short": "Duş,Sêş,Çar,Pên,În,Şem,Yek",
         "admin.services.manage": "Rêveberiya Xizmetan",
         "admin.services.auto_save": "Guhertin tavilê tên tomarkirin.",
         "admin.services.new": "Nû",
@@ -694,7 +694,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.calendar.select_barber_msg": "اختر عضوًا في الفريق لإدارة أيام عمله.",
         "admin.calendar.manage_for": "إدارة التوافر لـ",
         "admin.months": "يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,أغسطس,سبتمبر,أكتوبر,نوفمبر,ديسمبر",
-        "admin.days.short": "ن,ث,ر,خ,ج,س,ح"
+        "admin.days.short": "ن,ث,ر,خ,ج,س,ح",
         "admin.services.manage": "إدارة الخدمات",
         "admin.services.auto_save": "يتم حفظ التغييرات تلقائيًا.",
         "admin.services.new": "جديد",
