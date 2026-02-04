@@ -45,6 +45,22 @@ export default function AppointmentManager({ isOpen, onClose }: AppointmentManag
     };
 
     const cancelAppointment = async (id: string) => {
+        const appointment = appointments.find(a => a.id === id);
+        if (!appointment) return;
+
+        // Check if less than 24 hours
+        const appDate = new Date(appointment.date);
+        const [hours, minutes] = appointment.time.split(':').map(Number);
+        appDate.setHours(hours, minutes, 0, 0);
+
+        const now = new Date();
+        const diffInHours = (appDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+        if (diffInHours < 24) {
+            alert(t("manage.cancel_too_late"));
+            return;
+        }
+
         if (!confirm(t("manage.cancel_confirm"))) return;
 
         try {
