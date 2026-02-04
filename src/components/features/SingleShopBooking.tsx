@@ -223,7 +223,13 @@ export default function SingleShopBooking() {
                                 {services.map(service => (
                                     <div
                                         key={service.id}
-                                        onClick={() => toggleService(service.id)}
+                                        onClick={() => {
+                                            toggleService(service.id);
+                                            // Scroll down a bit to encourage progression or show more
+                                            setTimeout(() => {
+                                                window.scrollBy({ top: 150, behavior: 'smooth' });
+                                            }, 100);
+                                        }}
                                         className={cn(
                                             "relative group p-6 rounded-2xl border cursor-pointer transition-all duration-300 overflow-hidden",
                                             selectedServices.includes(service.id)
