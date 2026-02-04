@@ -96,7 +96,7 @@ export default function BarberList() {
 
     return (
         <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <div>
                     <h3 className="text-xl font-bold text-white">{t("admin.barbers.title")}</h3>
                     <p className="text-sm text-gray-400">{t("admin.barbers.subtitle")}</p>
@@ -107,7 +107,7 @@ export default function BarberList() {
                         setNewBarber({ name: "", specialty: "" });
                         setIsModalOpen(true);
                     }}
-                    className="flex items-center gap-2 bg-neon-blue text-black px-4 py-2 rounded-lg font-bold hover:bg-white transition-all shadow-[0_0_15px_rgba(0,255,255,0.3)] hover:shadow-[0_0_25px_rgba(0,255,255,0.5)]"
+                    className="flex items-center gap-2 bg-neon-blue text-black px-4 py-2 rounded-lg font-bold hover:bg-white transition-all shadow-[0_0_15px_rgba(0,255,255,0.3)] hover:shadow-[0_0_25px_rgba(0,255,255,0.5)] w-full md:w-auto justify-center"
                 >
                     <Plus size={18} />
                     {t("admin.barbers.add_btn")}
@@ -121,10 +121,10 @@ export default function BarberList() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="flex items-center justify-between p-4 bg-white/5 border border-white/5 rounded-xl group hover:border-white/20 transition-all hover:bg-white/10"
+                        className="flex flex-col md:flex-row items-center md:items-center justify-between p-4 bg-white/5 border border-white/5 rounded-xl group hover:border-white/20 transition-all hover:bg-white/10 gap-4"
                     >
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full bg-gray-800 overflow-hidden border border-white/10">
+                        <div className="flex items-center gap-4 w-full md:w-auto">
+                            <div className="w-12 h-12 rounded-full bg-gray-800 overflow-hidden border border-white/10 shrink-0">
                                 <img src={barber.image} alt={barber.name} className="w-full h-full object-cover" />
                             </div>
                             <div>
@@ -133,7 +133,7 @@ export default function BarberList() {
                             </div>
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 w-full md:w-auto justify-end border-t border-white/5 md:border-0 pt-3 md:pt-0 mt-2 md:mt-0">
                             <button
                                 onClick={() => openEditModal(barber)}
                                 className="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-colors"
@@ -170,7 +170,7 @@ export default function BarberList() {
                         >
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="text-xl font-bold text-white">
-                                    {editingBarber ? t("admin.barbers.edit_title", "Edit Barber") : t("admin.barbers.modal_title")}
+                                    {editingBarber ? t("admin.barbers.edit_title") : t("admin.barbers.modal_title")}
                                 </h3>
                                 <button onClick={closeModal} className="text-gray-400 hover:text-white">
                                     <X size={24} />

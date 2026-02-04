@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { LayoutDashboard, Calendar, Users, Scissors, LogOut, Menu, X, Clock } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -10,6 +11,7 @@ import { useLanguage } from "@/components/features/LanguageContext";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const { t, language, setLanguage } = useLanguage();
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const NAV_ITEMS = [
         { label: t("admin.nav.dashboard"), href: "/admin/dashboard", icon: LayoutDashboard },
@@ -35,17 +37,37 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     return (
         <div className="min-h-screen bg-[#050505] text-white flex">
-            {/* Sidebar */}
-            <aside className="w-64 border-r border-white/10 p-6 flex flex-col h-screen fixed left-0 top-0 overflow-y-auto z-50 bg-[#050505]">
-                <h1 className="text-2xl font-bold mb-10 tracking-wider">
-                    BERBER <span className="text-neon-blue text-xs align-top">ADMIN</span>
-                </h1>
+            {/* Mobile Sidebar Overlay */}
+            {isSidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black/80 z-40 md:hidden backdrop-blur-sm"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
 
-                <nav className="space-y-2 flex-1">
+            {/* Sidebar */}
+            <aside className={cn(
+                "fixed left-0 top-0 h-screen w-64 bg-[#050505] border-r border-white/10 p-6 flex flex-col z-50 transition-transform duration-300 md:translate-x-0",
+                isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            )}>
+                <div className="flex justify-between items-center mb-10">
+                    <h1 className="text-2xl font-bold tracking-wider">
+                        BERBER <span className="text-neon-blue text-xs align-top">ADMIN</span>
+                    </h1>
+                    <button
+                        onClick={() => setIsSidebarOpen(false)}
+                        className="md:hidden text-gray-400 hover:text-white"
+                    >
+                        <X size={24} />
+                    </button>
+                </div>
+
+                <nav className="space-y-2 flex-1 overflow-y-auto">
                     {NAV_ITEMS.map((item) => (
                         <Link
                             key={item.href}
                             href={item.href}
+                            onClick={() => setIsSidebarOpen(false)}
                             className={cn(
                                 "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-medium",
                                 pathname === item.href || (pathname.startsWith(item.href) && item.href !== "/admin/dashboard")
@@ -72,12 +94,21 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 ml-64 p-8">
-                <header className="flex justify-between items-center mb-8">
-                    <h2 className="text-2xl font-bold capitalize">{getPageTitle(pathname)}</h2>
-                    <div className="flex items-center gap-6">
+            <main className="flex-1 md:ml-64 p-4 md:p-8 w-full">
+                <header className="flex justify-between items-center mb-8 gap-4">
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => setIsSidebarOpen(true)}
+                            className="p-2 -ml-2 text-gray-400 hover:text-white md:hidden"
+                        >
+                            <Menu size={28} />
+                        </button>
+                        <h2 className="text-xl md:text-2xl font-bold capitalize truncate">{getPageTitle(pathname)}</h2>
+                    </div>
+
+                    <div className="flex items-center gap-4 md:gap-6">
                         {/* Compact Language Selector */}
-                        <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1 border border-white/10">
+                        <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1 border border-white/10 hidden sm:flex">
                             {['de', 'en', 'tr', 'ku', 'ar'].map((lang) => (
                                 <button
                                     key={lang}
@@ -94,12 +125,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                             ))}
                         </div>
 
+                        {/* Mobile Language Dropdown (Simplified if screen is very small, otherwise rely on the one above or auto-hide) */}
+                        {/* Ideally we keep the one above but make it scrollable or compact. For now, the sm:flex hides it on very small screens. Let's make it visible but smaller or scrollable? Or just hide on tiny screens. */}
+
                         <div className="flex items-center gap-4">
                             <div className="text-right hidden md:block">
                                 <p className="font-bold">Makas Admin</p>
                                 <p className="text-xs text-gray-500">Administrator</p>
                             </div>
-                            <div className="w-10 h-10 rounded-full bg-neon-purple/20 border border-neon-purple/50" />
+                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-neon-purple/20 border border-neon-purple/50 flex-shrink-0" />
                         </div>
                     </div>
                 </header>

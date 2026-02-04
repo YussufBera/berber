@@ -73,7 +73,7 @@ export default function BarberSchedule() {
 
         // Empty slots for start of month
         for (let i = 0; i < firstDay; i++) {
-            days.push(<div key={`empty-${i}`} className="h-24 bg-white/5 opacity-50 rounded-xl" />);
+            days.push(<div key={`empty-${i}`} className="h-16 md:h-24 bg-white/5 opacity-50 rounded-xl" />);
         }
 
         // Days
@@ -90,7 +90,7 @@ export default function BarberSchedule() {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setSelectedDate(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i))}
                     className={`
-                        h-24 p-2 rounded-xl border flex flex-col items-start justify-between transition-all relative
+                        h-16 md:h-24 p-1 md:p-2 rounded-xl border flex flex-col items-start justify-between transition-all relative
                         ${isSelected
                             ? "bg-neon-blue text-black border-neon-blue"
                             : hasApps
@@ -99,7 +99,7 @@ export default function BarberSchedule() {
                         ${isToday ? "ring-1 ring-inset ring-white" : ""}
                     `}
                 >
-                    <span className={`text-lg font-bold ${isSelected ? "text-black" : "text-white"}`}>{i}</span>
+                    <span className={`text-sm md:text-lg font-bold ${isSelected ? "text-black" : "text-white"}`}>{i}</span>
 
                     {hasApps && (
                         <div className="flex gap-1 flex-wrap content-end w-full">
@@ -197,16 +197,16 @@ export default function BarberSchedule() {
                         </div>
 
                         {/* Weekday Headers */}
-                        <div className="grid grid-cols-7 gap-4 mb-4">
+                        <div className="grid grid-cols-7 gap-1 md:gap-4 mb-4">
                             {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-                                <div key={day} className="text-gray-500 font-medium text-sm text-center uppercase tracking-wider">
+                                <div key={day} className="text-gray-500 font-medium text-xs md:text-sm text-center uppercase tracking-wider">
                                     {day}
                                 </div>
                             ))}
                         </div>
 
                         {/* Calendar Grid */}
-                        <div className="grid grid-cols-7 gap-4">
+                        <div className="grid grid-cols-7 gap-1 md:gap-4">
                             {renderCalendar()}
                         </div>
                     </motion.div>

@@ -103,7 +103,7 @@ export default function BarberAvailability() {
         const days = [];
 
         for (let i = 0; i < firstDay; i++) {
-            days.push(<div key={`empty-${i}`} className="h-24 bg-white/5 opacity-50 rounded-xl" />);
+            days.push(<div key={`empty-${i}`} className="h-14 md:h-24 bg-white/5 opacity-50 rounded-xl" />);
         }
 
         for (let i = 1; i <= daysInMonth; i++) {
@@ -119,15 +119,15 @@ export default function BarberAvailability() {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleDayClick(i)}
                     className={`
-                        h-24 p-2 rounded-xl border flex flex-col items-center justify-center transition-all relative
+                        h-14 md:h-24 p-1 md:p-2 rounded-xl border flex flex-col items-center justify-center transition-all relative
                         ${isOff
                             ? "bg-red-500/20 border-red-500 text-red-500 hover:bg-red-500/30"
                             : "bg-green-500/10 border-green-500/30 text-white hover:bg-green-500/20"}
                         ${isToday ? "ring-2 ring-white" : ""}
                     `}
                 >
-                    <span className="text-2xl font-bold">{i}</span>
-                    <span className="text-xs font-bold mt-2 uppercase">
+                    <span className="text-lg md:text-2xl font-bold">{i}</span>
+                    <span className="text-[10px] md:text-xs font-bold mt-1 md:mt-2 uppercase truncate w-full text-center">
                         {isOff ? t('av.day_off') : t('av.working')}
                     </span>
                 </motion.button>
@@ -195,12 +195,12 @@ export default function BarberAvailability() {
                                 <button onClick={nextMonth} className="p-2 hover:bg-white/10 rounded-full text-white transition-colors"><ChevronRight /></button>
                             </div>
                         </div>
-                        <div className="grid grid-cols-7 gap-4 mb-4">
+                        <div className="grid grid-cols-7 gap-1 md:gap-4 mb-4">
                             {t('admin.days.short').split(',').map(day => (
-                                <div key={day} className="text-gray-500 font-medium text-sm text-center uppercase tracking-wider">{day}</div>
+                                <div key={day} className="text-gray-500 font-medium text-xs md:text-sm text-center uppercase tracking-wider">{day}</div>
                             ))}
                         </div>
-                        <div className="grid grid-cols-7 gap-4">
+                        <div className="grid grid-cols-7 gap-1 md:gap-4">
                             {renderCalendar()}
                         </div>
                     </motion.div>

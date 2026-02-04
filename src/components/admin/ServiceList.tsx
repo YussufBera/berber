@@ -38,12 +38,12 @@ export default function ServiceList() {
 
     return (
         <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
                 <div>
                     <h3 className="text-xl font-bold text-white">Service Menu</h3>
                     <p className="text-sm text-gray-400">Manage your prices and durations</p>
                 </div>
-                <button className="flex items-center gap-2 bg-neon-blue text-black px-4 py-2 rounded-lg font-bold hover:bg-white transition-all">
+                <button className="flex items-center gap-2 bg-neon-blue text-black px-4 py-2 rounded-lg font-bold hover:bg-white transition-all w-full md:w-auto justify-center">
                     <Plus size={18} />
                     Add Service
                 </button>
@@ -56,7 +56,7 @@ export default function ServiceList() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="flex items-center justify-between p-4 bg-white/5 border border-white/5 rounded-xl group hover:border-white/20 transition-all"
+                        className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 bg-white/5 border border-white/5 rounded-xl group hover:border-white/20 transition-all gap-4"
                     >
                         <div className="flex items-center gap-4">
                             <div className="w-10 h-10 rounded-lg bg-[#1a1a1a] flex items-center justify-center text-gray-400 font-bold border border-white/5 group-hover:text-white group-hover:border-neon-purple transition-colors">
@@ -71,7 +71,7 @@ export default function ServiceList() {
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
                             <span className="text-xl font-bold text-white">€{service.price}</span>
                             <div className="flex gap-2">
                                 <button className="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition-colors">
