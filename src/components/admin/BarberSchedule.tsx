@@ -5,7 +5,10 @@ import { User, Calendar as CalendarIcon, Clock, DollarSign, Scissors, ChevronLef
 import { motion, AnimatePresence } from "framer-motion";
 import { Barber } from "@/lib/mockData";
 
+import { useLanguage } from "@/components/features/LanguageContext";
+
 export default function BarberSchedule() {
+    const { t } = useLanguage();
     const [barbers, setBarbers] = useState<Barber[]>([]);
     const [appointments, setAppointments] = useState<any[]>([]);
     const [selectedBarberId, setSelectedBarberId] = useState<string | null>(null);
@@ -130,7 +133,7 @@ export default function BarberSchedule() {
                 <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
                     <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                         <User className="text-neon-blue" />
-                        Select Barber
+                        {t('admin.calendar.select_barber')}
                     </h3>
                     <div className="flex gap-4 overflow-x-auto pb-2 custom-scrollbar">
                         {barbers.map(barber => (
@@ -167,8 +170,8 @@ export default function BarberSchedule() {
                         className="bg-[#111] border border-white/5 rounded-2xl p-20 text-center"
                     >
                         <User size={48} className="mx-auto mb-4 text-gray-600" />
-                        <h3 className="text-2xl text-white font-bold mb-2">Select a Barber</h3>
-                        <p className="text-gray-500">Choose a team member above to view their schedule.</p>
+                        <h3 className="text-2xl text-white font-bold mb-2">{t('admin.calendar.select_barber')}</h3>
+                        <p className="text-gray-500">{t('admin.calendar.view_schedule_msg')}</p>
                     </motion.div>
                 ) : !selectedDate ? (
                     // Step 2: Calendar View
@@ -228,7 +231,7 @@ export default function BarberSchedule() {
                                     {selectedDate.toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                                 </h2>
                                 <p className="text-gray-400">
-                                    Schedule for <span className="text-neon-blue">{selectedBarber?.name}</span>
+                                    {t('admin.calendar.schedule_for')} <span className="text-neon-blue">{selectedBarber?.name}</span>
                                 </p>
                             </div>
                         </div>
@@ -236,7 +239,7 @@ export default function BarberSchedule() {
                         {getAppointmentsForDay(selectedDate.getDate()).length === 0 ? (
                             <div className="text-center py-20 text-gray-500">
                                 <CalendarIcon size={48} className="mx-auto mb-4 opacity-20" />
-                                <p>No appointments for this day.</p>
+                                <p>{t('admin.calendar.no_appts')}</p>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

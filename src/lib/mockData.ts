@@ -4,7 +4,8 @@ export type Service = {
         de: string;
         en: string;
         tr: string;
-        ku?: string; // Optional for now, but we will populate it
+        ku?: string;
+        ar?: string;
     };
     price: number;
     duration: number; // in minutes
@@ -45,43 +46,43 @@ export const MOCK_SHOPS: BarberShop[] = [
         services: [
             {
                 id: "s1",
-                name: { de: "Klassischer Haarschnitt", en: "Classic Haircut", tr: "Klasik Saç Kesimi", ku: "Porjêkirina Klasîk" },
+                name: { de: "Klassischer Haarschnitt", en: "Classic Haircut", tr: "Klasik Saç Kesimi", ku: "Porjêkirina Klasîk", ar: "قص شعر كلاسيكي" },
                 price: 35,
                 duration: 45
             },
             {
                 id: "s2",
-                name: { de: "Bartpflege & Form", en: "Beard Trim & Shape", tr: "Sakal Düzeltme & Şekil", ku: "Çaksazî & Şiklê Rihê" },
+                name: { de: "Bartpflege & Form", en: "Beard Trim & Shape", tr: "Sakal Düzeltme & Şekil", ku: "Çaksazî & Şiklê Rihê", ar: "تحديد وتشذيب اللحية" },
                 price: 25,
                 duration: 30
             },
             {
                 id: "s3",
-                name: { de: "Premium Waschen & Styling", en: "Premium Wash & Style", tr: "Premium Yıkama & Şekil", ku: "Şûştin & Şikil - Premium" },
+                name: { de: "Premium Waschen & Styling", en: "Premium Wash & Style", tr: "Premium Yıkama & Şekil", ku: "Şûştin & Şikil - Premium", ar: "غسيل وتصفيف بريميوم" },
                 price: 20,
                 duration: 25
             },
             {
                 id: "s4",
-                name: { de: "Haare Färben", en: "Hair Coloring", tr: "Saç Boyama", ku: "Boyaxkirina Por" },
+                name: { de: "Haare Färben", en: "Hair Coloring", tr: "Saç Boyama", ku: "Boyaxkirina Por", ar: "صباغة الشعر" },
                 price: 60,
                 duration: 90
             },
             {
                 id: "s5",
-                name: { de: "Heißtuch-Rasur", en: "Hot Towel Shave", tr: "Sıcak Havlu Tıraşı", ku: "Tîraş bi Pêjika Germ" },
+                name: { de: "Heißtuch-Rasur", en: "Hot Towel Shave", tr: "Sıcak Havlu Tıraşı", ku: "Tîraş bi Pêjika Germ", ar: "حلاقة بالمنشفة الساخنة" },
                 price: 30,
                 duration: 35
             },
             {
                 id: "s6",
-                name: { de: "Gesichtsbehandlung", en: "Facial Treatment", tr: "Yüz Bakımı", ku: "Lênêrîna Rûyê" },
+                name: { de: "Gesichtsbehandlung", en: "Facial Treatment", tr: "Yüz Bakımı", ku: "Lênêrîna Rûyê", ar: "علاج للوجه" },
                 price: 40,
                 duration: 45
             },
             {
                 id: "s7",
-                name: { de: "Komplettpaket", en: "Full Service Package", tr: "Full Bakım Paketi", ku: "Pakêta Xizmeta Temamî" },
+                name: { de: "Komplettpaket", en: "Full Service Package", tr: "Full Bakım Paketi", ku: "Pakêta Xizmeta Temamî", ar: "باقة الخدمات الكاملة" },
                 price: 90,
                 duration: 120
             },
@@ -96,13 +97,13 @@ export const MOCK_SHOPS: BarberShop[] = [
         services: [
             {
                 id: "s10",
-                name: { de: "Fade Haarschnitt", en: "Fade Cut", tr: "Fade Kesim", ku: "Fade Hêkirin" }, // 'Fade' is often used as is, or 'Kurkirin bi şêwaza Fade'
+                name: { de: "Fade Haarschnitt", en: "Fade Cut", tr: "Fade Kesim", ku: "Fade Hêkirin", ar: "قصة التدريج (Fade)" },
                 price: 38,
                 duration: 45
             },
             {
                 id: "s20",
-                name: { de: "Königliche Rasur", en: "Royal Shave", tr: "Kral Tıraşı", ku: "Tîraşa Şahane" },
+                name: { de: "Königliche Rasur", en: "Royal Shave", tr: "Kral Tıraşı", ku: "Tîraşa Şahane", ar: "حلاقة ملكية" },
                 price: 45,
                 duration: 40
             },
@@ -117,13 +118,13 @@ export const MOCK_SHOPS: BarberShop[] = [
         services: [
             {
                 id: "s11",
-                name: { de: "Schnellschnitt", en: "Quick Cut", tr: "Hızlı Kesim", ku: "Hêkirina Bilez" },
+                name: { de: "Schnellschnitt", en: "Quick Cut", tr: "Hızlı Kesim", ku: "Hêkirina Bilez", ar: "قص سريع" },
                 price: 25,
                 duration: 30
             },
             {
                 id: "s21",
-                name: { de: "Bartöl-Therapie", en: "Beard Oil Therapy", tr: "Sakal Yağı Terapisi", ku: "Terapiya Rûnê Rihê" },
+                name: { de: "Bartöl-Therapie", en: "Beard Oil Therapy", tr: "Sakal Yağı Terapisi", ku: "Terapiya Rûnê Rihê", ar: "علاج زيت اللحية" },
                 price: 15,
                 duration: 15
             },

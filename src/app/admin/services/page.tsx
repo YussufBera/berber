@@ -6,7 +6,10 @@ import DashboardLayout from "@/components/admin/DashboardLayout";
 import { MOCK_SHOPS, Service } from "@/lib/mockData";
 import { Trash2, Plus, Save, X, RefreshCw, Edit2 } from "lucide-react";
 
+import { useLanguage } from "@/components/features/LanguageContext";
+
 export default function ServicesPage() {
+    const { t } = useLanguage();
     // 1. Storage Access (Replaced useStorage with API State)
     const [localServices, setLocalServices] = useState<Service[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +35,7 @@ export default function ServicesPage() {
     });
 
     const handleDelete = async (id: string) => {
-        if (confirm("Sind Sie sicher?")) {
+        if (confirm(t('admin.services.confirm_delete'))) {
             // Optimistic Update
             setLocalServices(prev => prev.filter(s => s.id !== id));
             await fetch(`/api/services?id=${id}`, { method: 'DELETE' });
@@ -62,7 +65,7 @@ export default function ServicesPage() {
                 setNewService({ name: { de: "", en: "", tr: "" }, price: 0, duration: 30 });
             }
         } catch (e) {
-            alert("Fehler beim Hinzufügen");
+            alert(t('admin.services.error_add'));
         }
     };
 
@@ -96,8 +99,8 @@ export default function ServicesPage() {
                 {/* Header Actions */}
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                     <div>
-                        <h3 className="text-xl font-bold text-white">Dienstleistungen verwalten</h3>
-                        <p className="text-gray-400 text-sm">Änderungen werden sofort gespeichert.</p>
+                        <h3 className="text-xl font-bold text-white">{t('admin.services.manage')}</h3>
+                        <p className="text-gray-400 text-sm">{t('admin.services.auto_save')}</p>
                     </div>
 
                     <div className="flex gap-3">
@@ -105,32 +108,32 @@ export default function ServicesPage() {
                             onClick={() => setIsEditing(true)}
                             className="bg-neon-blue text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-white transition-colors"
                         >
-                            <Plus size={18} /> Neu
+                            <Plus size={18} /> {t('admin.services.new')}
                         </button>
                     </div>
                 </div>
 
-                {isLoading && <p className="text-white">Lade Daten...</p>}
+                {isLoading && <p className="text-white">{t('admin.services.loading')}</p>}
 
                 {/* Edit Form */}
                 {isEditing && (
                     <div className="mb-8 p-6 bg-white/5 rounded-xl border border-neon-blue/30 animate-in fade-in slide-in-from-top-4">
-                        <h4 className="text-white font-bold mb-4">Neue Dienstleistung</h4>
+                        <h4 className="text-white font-bold mb-4">{t('admin.services.add_new')}</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <input
-                                placeholder="Name (Deutsch) *"
+                                placeholder={t('admin.services.name_de')}
                                 className="p-3 rounded-lg bg-black border border-white/20 text-white focus:border-neon-blue outline-none"
                                 value={newService.name?.de}
                                 onChange={e => setNewService({ ...newService, name: { ...newService.name as any, de: e.target.value } })}
                             />
                             <input
-                                placeholder="Name (Englisch)"
+                                placeholder={t('admin.services.name_en')}
                                 className="p-3 rounded-lg bg-black border border-white/20 text-white"
                                 value={newService.name?.en}
                                 onChange={e => setNewService({ ...newService, name: { ...newService.name as any, en: e.target.value } })}
                             />
                             <input
-                                placeholder="Name (Türkisch)"
+                                placeholder={t('admin.services.name_tr')}
                                 className="p-3 rounded-lg bg-black border border-white/20 text-white"
                                 value={newService.name?.tr}
                                 onChange={e => setNewService({ ...newService, name: { ...newService.name as any, tr: e.target.value } })}
@@ -138,14 +141,14 @@ export default function ServicesPage() {
                             <div className="flex gap-4">
                                 <input
                                     type="number"
-                                    placeholder="Preis (€) *"
+                                    placeholder={t('admin.services.price')}
                                     className="p-3 rounded-lg bg-black border border-white/20 text-white w-full"
                                     value={newService.price}
                                     onChange={e => setNewService({ ...newService, price: Number(e.target.value) })}
                                 />
                                 <input
                                     type="number"
-                                    placeholder="Dauer (Min)"
+                                    placeholder={t('admin.services.duration')}
                                     className="p-3 rounded-lg bg-black border border-white/20 text-white w-full"
                                     value={newService.duration}
                                     onChange={e => setNewService({ ...newService, duration: Number(e.target.value) })}
@@ -153,9 +156,9 @@ export default function ServicesPage() {
                             </div>
                         </div>
                         <div className="flex gap-3 justify-end">
-                            <button onClick={() => setIsEditing(false)} className="text-gray-400 hover:text-white px-4">Abbrechen</button>
+                            <button onClick={() => setIsEditing(false)} className="text-gray-400 hover:text-white px-4">{t('admin.barbers.cancel')}</button>
                             <button onClick={handleAdd} className="bg-white text-black px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-gray-200">
-                                <Plus size={18} /> Zur Liste hinzufügen
+                                <Plus size={18} /> {t('admin.services.add_btn')}
                             </button>
                         </div>
                     </div>
@@ -164,7 +167,7 @@ export default function ServicesPage() {
                 {/* List */}
                 <div className="grid grid-cols-1 gap-4">
                     {localServices.length === 0 && (
-                        <p className="text-center text-gray-500 py-10">Keine Dienstleistungen vorhanden.</p>
+                        <p className="text-center text-gray-500 py-10">{t('admin.services.empty')}</p>
                     )}
                     {localServices.map(service => (
                         <div key={service.id} className="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-colors group">

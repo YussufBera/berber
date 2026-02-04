@@ -159,7 +159,8 @@ export default function SingleShopBooking() {
         'de': 'de-DE',
         'en': 'en-US',
         'tr': 'tr-TR',
-        'ku': 'ku-TR'
+        'ku': 'ku-TR',
+        'ar': 'ar-SA'
     };
     const currentLocale = localeMap[language || 'de'];
 
