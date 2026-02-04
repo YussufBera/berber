@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils";
 import { useLanguage } from "./LanguageContext";
 import { useRouter } from "next/navigation";
 
-
 // Use the first shop as the "Single" shop
 const SHOP = MOCK_SHOPS[0];
 
@@ -27,8 +26,6 @@ export default function SingleShopBooking() {
     const [unavailableBarbers, setUnavailableBarbers] = useState<string[]>([]); // Names of barbers who are off
     const [contactInfo, setContactInfo] = useState({ name: "", phone: "", email: "" });
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
-
 
     // Hydration fix
     const [mounted, setMounted] = useState(false);
@@ -67,21 +64,30 @@ export default function SingleShopBooking() {
         .filter(s => selectedServices.includes(s.id))
         .reduce((acc, s) => acc + s.price, 0);
 
+    // Fetch Availability when Date Changes
     useEffect(() => {
-        // Reset barber selection if date changes (optional, but good practice if availability changes)
-        // fetching availability for all barbers on this date
         if (selectedDate) {
-            const dateStr = selectedDate.toISOString().split('T')[0];
+            const year = selectedDate.getFullYear();
+            const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+            const day = String(selectedDate.getDate()).padStart(2, '0');
+            const dateStr = `${year}-${month}-${day}`;
+
             fetch(`/api/availability?date=${dateStr}`)
                 .then(res => res.json())
                 .then((data: any[]) => {
-                    // Get list of barber names who are off
                     const off = data.filter(d => d.isOff).map(d => d.barber);
                     setUnavailableBarbers(off);
+                    // Deselect if currently selected barber is off
+                    if (selectedBarber && off.find(name => {
+                        const b = barbers.find(barb => barb.id === selectedBarber);
+                        return b && b.name === name;
+                    })) {
+                        setSelectedBarber(null);
+                    }
                 })
                 .catch(console.error);
         }
-    }, [selectedDate]);
+    }, [selectedDate, selectedBarber, barbers]);
 
     const handleNext = async () => {
         if (step === 1 && selectedServices.length > 0) setStep(2);
@@ -90,7 +96,7 @@ export default function SingleShopBooking() {
         else if (step === 4) {
             // Validate Name
             if (!contactInfo.name.trim()) {
-                setError(t("contact.required")); // Or generic required message
+                setError(t("contact.required"));
                 return;
             }
 
@@ -111,7 +117,7 @@ export default function SingleShopBooking() {
                     phone: contactInfo.phone,
                     services: services.filter(s => selectedServices.includes(s.id)).map(s => s.name.en),
                     total: total,
-                    date: selectedDate, // Use selected ISO Date
+                    date: selectedDate,
                     time: selectedTime,
                     barber: barberName
                 };
@@ -137,22 +143,18 @@ export default function SingleShopBooking() {
         'de': 'de-DE',
         'en': 'en-US',
         'tr': 'tr-TR',
-        'ku': 'ku-TR' // Fallback to Turkish locale region for Kurdish if 'ku' isn't fully supported, or 'ku' if available in environment
+        'ku': 'ku-TR'
     };
     const currentLocale = localeMap[language || 'de'];
 
     // Helper for safe service name access
     const getServiceName = (s: any) => {
         if (!s.name) return "Service";
-        // Check language specific name, fallback to German
         return s.name[language || 'de'] || s.name['de'] || "Service";
     };
 
-    // Determine 'today' only after mount to avoid hydration mismatch, or use a fixed date for initial render if needed.
-    // However, to be safe, we return null until mounted if we are strictly avoiding mismatch.
     if (!mounted) return null;
 
-    // Calculate dates based on current client time
     const today = new Date();
 
     return (
@@ -243,8 +245,17 @@ export default function SingleShopBooking() {
                                         {Array.from({ length: 30 }, (_, i) => i).map(i => {
                                             const d = new Date(today); // Use safe 'today'
                                             d.setDate(today.getDate() + i);
-                                            // Compare just the date part (YYYY-MM-DD)
-                                            const isSelected = selectedDate ? selectedDate.toISOString().split('T')[0] === d.toISOString().split('T')[0] : false;
+
+                                            // Compare using local date strings
+                                            const selYear = selectedDate ? selectedDate.getFullYear() : 0;
+                                            const selMonth = selectedDate ? selectedDate.getMonth() : 0;
+                                            const selDay = selectedDate ? selectedDate.getDate() : 0;
+
+                                            // Check if dates match exactly (year, month, day)
+                                            const isSelected = selectedDate &&
+                                                selYear === d.getFullYear() &&
+                                                selMonth === d.getMonth() &&
+                                                selDay === d.getDate();
 
                                             return (
                                                 <button
