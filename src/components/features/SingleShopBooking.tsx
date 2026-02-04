@@ -19,10 +19,11 @@ const TIME_SLOTS = [
 export default function SingleShopBooking() {
     const router = useRouter();
     const { t, language } = useLanguage();
-    const [step, setStep] = useState(1); // 1: Services, 2: Date/Time, 3: Contact, 4: Success
+    const [step, setStep] = useState(1); // 1: Services, 2: Date/Time, 3: Barber, 4: Contact, 5: Success
     const [selectedServices, setSelectedServices] = useState<string[]>([]);
     const [selectedDate, setSelectedDate] = useState<string>("");
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
+    const [selectedBarber, setSelectedBarber] = useState<string | null>(null);
     const [contactInfo, setContactInfo] = useState({ name: "", phone: "", email: "" });
     const [error, setError] = useState("");
 
@@ -35,6 +36,7 @@ export default function SingleShopBooking() {
 
     // Services State (Fetched from API)
     const [services, setServices] = useState<any[]>(SHOP.services);
+    const [barbers, setBarbers] = useState<any[]>([]);
 
     useEffect(() => {
         fetch('/api/services')
@@ -43,6 +45,13 @@ export default function SingleShopBooking() {
                 if (data && data.length > 0) setServices(data);
             })
             .catch(err => console.error("Failed to load services", err));
+
+        fetch('/api/barbers')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.length > 0) setBarbers(data);
+            })
+            .catch(err => console.error("Failed to load barbers", err));
     }, []);
 
     const toggleService = (id: string) => {
@@ -58,7 +67,8 @@ export default function SingleShopBooking() {
     const handleNext = async () => {
         if (step === 1 && selectedServices.length > 0) setStep(2);
         else if (step === 2 && selectedTime) setStep(3);
-        else if (step === 3) {
+        else if (step === 3 && selectedBarber) setStep(4);
+        else if (step === 4) {
             // Validate Name
             if (!contactInfo.name.trim()) {
                 setError(t("contact.required")); // Or generic required message
@@ -68,14 +78,14 @@ export default function SingleShopBooking() {
             // Validate Phone: Optional +, then 10-12 digits. No other chars allow.
             const phoneRegex = /^\+?[0-9]{10,12}$/;
             if (!contactInfo.phone || !phoneRegex.test(contactInfo.phone.replace(/\s/g, ''))) {
-                setError("Bitte eine gültige Telefonnummer eingeben (10-12 Ziffern)."); // You might want to translate this too if strict localization is needed, but user didn't ask explicitly for validation error translation. Using German default as base or English based on context. Let's stick to a generic error or hardcoded for now if t() key missing.
-                // Actually, let's use a generic error if possible or just hardcode for now.
-                // User asked for specific validation rules.
+                setError("Bitte eine gültige Telefonnummer eingeben (10-12 Ziffern).");
                 return;
             }
 
             // Save booking to Database
             try {
+                const barberName = barbers.find(b => b.id === selectedBarber)?.name || "Any";
+
                 const newBooking = {
                     name: contactInfo.name,
                     email: contactInfo.email,
@@ -84,6 +94,7 @@ export default function SingleShopBooking() {
                     total: total,
                     date: selectedDate, // Use selected ISO Date
                     time: selectedTime,
+                    barber: barberName
                 };
 
                 const res = await fetch('/api/appointments', {
@@ -94,7 +105,7 @@ export default function SingleShopBooking() {
 
                 if (!res.ok) throw new Error('Failed to create booking');
 
-                setStep(4);
+                setStep(5);
             } catch (err) {
                 console.error("Booking error:", err);
                 setError("Failed to confirm booking. Please try again.");
@@ -150,8 +161,9 @@ export default function SingleShopBooking() {
                 <h2 className="text-4xl md:text-6xl font-bold text-white mb-2 tracking-tighter">
                     {step === 1 && t('select.services')}
                     {step === 2 && t('select.time')}
-                    {step === 3 && t('contact.details')}
-                    {step === 4 && t('confirmed')}
+                    {step === 3 && t('select.barber')}
+                    {step === 4 && t('contact.details')}
+                    {step === 5 && t('confirmed')}
                 </h2>
                 <div className="h-1 w-20 bg-neon-blue rounded-full mx-auto md:mx-0" />
             </motion.div>
@@ -265,6 +277,43 @@ export default function SingleShopBooking() {
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: 20 }}
+                                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                            >
+                                {barbers.map(barber => (
+                                    <div
+                                        key={barber.id}
+                                        onClick={() => setSelectedBarber(barber.id)}
+                                        className={cn(
+                                            "relative group p-4 rounded-2xl border cursor-pointer transition-all duration-300 overflow-hidden flex items-center gap-4",
+                                            selectedBarber === barber.id
+                                                ? "bg-neon-purple/10 border-neon-purple"
+                                                : "bg-white/5 border-white/10 hover:border-white/30"
+                                        )}
+                                    >
+                                        <div className="w-16 h-16 rounded-full bg-gray-800 overflow-hidden border border-white/10 shrink-0">
+                                            <img src={barber.image} alt={barber.name} className="w-full h-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold text-white group-hover:text-neon-purple transition-colors">{barber.name}</h3>
+                                            <p className="text-xs text-gray-400">{barber.specialty}</p>
+                                        </div>
+
+                                        {selectedBarber === barber.id && (
+                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-neon-purple rounded-full flex items-center justify-center text-black">
+                                                <Check size={18} />
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </motion.div>
+                        )}
+
+                        {step === 4 && (
+                            <motion.div
+                                key="step4"
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 20 }}
                                 className="bg-white/5 p-8 rounded-2xl border border-white/10"
                             >
                                 <h3 className="text-xl font-bold text-white mb-6">{t('contact.title')}</h3>
@@ -324,9 +373,9 @@ export default function SingleShopBooking() {
                             </motion.div>
                         )}
 
-                        {step === 4 && (
+                        {step === 5 && (
                             <motion.div
-                                key="step4"
+                                key="step5"
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ type: "spring", duration: 0.8, bounce: 0.5 }}
@@ -360,7 +409,12 @@ export default function SingleShopBooking() {
                                     className="text-xl text-gray-300 mb-6 max-w-md mx-auto leading-relaxed"
                                 >
                                     Your appointment is confirmed for <br />
-                                    <span className="text-neon-blue font-bold text-2xl">{selectedTime}</span> on <span className="text-neon-purple font-bold text-2xl">{new Date(selectedDate).toLocaleDateString()}</span>.
+                                    <div className="my-4">
+                                        <span className="text-neon-blue font-bold text-2xl">{selectedTime}</span> on <span className="text-neon-purple font-bold text-2xl">{new Date(selectedDate).toLocaleDateString()}</span>
+                                    </div>
+                                    <div className="text-sm text-gray-400">
+                                        Barber: <span className="text-white font-bold">{barbers.find(b => b.id === selectedBarber)?.name}</span>
+                                    </div>
                                 </motion.p>
 
                                 {/* Cash Warning */}
@@ -420,18 +474,18 @@ export default function SingleShopBooking() {
                         )}
 
                         <div className="mt-8">
-                            {step < 4 && (
+                            {step < 5 && (
                                 <button
-                                    disabled={step === 1 ? selectedServices.length === 0 : step === 2 ? !selectedTime : false}
+                                    disabled={step === 1 ? selectedServices.length === 0 : step === 2 ? !selectedTime : step === 3 ? !selectedBarber : false}
                                     onClick={handleNext}
                                     className="w-full bg-neon-blue text-black font-bold py-4 rounded-xl hover:bg-white transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                 >
-                                    {step === 3 ? t('confirm') : t('next')}
+                                    {step === 4 ? t('confirm') : t('next')}
                                     <ChevronRight size={20} />
                                 </button>
                             )}
 
-                            {step > 1 && step < 4 && (
+                            {step > 1 && step < 5 && (
                                 <button
                                     onClick={() => setStep(step - 1)}
                                     className="w-full mt-4 text-gray-500 hover:text-white text-sm"

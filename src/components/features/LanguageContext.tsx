@@ -20,6 +20,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "book.button": "TERMIN BUCHEN",
         "select.services": "DIENSTLEISTUNGEN",
         "select.time": "ZEIT WÄHLEN",
+        "select.barber": "BARBIER WÄHLEN",
         "select.date": "DATUM WÄHLEN",
         "confirmed": "BESTÄTIGT",
         "summary": "Zusammenfassung",
@@ -58,6 +59,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.dashboard": "Übersicht",
         "admin.nav.termins": "Termine",
         "admin.nav.services": "Dienstleistungen",
+        "admin.nav.barbers": "Barbiere",
         "admin.logout": "Abmelden",
 
         "admin.stats.total_revenue": "GESAMTEINNAHMEN",
@@ -91,6 +93,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "book.button": "BOOK APPOINTMENT",
         "select.services": "SELECT SERVICES",
         "select.time": "CHOOSE A TIME",
+        "select.barber": "CHOOSE BARBER",
         "select.date": "SELECT DATE",
         "confirmed": "CONFIRMED",
         "summary": "Summary",
@@ -129,6 +132,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.dashboard": "Dashboard",
         "admin.nav.termins": "Appointments",
         "admin.nav.services": "Services",
+        "admin.nav.barbers": "Barbers",
         "admin.logout": "Logout",
 
         "admin.stats.total_revenue": "TOTAL REVENUE",
@@ -162,6 +166,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "book.button": "RANDEVU AL",
         "select.services": "HİZMETLERİ SEÇİN",
         "select.time": "SAAT SEÇİN",
+        "select.barber": "BERBER SEÇİN",
         "select.date": "TARİH SEÇİN",
         "confirmed": "ONAYLANDI",
         "summary": "Özet",
@@ -200,6 +205,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.dashboard": "Panel",
         "admin.nav.termins": "Randevular",
         "admin.nav.services": "Hizmetler",
+        "admin.nav.barbers": "Berberler",
         "admin.logout": "Çıkış Yap",
 
         "admin.stats.total_revenue": "TOPLAM GELİR",
@@ -233,6 +239,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "book.button": "RANDEVÛ BIGIRE",
         "select.services": "XIZMETAN HILBIJÊRE",
         "select.time": "DEM HILBIJÊRE",
+        "select.barber": "BERBER HILBIJÊRE",
         "select.date": "TARÎX HILBIJÊRE",
         "confirmed": "HAT ERÊKIRIN",
         "summary": "Kurte",
@@ -271,6 +278,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.nav.dashboard": "Panel",
         "admin.nav.termins": "Randevû",
         "admin.nav.services": "Xizmet",
+        "admin.nav.barbers": "Berber",
         "admin.logout": "Derkeve",
 
         "admin.stats.total_revenue": "DAHATIN",
