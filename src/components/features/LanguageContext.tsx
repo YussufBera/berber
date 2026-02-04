@@ -62,6 +62,12 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.placeholder_phone": "+49 123 4567890",
         "contact.placeholder_email": "beispiel@mail.com",
 
+        "hero.premium": "PREMIUM",
+        "hero.grooming": "PFLEGE",
+        "services.haircut": "Haarschnitt",
+        "services.beard": "Bart",
+        "services.full": "Komplettpaket",
+
         "admin.login.title": "Admin Zugang",
         "admin.login.subtitle": "Bitte Passwort eingeben",
         "admin.login.button": "Anmelden",
@@ -201,6 +207,12 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.placeholder_name": "John Doe",
         "contact.placeholder_phone": "+1 234 567 890",
         "contact.placeholder_email": "example@mail.com",
+
+        "hero.premium": "PREMIUM",
+        "hero.grooming": "GROOMING",
+        "services.haircut": "Haircut",
+        "services.beard": "Beard",
+        "services.full": "Full Package",
 
         "admin.login.title": "Admin Access",
         "admin.login.subtitle": "Please enter password",
@@ -342,6 +354,12 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.placeholder_phone": "+90 555 123 4567",
         "contact.placeholder_email": "ornek@mail.com",
 
+        "hero.premium": "PREMIUM",
+        "hero.grooming": "BAKIM",
+        "services.haircut": "Saç Kesimi",
+        "services.beard": "Sakal",
+        "services.full": "Tam Paket",
+
         "admin.login.title": "Yönetici Girişi",
         "admin.login.subtitle": "Lütfen şifreyi giriniz",
         "admin.login.button": "Giriş Yap",
@@ -482,6 +500,12 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.placeholder_phone": "+49 ...",
         "contact.placeholder_email": "mînak@mail.com",
 
+        "hero.premium": "NAÎF",
+        "hero.grooming": "PALÎŞA",
+        "services.haircut": "Porbirîn",
+        "services.beard": "Rih",
+        "services.full": "Pakêta Temam",
+
         "admin.login.title": "Têketina Rêveber",
         "admin.login.subtitle": "Zehmet nebe şîfreyê binivîse",
         "admin.login.button": "Têkeve",
@@ -620,6 +644,12 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.placeholder_name": "الاسم",
         "contact.placeholder_phone": "+90 ...",
         "contact.placeholder_email": "example@mail.com",
+
+        "hero.premium": "متميز",
+        "hero.grooming": "عناية",
+        "services.haircut": "قص الشعر",
+        "services.beard": "اللحية",
+        "services.full": "باقة كاملة",
 
         "admin.login.title": "دخول المسؤول",
         "admin.login.subtitle": "يرجى إدخال كلمة المرور",

@@ -56,12 +56,12 @@ export default function Home() {
               initial={{ width: 0 }} animate={{ width: "3rem" }} transition={{ duration: 1, delay: 0.5 }}
               className="h-[1px] bg-white/50 hidden md:block"
             />
-            <motion.span
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 0.5 }}
-              className="text-sm md:text-lg tracking-[0.2em] font-light uppercase text-gray-300"
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-neon-blue"
             >
-              Est. 2024
-            </motion.span>
+              <Scissors size={24} />
+            </motion.div>
             <motion.div
               initial={{ width: 0 }} animate={{ width: "3rem" }} transition={{ duration: 1, delay: 0.5 }}
               className="h-[1px] bg-white/50 hidden md:block"
@@ -82,7 +82,7 @@ export default function Home() {
             transition={{ delay: 0.8 }}
             className="text-xl md:text-3xl font-light text-gray-200 mt-2 tracking-wide"
           >
-            PREMIUM <span className="text-neon-blue font-semibold">GROOMING</span>
+            {t('hero.premium')} <span className="text-neon-blue font-semibold">{t('hero.grooming')}</span>
           </motion.p>
 
           <motion.div
