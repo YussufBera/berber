@@ -1,23 +1,28 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { useLanguage } from "./LanguageContext";
-
-const BARBERS = [
-    {
-        id: "1",
-        name: "Yusuf",
-        specialty: "Master Barber",
-    },
-    {
-        id: "2",
-        name: "Ahmet",
-        specialty: "Style Director",
-    }
-];
+import { Barber } from "@/lib/mockData";
 
 export default function TeamShowcase() {
     const { t } = useLanguage();
+    const [barbers, setBarbers] = useState<Barber[]>([]);
+
+    useEffect(() => {
+        const fetchBarbers = async () => {
+            try {
+                const res = await fetch('/api/barbers');
+                if (res.ok) {
+                    const data = await res.json();
+                    setBarbers(data);
+                }
+            } catch (error) {
+                console.error("Failed to fetch barbers", error);
+            }
+        };
+        fetchBarbers();
+    }, []);
 
     return (
         <section className="py-24 bg-black relative border-t border-white/5">
@@ -36,24 +41,28 @@ export default function TeamShowcase() {
                 </motion.div>
 
                 <div className="flex flex-wrap justify-center gap-8 max-w-4xl mx-auto">
-                    {BARBERS.map((barber, index) => (
-                        <motion.div
-                            key={barber.id}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="group relative w-full md:w-64 h-64 rounded-full border border-white/10 flex flex-col items-center justify-center p-6 bg-neutral-900/50 hover:bg-neutral-800 transition-all duration-500 hover:border-neon-purple/30"
-                        >
-                            <div className="absolute inset-0 rounded-full bg-neon-purple/5 blur-xl group-hover:bg-neon-purple/10 transition-all" />
+                    {barbers.length > 0 ? (
+                        barbers.map((barber, index) => (
+                            <motion.div
+                                key={barber.id}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="group relative w-full md:w-64 h-64 rounded-full border border-white/10 flex flex-col items-center justify-center p-6 bg-neutral-900/50 hover:bg-neutral-800 transition-all duration-500 hover:border-neon-purple/30"
+                            >
+                                <div className="absolute inset-0 rounded-full bg-neon-purple/5 blur-xl group-hover:bg-neon-purple/10 transition-all" />
 
-                            <h3 className="text-3xl font-bold text-white mb-2 relative z-10">{barber.name}</h3>
-                            <p className="text-neon-blue font-medium tracking-widest text-xs uppercase relative z-10 mb-4">{barber.specialty}</p>
+                                <h3 className="text-3xl font-bold text-white mb-2 relative z-10">{barber.name}</h3>
+                                <p className="text-neon-blue font-medium tracking-widest text-xs uppercase relative z-10 mb-4">{barber.specialty}</p>
 
-                            {/* Decorative line */}
-                            <div className="w-12 h-[1px] bg-white/20 group-hover:w-24 transition-all duration-500" />
-                        </motion.div>
-                    ))}
+                                {/* Decorative line */}
+                                <div className="w-12 h-[1px] bg-white/20 group-hover:w-24 transition-all duration-500" />
+                            </motion.div>
+                        ))
+                    ) : (
+                        <p className="text-gray-500">Loading team...</p>
+                    )}
 
                     {/* "Join Us" Card */}
                     <motion.div

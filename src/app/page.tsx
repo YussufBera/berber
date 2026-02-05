@@ -90,7 +90,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2 }}
-            className="mt-12"
+            className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6"
           >
             <button
               onClick={startBookingTransition}
