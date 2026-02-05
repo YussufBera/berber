@@ -207,12 +207,12 @@ export default function SingleShopBooking() {
             {/* Back Button */}
             <button
                 onClick={() => router.push('/')}
-                className="absolute top-4 left-6 md:left-12 flex items-center gap-2 text-white/70 hover:text-white transition-colors group z-50 pointer-events-auto"
+                className="absolute -top-6 left-6 md:left-12 flex items-center gap-2 text-white/70 hover:text-white transition-colors group z-50 pointer-events-auto"
             >
                 <div className="p-2 rounded-full bg-white/5 border border-white/10 group-hover:bg-neon-blue group-hover:border-neon-blue group-hover:text-black transition-all">
                     <ArrowLeft size={20} />
                 </div>
-                <span className="font-medium">{t('back') || 'Back'}</span>
+                <span className="font-medium text-sm tracking-widest">{t('nav.home') || 'HOME'}</span>
             </button>
 
             {/* Header content - Scroll Entrance */}
@@ -336,23 +336,53 @@ export default function SingleShopBooking() {
                                 <div id="time-picker-section" className="bg-white/5 p-6 rounded-2xl border border-white/10">
                                     <h3 className="text-lg font-bold text-gray-300 mb-4 flex items-center gap-2"><Clock className="text-neon-blue" /> {t('select.time')}</h3>
                                     <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
-                                        {TIME_SLOTS.map(time => (
-                                            <button
-                                                key={time}
-                                                onClick={() => {
-                                                    setSelectedTime(time);
-                                                    setTimeout(() => scrollToElement('action-bar-bottom'), 100);
-                                                }}
-                                                className={cn(
-                                                    "py-3 rounded-xl text-center font-bold border transition-all duration-300",
-                                                    selectedTime === time
-                                                        ? "bg-neon-blue text-black border-neon-blue shadow-[0_0_15px_rgba(0,255,255,0.4)]"
-                                                        : "bg-white/5 border-white/10 text-white hover:border-neon-blue/50 hover:bg-white/10"
-                                                )}
-                                            >
-                                                {time}
-                                            </button>
-                                        ))}
+                                        {TIME_SLOTS.map(time => {
+                                            // Check if time is in the past
+                                            const isPast = (() => {
+                                                if (!selectedDate) return false;
+                                                const now = new Date();
+                                                const today = new Date();
+
+                                                // Reset times to compare dates only
+                                                const selDate = new Date(selectedDate);
+                                                selDate.setHours(0, 0, 0, 0);
+                                                today.setHours(0, 0, 0, 0);
+
+                                                // If date is in the past (shouldn't happen with date picker but good to be safe)
+                                                if (selDate < today) return true;
+
+                                                // If date is in future, time is not past
+                                                if (selDate > today) return false;
+
+                                                // If date is today, check time
+                                                const [hours, minutes] = time.split(':').map(Number);
+                                                const slotTime = new Date(now);
+                                                slotTime.setHours(hours, minutes, 0, 0);
+
+                                                return slotTime < now;
+                                            })();
+
+                                            return (
+                                                <button
+                                                    key={time}
+                                                    disabled={isPast}
+                                                    onClick={() => {
+                                                        setSelectedTime(time);
+                                                        setTimeout(() => scrollToElement('action-bar-bottom'), 100);
+                                                    }}
+                                                    className={cn(
+                                                        "py-3 rounded-xl text-center font-bold border transition-all duration-300",
+                                                        selectedTime === time
+                                                            ? "bg-neon-blue text-black border-neon-blue shadow-[0_0_15px_rgba(0,255,255,0.4)]"
+                                                            : isPast
+                                                                ? "bg-white/5 border-white/5 text-gray-600 cursor-not-allowed opacity-50"
+                                                                : "bg-white/5 border-white/10 text-white hover:border-neon-blue/50 hover:bg-white/10"
+                                                    )}
+                                                >
+                                                    {time}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </motion.div>
@@ -617,9 +647,10 @@ export default function SingleShopBooking() {
                                                 setStep(4);
                                             }, 50);
                                         }}
-                                        className="w-full text-center text-sm text-gray-400 hover:text-white underline decoration-dotted underline-offset-4 transition-colors pt-2"
+                                        className="w-full text-center py-3 rounded-xl border border-white/20 text-sm font-medium text-gray-300 hover:text-white hover:border-white/40 hover:bg-white/5 transition-all pt-2 flex items-center justify-center gap-2 group"
                                     >
-                                        {t("select.continue_without")} (+0€)
+                                        <span>{t("select.continue_without")}</span>
+                                        <span className="bg-white/10 px-2 py-0.5 rounded text-xs group-hover:bg-white/20 transition-colors">+0€</span>
                                     </button>
                                 )}
 
