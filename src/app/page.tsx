@@ -47,7 +47,7 @@ export default function Home() {
       />
 
       {/* --- HERO SECTION --- */}
-      <section ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section id="hero-section" ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
         <motion.div
           style={{ y: yHero, opacity: opacityHero }}
           className="relative z-10 text-center px-4"
@@ -98,6 +98,13 @@ export default function Home() {
             >
               {t('book.button')}
             </button>
+
+            <button
+              onClick={() => document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-8 py-4 bg-transparent border border-white/20 text-white font-bold tracking-widest hover:bg-white/10 transition-all duration-300 rounded-full"
+            >
+              {t('hero.about_us')}
+            </button>
           </motion.div>
         </motion.div>
 
@@ -107,7 +114,7 @@ export default function Home() {
           className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
         >
           <div className="flex flex-col items-center gap-2 text-gray-500 text-xs tracking-widest uppercase">
-            <span>Scroll</span>
+            <span>{t('hero.scroll')}</span>
             <motion.div
               animate={{ y: [0, 10, 0] }}
               transition={{ repeat: Infinity, duration: 2 }}
@@ -119,7 +126,7 @@ export default function Home() {
       </section>
 
       {/* --- THE STORY (About) --- */}
-      <section className="relative py-32 bg-[#050505] z-10 px-6">
+      <section id="about-section" className="relative py-32 bg-[#050505] z-10 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -146,12 +153,12 @@ export default function Home() {
       <TeamShowcase />
 
       {/* --- GALLERY SECTION --- */}
-      <div className="bg-[#050505]">
+      <div id="gallery-section" className="bg-[#050505]">
         <GallerySection />
       </div>
 
       {/* --- INFO / FOOTER SECTION --- */}
-      <div className="bg-[#080808]">
+      <div id="info-section" className="bg-[#080808]">
         <InfoSection />
       </div>
 

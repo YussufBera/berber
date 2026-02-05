@@ -17,6 +17,8 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     de: {
         "hero.title": "DEIN TERMIN.",
         "hero.subtitle": "PREMIUM TERMINE FÜR DEN MODERNEN GENTLEMAN",
+        "hero.scroll": "Scrollen",
+        "hero.about_us": "Über uns",
         "book.button": "TERMIN BUCHEN",
         "select.services": "DIENSTLEISTUNGEN",
         "select.time": "ZEIT WÄHLEN",
@@ -176,6 +178,8 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     en: {
         "hero.title": "YOUR APPOINTMENT.",
         "hero.subtitle": "PREMIUM APPOINTMENTS FOR THE MODERN GENTLEMAN",
+        "hero.scroll": "Scroll",
+        "hero.about_us": "Who we are",
         "book.button": "BOOK APPOINTMENT",
         "select.services": "SELECT SERVICES",
         "select.time": "CHOOSE A TIME",
@@ -335,6 +339,8 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     tr: {
         "hero.title": "RANDEVUNUZ.",
         "hero.subtitle": "MODERN BEYEFENDİLER İÇİN PREMİUM RANDEVULAR",
+        "hero.scroll": "Kaydır",
+        "hero.about_us": "Biz Kimiz",
         "book.button": "RANDEVU AL",
         "select.services": "HİZMETLERİ SEÇİN",
         "select.time": "SAAT SEÇİN",
@@ -494,6 +500,8 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     ku: {
         "hero.title": "RANDEVÛYA TE.",
         "hero.subtitle": "RANDEVÛYÊN BI KALÎTE BO CAMÊRÊN MODERN",
+        "hero.scroll": "Bikişîne",
+        "hero.about_us": "Em Kî Ne",
         "book.button": "RANDEVÛ BIGIRE",
         "select.services": "XIZMETAN HILBIJÊRE",
         "select.time": "DEM HILBIJÊRE",
@@ -653,6 +661,8 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     ar: {
         "hero.title": "موعدك.",
         "hero.subtitle": "مواعيد متميزة للرجل العصري",
+        "hero.scroll": "تمرير",
+        "hero.about_us": "من نحن",
         "book.button": "حجز موعد",
         "select.services": "اختر الخدمات",
         "select.time": "اختر الوقت",
