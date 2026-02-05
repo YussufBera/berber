@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { User, Calendar as CalendarIcon, Clock, DollarSign, Scissors, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
+import { User, Calendar as CalendarIcon, Clock, DollarSign, Scissors, ChevronLeft, ChevronRight, ArrowLeft, MessageCircle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Barber } from "@/lib/mockData";
 
@@ -269,6 +269,21 @@ export default function BarberSchedule() {
                                         <div className="text-sm text-gray-400 mt-2 pt-2 border-t border-white/5 flex items-start gap-2">
                                             <Scissors size={14} className="mt-0.5 shrink-0" />
                                             <span className="line-clamp-2">{app.services}</span>
+                                            <span className="line-clamp-2">{app.services}</span>
+                                        </div>
+
+                                        <div className="mt-3 flex justify-end">
+                                            <button
+                                                onClick={() => {
+                                                    const message = `Sayın ${app.name}, randevunuzu hatırlatmak isteriz: 🗓️ ${new Date(app.date).toLocaleDateString()} ⏰ ${app.time}. - MAKAS`;
+                                                    const cleanPhone = app.phone.replace(/\D/g, '');
+                                                    window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
+                                                }}
+                                                className="p-2 text-gray-500 hover:text-green-500 hover:bg-green-500/10 rounded-lg transition-colors"
+                                                title="WhatsApp ile Hatırlat"
+                                            >
+                                                <MessageCircle size={18} />
+                                            </button>
                                         </div>
                                     </motion.div>
                                 ))}
