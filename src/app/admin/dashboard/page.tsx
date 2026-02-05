@@ -42,6 +42,13 @@ export default function AdminDashboardPage() {
         const id = selectedBooking.id;
         setIsModalOpen(false);
 
+        // Send WhatsApp IMMEDIATELY to avoid popup blockers
+        if (sendWhatsApp) {
+            const message = `Sayın ${selectedBooking.name}, randevunuz onaylandı! 🗓️ ${new Date(selectedBooking.date).toLocaleDateString()} ⏰ ${selectedBooking.time}. Bizi tercih ettiğiniz için teşekkürler. - MAKAS`;
+            const cleanPhone = selectedBooking.phone.replace(/\D/g, '');
+            window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
         // Optimistic update
         const updatedBookings = bookings.map(b => b.id === id ? { ...b, status: 'approved' } : b);
         setBookings(updatedBookings);
@@ -53,13 +60,7 @@ export default function AdminDashboardPage() {
                 body: JSON.stringify({ id, status: 'approved' })
             });
 
-            // Send WhatsApp if requested
-            if (sendWhatsApp) {
-                const message = `Sayın ${selectedBooking.name}, randevunuz onaylandı! 🗓️ ${new Date(selectedBooking.date).toLocaleDateString()} ⏰ ${selectedBooking.time}. Bizi tercih ettiğiniz için teşekkürler. - MAKAS`;
-                const cleanPhone = selectedBooking.phone.replace(/\D/g, '');
-                window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
-            }
-
+            // Reload to sync state (optional, but keeps data fresh)
             window.location.reload();
         } catch (error) {
             console.error("Failed to approve", error);
