@@ -377,38 +377,6 @@ export default function SingleShopBooking() {
                                     exit={{ opacity: 0, x: 20 }}
                                     className="grid grid-cols-1 md:grid-cols-2 gap-6"
                                 >
-                                    {/* Any Barber Option */}
-                                    <div
-                                        onClick={() => {
-                                            setSelectedBarber("any");
-                                            setTimeout(() => scrollToElement('action-bar-bottom'), 100);
-                                        }}
-                                        className={`
-                                        relative p-4 rounded-xl border-2 cursor-pointer transition-all group overflow-hidden
-                                        ${selectedBarber === "any"
-                                                ? "border-neon-blue bg-neon-blue/10"
-                                                : "border-white/10 hover:border-white/30 bg-white/5"
-                                            }
-                                    `}
-                                    >
-                                        {/* Selection Indicator */}
-                                        <div className={`absolute top-3 right-3 w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${selectedBarber === "any" ? "bg-neon-blue border-neon-blue" : "border-gray-500"}`}>
-                                            {selectedBarber === "any" && <Check size={12} className="text-black" />}
-                                        </div>
-
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-16 h-16 rounded-full bg-gray-800 overflow-hidden shrink-0 flex items-center justify-center border border-white/10">
-                                                <Scissors size={24} className="text-white/50" />
-                                            </div>
-                                            <div>
-                                                <h3 className="text-lg font-bold text-white group-hover:text-neon-blue transition-colors">{t("select.any_barber")}</h3>
-                                                <p className="text-sm text-gray-400">
-                                                    +0€
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     {barbers.map(barber => {
                                         const isOff = unavailableBarbers.includes(barber.name);
                                         return (
@@ -640,6 +608,21 @@ export default function SingleShopBooking() {
                                         <span>+€1</span>
                                     </div>
                                 )}
+
+                                {step === 3 && (
+                                    <button
+                                        onClick={() => {
+                                            setSelectedBarber("any");
+                                            setTimeout(() => {
+                                                setStep(4);
+                                            }, 50);
+                                        }}
+                                        className="w-full text-center text-sm text-gray-400 hover:text-white underline decoration-dotted underline-offset-4 transition-colors pt-2"
+                                    >
+                                        {t("select.continue_without")} (+0€)
+                                    </button>
+                                )}
+
                                 <div className="flex justify-between items-center pt-2">
                                     <span className="text-gray-400">{t('total')}</span>
                                     <span className="text-2xl font-bold text-white">€{total}</span>
