@@ -89,9 +89,14 @@ export default function SingleShopBooking() {
         );
     };
 
-    const total = services
+    const servicesTotal = services
         .filter(s => selectedServices.includes(s.id))
         .reduce((acc, s) => acc + s.price, 0);
+
+    // Add 1 Euro if specific barber is selected (and it's not "any" - represented by null or "any" based on logic below)
+    // We'll use "any" as the ID for Any Barber selection
+    const isSpecificBarberSelected = selectedBarber && selectedBarber !== "any";
+    const total = servicesTotal + (isSpecificBarberSelected ? 1 : 0);
 
     // Fetch Availability when Date Changes
     useEffect(() => {
@@ -147,7 +152,7 @@ export default function SingleShopBooking() {
 
             // Save booking to Database
             try {
-                const barberName = barbers.find(b => b.id === selectedBarber)?.name || "Any";
+                const barberName = selectedBarber === "any" ? "Any" : barbers.find(b => b.id === selectedBarber)?.name || "Any";
 
                 const newBooking = {
                     name: contactInfo.name,
@@ -354,58 +359,102 @@ export default function SingleShopBooking() {
                         )}
 
                         {step === 3 && (
-                            <motion.div
-                                key="step3"
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: 20 }}
-                                className="grid grid-cols-1 md:grid-cols-2 gap-6"
-                            >
-                                {barbers.map(barber => {
-                                    const isOff = unavailableBarbers.includes(barber.name);
-                                    return (
-                                        <div
-                                            key={barber.id}
-                                            onClick={() => {
-                                                if (!isOff) {
-                                                    setSelectedBarber(barber.id);
-                                                    setTimeout(() => scrollToElement('action-bar-bottom'), 100);
-                                                }
-                                            }}
-                                            className={`
-                                                relative p-4 rounded-xl border-2 cursor-pointer transition-all group overflow-hidden
-                                                ${selectedBarber === barber.id
-                                                    ? "border-neon-blue bg-neon-blue/10"
-                                                    : isOff
-                                                        ? "border-white/5 bg-red-500/5 opacity-50 cursor-not-allowed" // Disabled style
-                                                        : "border-white/10 hover:border-white/30 bg-white/5"
-                                                }
-                                            `}
-                                        >
-                                            {/* Selection Indicator */}
-                                            <div className={`absolute top-3 right-3 w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${selectedBarber === barber.id ? "bg-neon-blue border-neon-blue" : "border-gray-500"}`}>
-                                                {selectedBarber === barber.id && <Check size={12} className="text-black" />}
-                                            </div>
+                            <div className="space-y-4">
+                                {/* Warning Message */}
+                                <div className="bg-yellow-500/10 border border-yellow-500/20 p-4 rounded-xl flex items-center gap-3">
+                                    <div className="p-2 bg-yellow-500/20 rounded-full text-yellow-500 shrink-0">
+                                        <div className="font-bold text-lg">€</div>
+                                    </div>
+                                    <p className="text-yellow-500 text-sm font-medium">
+                                        {t("select.barber_warning")}
+                                    </p>
+                                </div>
 
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-16 h-16 rounded-full bg-gray-800 overflow-hidden shrink-0">
-                                                    <img src={barber.image} alt={barber.name} className="w-full h-full object-cover" />
-                                                </div>
-                                                <div>
-                                                    <h3 className="text-lg font-bold text-white group-hover:text-neon-blue transition-colors">{barber.name}</h3>
-                                                    <p className="text-sm text-gray-400">
-                                                        {isOff ? (
-                                                            <span className="text-red-500 font-bold uppercase text-xs">{t('av.day_off')}</span>
-                                                        ) : (
-                                                            barber.specialty
-                                                        )}
-                                                    </p>
-                                                </div>
+                                <motion.div
+                                    key="step3"
+                                    initial={{ opacity: 0, x: 20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: 20 }}
+                                    className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                                >
+                                    {/* Any Barber Option */}
+                                    <div
+                                        onClick={() => {
+                                            setSelectedBarber("any");
+                                            setTimeout(() => scrollToElement('action-bar-bottom'), 100);
+                                        }}
+                                        className={`
+                                        relative p-4 rounded-xl border-2 cursor-pointer transition-all group overflow-hidden
+                                        ${selectedBarber === "any"
+                                                ? "border-neon-blue bg-neon-blue/10"
+                                                : "border-white/10 hover:border-white/30 bg-white/5"
+                                            }
+                                    `}
+                                    >
+                                        {/* Selection Indicator */}
+                                        <div className={`absolute top-3 right-3 w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${selectedBarber === "any" ? "bg-neon-blue border-neon-blue" : "border-gray-500"}`}>
+                                            {selectedBarber === "any" && <Check size={12} className="text-black" />}
+                                        </div>
+
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-16 h-16 rounded-full bg-gray-800 overflow-hidden shrink-0 flex items-center justify-center border border-white/10">
+                                                <Scissors size={24} className="text-white/50" />
+                                            </div>
+                                            <div>
+                                                <h3 className="text-lg font-bold text-white group-hover:text-neon-blue transition-colors">{t("select.any_barber")}</h3>
+                                                <p className="text-sm text-gray-400">
+                                                    +0€
+                                                </p>
                                             </div>
                                         </div>
-                                    );
-                                })}
-                            </motion.div>
+                                    </div>
+
+                                    {barbers.map(barber => {
+                                        const isOff = unavailableBarbers.includes(barber.name);
+                                        return (
+                                            <div
+                                                key={barber.id}
+                                                onClick={() => {
+                                                    if (!isOff) {
+                                                        setSelectedBarber(barber.id);
+                                                        setTimeout(() => scrollToElement('action-bar-bottom'), 100);
+                                                    }
+                                                }}
+                                                className={`
+                                                relative p-4 rounded-xl border-2 cursor-pointer transition-all group overflow-hidden
+                                                ${selectedBarber === barber.id
+                                                        ? "border-neon-blue bg-neon-blue/10"
+                                                        : isOff
+                                                            ? "border-white/5 bg-red-500/5 opacity-50 cursor-not-allowed" // Disabled style
+                                                            : "border-white/10 hover:border-white/30 bg-white/5"
+                                                    }
+                                            `}
+                                            >
+                                                {/* Selection Indicator */}
+                                                <div className={`absolute top-3 right-3 w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${selectedBarber === barber.id ? "bg-neon-blue border-neon-blue" : "border-gray-500"}`}>
+                                                    {selectedBarber === barber.id && <Check size={12} className="text-black" />}
+                                                </div>
+
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-16 h-16 rounded-full bg-gray-800 overflow-hidden shrink-0">
+                                                        <img src={barber.image} alt={barber.name} className="w-full h-full object-cover" />
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="text-lg font-bold text-white group-hover:text-neon-blue transition-colors">{barber.name}</h3>
+                                                        <p className="text-sm text-gray-400">
+                                                            {isOff ? (
+                                                                <span className="text-red-500 font-bold uppercase text-xs">{t('av.day_off')}</span>
+                                                            ) : (
+                                                                "+1€"
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </motion.div>
+                            </div>
                         )}
 
                         {step === 4 && (
@@ -530,7 +579,9 @@ export default function SingleShopBooking() {
                                         }
                                     </span>
                                     <div className="text-sm text-gray-400">
-                                        {t('confirmation.barber').replace('{name}', barbers.find(b => b.id === selectedBarber)?.name || '')}
+                                        <div className="text-sm text-gray-400">
+                                            {selectedBarber === "any" ? t("select.any_barber") : t('confirmation.barber').replace('{name}', barbers.find(b => b.id === selectedBarber)?.name || '')}
+                                        </div>
                                     </div>
                                 </motion.p>
 
@@ -583,6 +634,12 @@ export default function SingleShopBooking() {
                                         <span>€{s.price}</span>
                                     </div>
                                 ))}
+                                {isSpecificBarberSelected && (
+                                    <div className="flex justify-between text-neon-blue text-sm border-b border-white/5 pb-2">
+                                        <span>{t("select.barber")} ({barbers.find(b => b.id === selectedBarber)?.name})</span>
+                                        <span>+€1</span>
+                                    </div>
+                                )}
                                 <div className="flex justify-between items-center pt-2">
                                     <span className="text-gray-400">{t('total')}</span>
                                     <span className="text-2xl font-bold text-white">€{total}</span>
