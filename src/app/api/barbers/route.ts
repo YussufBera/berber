@@ -29,7 +29,7 @@ export async function POST(req: Request) {
 export async function PUT(req: Request) {
     try {
         const body = await req.json();
-        const { id, name, specialty, image, shopId } = body;
+        const { id, name, image, shopId } = body;
 
         if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
 
@@ -39,7 +39,6 @@ export async function PUT(req: Request) {
         barbers[index] = {
             ...barbers[index],
             name: name || barbers[index].name,
-            specialty: specialty || barbers[index].specialty,
             image: image || barbers[index].image,
             shopId: shopId || barbers[index].shopId
         };
