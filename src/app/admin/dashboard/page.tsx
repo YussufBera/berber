@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/admin/DashboardLayout";
 import StatsOverview from "@/components/admin/StatsOverview";
+import WhatsAppConfirmationModal from "@/components/features/WhatsAppConfirmationModal";
 import { Check, X, Clock } from "lucide-react";
 
 
@@ -11,6 +12,8 @@ import { useLanguage } from "@/components/features/LanguageContext";
 export default function AdminDashboardPage() {
     const { t } = useLanguage();
     const [bookings, setBookings] = useState<any[]>([]);
+    const [selectedBooking, setSelectedBooking] = useState<any | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         // ... (keep fetch logic)
@@ -28,8 +31,18 @@ export default function AdminDashboardPage() {
         fetchBookings();
     }, []);
 
-    const handleApprove = async (id: string) => {
-        // ... (keep logic)
+    const handleApproveClick = (booking: any) => {
+        setSelectedBooking(booking);
+        setIsModalOpen(true);
+    };
+
+    const handleConfirmApproval = async (sendWhatsApp: boolean) => {
+        if (!selectedBooking) return;
+
+        const id = selectedBooking.id;
+        setIsModalOpen(false);
+
+        // Optimistic update
         const updatedBookings = bookings.map(b => b.id === id ? { ...b, status: 'approved' } : b);
         setBookings(updatedBookings);
 
@@ -39,6 +52,14 @@ export default function AdminDashboardPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id, status: 'approved' })
             });
+
+            // Send WhatsApp if requested
+            if (sendWhatsApp) {
+                const message = `Sayın ${selectedBooking.name}, randevunuz onaylandı! 🗓️ ${new Date(selectedBooking.date).toLocaleDateString()} ⏰ ${selectedBooking.time}. Bizi tercih ettiğiniz için teşekkürler. - MAKAS`;
+                const cleanPhone = selectedBooking.phone.replace(/\D/g, '');
+                window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
+            }
+
             window.location.reload();
         } catch (error) {
             console.error("Failed to approve", error);
@@ -97,7 +118,7 @@ export default function AdminDashboardPage() {
 
                                     <div className="flex gap-3 mt-auto">
                                         <button
-                                            onClick={() => handleApprove(booking.id)}
+                                            onClick={() => handleApproveClick(booking)}
                                             className="flex-1 bg-green-500/10 text-green-400 border border-green-500/20 py-3 rounded-xl text-sm font-bold hover:bg-green-500 hover:text-black hover:border-green-500 transition-all flex items-center justify-center gap-2"
                                         >
                                             <Check size={18} /> {t("admin.btn.approve")}
@@ -115,6 +136,13 @@ export default function AdminDashboardPage() {
                     )}
                 </div>
             </div>
-        </DashboardLayout>
+
+            <WhatsAppConfirmationModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onConfirm={handleConfirmApproval}
+                bookingName={selectedBooking?.name || ""}
+            />
+        </DashboardLayout >
     );
 }

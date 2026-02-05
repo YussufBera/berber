@@ -173,7 +173,13 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.services.duration": "Dauer (Min)",
         "admin.calendar.no_appts": "Keine Termine für diesen Tag.",
         "admin.calendar.schedule_for": "Plan für",
-        "admin.calendar.view_schedule_msg": "Wählen Sie ein Teammitglied, um dessen Plan zu sehen."
+        "admin.calendar.view_schedule_msg": "Wählen Sie ein Teammitglied, um dessen Plan zu sehen.",
+
+        "modal.whatsapp.title": "WhatsApp Bestätigung",
+        "modal.whatsapp.message": "Möchten Sie eine WhatsApp-Bestätigung an {name} senden?",
+        "modal.whatsapp.send": "Ja, Nachricht senden",
+        "modal.whatsapp.no_send": "Nein, nur bestätigen",
+        "modal.whatsapp.cancel": "Abbrechen"
     },
     en: {
         "hero.title": "YOUR APPOINTMENT.",
@@ -334,7 +340,13 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.services.duration": "Duration (Min)",
         "admin.calendar.no_appts": "No appointments for this day.",
         "admin.calendar.schedule_for": "Schedule for",
-        "admin.calendar.view_schedule_msg": "Choose a team member above to view their schedule."
+        "admin.calendar.view_schedule_msg": "Choose a team member above to view their schedule.",
+
+        "modal.whatsapp.title": "WhatsApp Confirmation",
+        "modal.whatsapp.message": "Do you want to send a WhatsApp confirmation to {name}?",
+        "modal.whatsapp.send": "Yes, Send Message",
+        "modal.whatsapp.no_send": "No, Just Approve",
+        "modal.whatsapp.cancel": "Cancel"
     },
     tr: {
         "hero.title": "RANDEVUNUZ.",
@@ -495,7 +507,13 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.services.duration": "Süre (Dk)",
         "admin.calendar.no_appts": "Bugün için randevu yok.",
         "admin.calendar.schedule_for": "Planı:",
-        "admin.calendar.view_schedule_msg": "Planını görmek için bir ekip üyesi seçin."
+        "admin.calendar.view_schedule_msg": "Planını görmek için bir ekip üyesi seçin.",
+
+        "modal.whatsapp.title": "WhatsApp Onayı",
+        "modal.whatsapp.message": "{name} adlı müşteriye WhatsApp onayı göndermek ister misiniz?",
+        "modal.whatsapp.send": "Evet, Mesaj Gönder",
+        "modal.whatsapp.no_send": "Hayır, Sadece Onayla",
+        "modal.whatsapp.cancel": "İptal"
     },
     ku: {
         "hero.title": "RANDEVÛYA TE.",
@@ -656,7 +674,13 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.services.duration": "Dem (Xûlek)",
         "admin.calendar.no_appts": "Ji bo vê rojê randevu tune.",
         "admin.calendar.schedule_for": "Plana ji bo",
-        "admin.calendar.view_schedule_msg": "Ji bo dîtina planê endamekî tîmê hilbijêre."
+        "admin.calendar.view_schedule_msg": "Ji bo dîtina planê endamekî tîmê hilbijêre.",
+
+        "modal.whatsapp.title": "Erêkirina WhatsApp",
+        "modal.whatsapp.message": "Tu dixwazî peyama erêkirinê ya WhatsApp ji bo {name} bişînî?",
+        "modal.whatsapp.send": "Erê, Peyamê Bişîne",
+        "modal.whatsapp.no_send": "Na, Tenê Erê Bike",
+        "modal.whatsapp.cancel": "Betal Bike"
     },
     ar: {
         "hero.title": "موعدك.",
@@ -798,6 +822,12 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.calendar.select_barber": "اختر حلاق",
         "admin.calendar.select_barber_msg": "اختر عضوًا في الفريق لإدارة أيام عمله.",
         "admin.calendar.manage_for": "إدارة التوافر لـ",
+
+        "modal.whatsapp.title": "تأكيد واتساب",
+        "modal.whatsapp.message": "هل تريد إرسال تأكيد واتساب إلى {name}؟",
+        "modal.whatsapp.send": "نعم، أرسل رسالة",
+        "modal.whatsapp.no_send": "لا، فقط وافق",
+        "modal.whatsapp.cancel": "إلغاء",
         "admin.months": "يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,أغسطس,سبتمبر,أكتوبر,نوفمبر,ديسمبر",
         "admin.days.short": "ن,ث,ر,خ,ج,س,ح",
         "admin.services.manage": "إدارة الخدمات",

@@ -15,6 +15,18 @@ const TIME_SLOTS = [
     "10:00", "10:45", "11:30", "13:00", "13:45", "14:30", "15:15", "16:00", "16:45", "17:30", "18:15", "19:00"
 ];
 
+const COUNTRY_CODES = [
+    { code: "+49", flag: "🇩🇪", label: "DE" },
+    { code: "+90", flag: "🇹🇷", label: "TR" },
+    { code: "+33", flag: "🇫🇷", label: "FR" },
+    { code: "+44", flag: "🇬🇧", label: "UK" },
+    { code: "+1", flag: "🇺🇸", label: "US" },
+    { code: "+31", flag: "🇳🇱", label: "NL" },
+    { code: "+32", flag: "🇧🇪", label: "BE" },
+    { code: "+41", flag: "🇨🇭", label: "CH" },
+    { code: "+43", flag: "🇦🇹", label: "AT" },
+];
+
 const scrollToElement = (id: string, offset = 100) => {
     const element = document.getElementById(id);
     if (element) {
@@ -36,6 +48,7 @@ export default function SingleShopBooking() {
     const [selectedBarber, setSelectedBarber] = useState<string | null>(null); // Barber ID
     const [unavailableBarbers, setUnavailableBarbers] = useState<string[]>([]); // Names of barbers who are off
     const [contactInfo, setContactInfo] = useState({ name: "", phone: "", email: "" });
+    const [countryCode, setCountryCode] = useState("+49");
     const [error, setError] = useState("");
 
     // Hydration fix
@@ -116,10 +129,19 @@ export default function SingleShopBooking() {
                 return;
             }
 
-            // Validate Phone: Optional +, then 10-12 digits. No other chars allow.
-            const phoneRegex = /^\+?[0-9]{10,12}$/;
-            if (!contactInfo.phone || !phoneRegex.test(contactInfo.phone.replace(/\s/g, ''))) {
-                setError("Bitte eine gültige Telefonnummer eingeben (10-12 Ziffern).");
+            // Clean phone: remove spaces and leading zeros
+            let cleanNumber = contactInfo.phone.replace(/\s/g, '');
+            if (cleanNumber.startsWith('0')) {
+                cleanNumber = cleanNumber.substring(1);
+            }
+
+            // Combine with country code
+            const fullPhone = countryCode + cleanNumber;
+
+            // Validate Phone: + then 10-15 digits
+            const phoneRegex = /^\+[0-9]{10,15}$/;
+            if (!cleanNumber || !phoneRegex.test(fullPhone)) {
+                setError("Bitte eine gültige Telefonnummer eingeben.");
                 return;
             }
 
@@ -130,7 +152,7 @@ export default function SingleShopBooking() {
                 const newBooking = {
                     name: contactInfo.name,
                     email: contactInfo.email,
-                    phone: contactInfo.phone,
+                    phone: fullPhone,
                     services: services.filter(s => selectedServices.includes(s.id)).map(s => s.name.en),
                     total: total,
                     date: selectedDate,
@@ -373,7 +395,7 @@ export default function SingleShopBooking() {
                                                     <h3 className="text-lg font-bold text-white group-hover:text-neon-blue transition-colors">{barber.name}</h3>
                                                     <p className="text-sm text-gray-400">
                                                         {isOff ? (
-                                                            <span className="text-red-500 font-bold uppercase text-xs">{t('av.day_off', 'Day Off')}</span>
+                                                            <span className="text-red-500 font-bold uppercase text-xs">{t('av.day_off')}</span>
                                                         ) : (
                                                             barber.specialty
                                                         )}
@@ -412,16 +434,37 @@ export default function SingleShopBooking() {
                                     </div>
                                     <div>
                                         <label className="block text-gray-400 text-sm mb-2">{t('contact.phone')}</label>
-                                        <input
-                                            type="tel"
-                                            value={contactInfo.phone}
-                                            onChange={(e) => {
-                                                setContactInfo(prev => ({ ...prev, phone: e.target.value }));
-                                                setError("");
-                                            }}
-                                            className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white focus:border-neon-blue focus:outline-none transition-colors"
-                                            placeholder={t('contact.placeholder_phone')}
-                                        />
+                                        <div className="flex gap-2">
+                                            <div className="relative">
+                                                <select
+                                                    value={countryCode}
+                                                    onChange={(e) => setCountryCode(e.target.value)}
+                                                    className="appearance-none bg-black/40 border border-white/10 rounded-xl py-4 pl-4 pr-8 text-white focus:border-neon-blue focus:outline-none transition-colors h-full cursor-pointer"
+                                                >
+                                                    {COUNTRY_CODES.map((c) => (
+                                                        <option key={c.code} value={c.code}>
+                                                            {c.flag} {c.code}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                                    <ChevronRight size={14} className="rotate-90" />
+                                                </div>
+                                            </div>
+
+                                            <input
+                                                type="tel"
+                                                value={contactInfo.phone}
+                                                onChange={(e) => {
+                                                    // Only allow numbers
+                                                    const val = e.target.value.replace(/[^0-9]/g, '');
+                                                    setContactInfo(prev => ({ ...prev, phone: val }));
+                                                    setError("");
+                                                }}
+                                                className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white focus:border-neon-blue focus:outline-none transition-colors"
+                                                placeholder="176 123 45 67"
+                                            />
+                                        </div>
                                     </div>
 
                                     <div>
