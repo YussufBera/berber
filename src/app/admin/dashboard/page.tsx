@@ -44,7 +44,14 @@ export default function AdminDashboardPage() {
 
         // Send WhatsApp IMMEDIATELY to avoid popup blockers
         if (sendWhatsApp) {
-            const message = `Sayın ${selectedBooking.name}, randevunuz onaylandı! 🗓️ ${new Date(selectedBooking.date).toLocaleDateString()} ⏰ ${selectedBooking.time}. Bizi tercih ettiğiniz için teşekkürler. - MAKAS`;
+            const rawMessage = t("whatsapp.message_template");
+            const message = rawMessage
+                .replace("{name}", selectedBooking.name)
+                .replace("{date}", new Date(selectedBooking.date).toLocaleDateString())
+                .replace("{time}", selectedBooking.time)
+                .replace("{barber}", selectedBooking.barber || "MAKAS")
+                .replace("{total}", selectedBooking.total);
+
             const cleanPhone = selectedBooking.phone.replace(/\D/g, '');
             window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
         }

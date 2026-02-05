@@ -28,7 +28,14 @@ export default function TerminsPage() {
     };
 
     const handleWhatsApp = (booking: any) => {
-        const message = `Sayın ${booking.name}, randevunuz onaylandı! 🗓️ ${new Date(booking.date).toLocaleDateString()} ⏰ ${booking.time}. Bizi tercih ettiğiniz için teşekkürler. - MAKAS`;
+        const rawMessage = t("whatsapp.message_template");
+        const message = rawMessage
+            .replace("{name}", booking.name)
+            .replace("{date}", new Date(booking.date).toLocaleDateString())
+            .replace("{time}", booking.time)
+            .replace("{barber}", booking.barber || "MAKAS")
+            .replace("{total}", booking.total);
+
         // Basic phone cleanup (keep numbers only)
         const cleanPhone = booking.phone.replace(/\D/g, '');
         window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');

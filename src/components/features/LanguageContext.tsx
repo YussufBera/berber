@@ -179,7 +179,9 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "modal.whatsapp.message": "Möchten Sie eine WhatsApp-Bestätigung an {name} senden?",
         "modal.whatsapp.send": "Ja, Nachricht senden",
         "modal.whatsapp.no_send": "Nein, nur bestätigen",
-        "modal.whatsapp.cancel": "Abbrechen"
+        "modal.whatsapp.cancel": "Abbrechen",
+
+        "whatsapp.message_template": "Hallo {name}, dein Termin ist bestätigt!\n- Datum & Zeit: {date} um {time}\n- Dein Barbier: {barber}\n- Gesamtbetrag: {total}€\nDanke, dass du dich für MAKAS entschieden hast."
     },
     en: {
         "hero.title": "YOUR APPOINTMENT.",
@@ -346,7 +348,9 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "modal.whatsapp.message": "Do you want to send a WhatsApp confirmation to {name}?",
         "modal.whatsapp.send": "Yes, Send Message",
         "modal.whatsapp.no_send": "No, Just Approve",
-        "modal.whatsapp.cancel": "Cancel"
+        "modal.whatsapp.cancel": "Cancel",
+
+        "whatsapp.message_template": "Hi {name}, your appointment is confirmed!\n- Date & Time: {date} at {time}\n- Your Barber: {barber}\n- Total Amount: {total}€\nThank you for choosing MAKAS."
     },
     tr: {
         "hero.title": "RANDEVUNUZ.",
@@ -513,7 +517,9 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "modal.whatsapp.message": "{name} adlı müşteriye WhatsApp onayı göndermek ister misiniz?",
         "modal.whatsapp.send": "Evet, Mesaj Gönder",
         "modal.whatsapp.no_send": "Hayır, Sadece Onayla",
-        "modal.whatsapp.cancel": "İptal"
+        "modal.whatsapp.cancel": "İptal",
+
+        "whatsapp.message_template": "Sayın {name}, randevunuz onaylandı!\n- Randevu tarihi ve saatiniz: {date} - {time}\n- Randevu aldığınız Berber: {barber}\n- Toplam tutar: {total}€\nBizi tercih ettiğiniz için teşekkürler."
     },
     ku: {
         "hero.title": "RANDEVÛYA TE.",
@@ -680,7 +686,9 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "modal.whatsapp.message": "Tu dixwazî peyama erêkirinê ya WhatsApp ji bo {name} bişînî?",
         "modal.whatsapp.send": "Erê, Peyamê Bişîne",
         "modal.whatsapp.no_send": "Na, Tenê Erê Bike",
-        "modal.whatsapp.cancel": "Betal Bike"
+        "modal.whatsapp.cancel": "Betal Bike",
+
+        "whatsapp.message_template": "Rêzdar {name}, randevûya te hat erêkirin!\n- Dîrok & Dem: {date} - {time}\n- Berberê te: {barber}\n- Giştî: {total}€\nSpas ku te MAKAS hilbijart."
     },
     ar: {
         "hero.title": "موعدك.",
@@ -828,6 +836,8 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "modal.whatsapp.send": "نعم، أرسل رسالة",
         "modal.whatsapp.no_send": "لا، فقط وافق",
         "modal.whatsapp.cancel": "إلغاء",
+
+        "whatsapp.message_template": "عزيزي {name}، تم تأكيد موعدك!\n- التاريخ والوقت: {date} - {time}\n- الحلاق: {barber}\n- الإجمالي: {total}€\nشكراً لاختياركم MAKAS.",
         "admin.months": "يناير,فبراير,مارس,أبريل,مايو,يونيو,يوليو,أغسطس,سبتمبر,أكتوبر,نوفمبر,ديسمبر",
         "admin.days.short": "ن,ث,ر,خ,ج,س,ح",
         "admin.services.manage": "إدارة الخدمات",
