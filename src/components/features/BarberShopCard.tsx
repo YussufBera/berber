@@ -10,24 +10,47 @@ export default function BarberShopCard({ shop }: { shop: BarberShop }) {
     const lang = 'en';
 
     return (
-        <div className="relative w-full max-w-[280px] cursor-pointer group bg-white border border-rose-100/50 shadow-sm hover:shadow-md hover:border-gold/40 rounded-2xl overflow-hidden transition-all duration-300">
+        <div className="relative w-full max-w-sm cursor-pointer group bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden hover:border-neon-blue transition-colors">
+
+            <div className="relative h-[300px] w-full bg-zinc-800">
+                {/* Image Background */}
+                <Image
+                    src={shop.image}
+                    alt={shop.name}
+                    fill
+                    className="object-cover opacity-80"
+                />
+            </div>
+
             {/* Content */}
-            <div className="p-6 text-center">
-                <div className="mb-3 flex justify-center text-gold">
-                    <Star size={16} fill="currentColor" />
-                    <span className="font-bold ml-1 text-gray-600">{shop.rating}</span>
+            <div className="p-5">
+                <div className="flex items-center justify-between mb-2">
+                    <span className="px-2 py-1 rounded bg-neon-blue/20 text-neon-blue text-xs font-bold">
+                        OPEN NOW
+                    </span>
+                    <div className="flex items-center text-neon-purple gap-1">
+                        <Star size={16} fill="currentColor" />
+                        <span className="font-bold">{shop.rating}</span>
+                    </div>
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-rose-gold transition-colors">
+                <h3 className="text-2xl font-bold text-white mb-1">
                     {shop.name}
                 </h3>
 
-                <div className="flex items-center justify-center gap-2 text-gray-400 text-xs mb-4">
-                    <MapPin size={12} />
+                <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">
+                    <MapPin size={14} />
                     <span>{shop.address}</span>
                 </div>
 
-                <div className="w-12 h-[1px] bg-rose-100 mx-auto"></div>
+                <div className="space-y-2 border-t border-white/10 pt-3">
+                    {shop.services.slice(0, 2).map((s) => (
+                        <div key={s.id} className="flex justify-between text-sm text-gray-300">
+                            <span>{s.name[lang]}</span>
+                            <span className="font-mono text-neon-blue">€{s.price}</span>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

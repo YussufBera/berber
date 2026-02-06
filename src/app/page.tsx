@@ -147,14 +147,10 @@ export default function Home() {
       </section>
 
       {/* --- SERVICES SHOWCASE --- */}
-      <div id="services-section">
-        <ServicesShowcase />
-      </div>
+      <ServicesShowcase />
 
       {/* --- TEAM SHOWCASE --- */}
-      <div id="team-section">
-        <TeamShowcase />
-      </div>
+      <TeamShowcase />
 
       {/* --- GALLERY SECTION --- */}
       <div id="gallery-section" className="bg-[#050505]">
