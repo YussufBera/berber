@@ -124,6 +124,10 @@ export default function AdminDashboardPage() {
                                                 <p className="text-white font-bold text-lg">{booking.name}</p>
                                                 <p className="text-sm text-neon-blue">{booking.services}</p>
                                                 <p className="text-xs text-gray-400 mt-1">{booking.phone} / {booking.email}</p>
+                                                <p className="text-xs text-gray-400 mt-1">
+                                                    <span className="text-gray-500">Barber: </span>
+                                                    <span className="text-white">{(booking.barber && booking.barber !== "Any") ? booking.barber : "-"}</span>
+                                                </p>
                                             </div>
                                             <span className="text-neon-purple font-mono font-bold text-xl">€{booking.total}</span>
                                         </div>

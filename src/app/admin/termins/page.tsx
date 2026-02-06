@@ -85,7 +85,7 @@ export default function TerminsPage() {
                                             <span className="text-white font-medium">{booking.name}</span>
                                         </td>
                                         <td className="p-4">
-                                            <span className="text-white font-medium">{booking.barber || "-"}</span>
+                                            <span className="text-white font-medium">{(booking.barber && booking.barber !== "Any") ? booking.barber : "-"}</span>
                                         </td>
                                         <td className="p-4 text-sm text-gray-300">
                                             <div className="flex flex-col">
