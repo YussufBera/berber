@@ -48,6 +48,7 @@ export default function SingleShopBooking() {
     const [selectedBarber, setSelectedBarber] = useState<string | null>(null); // Barber ID
     const [unavailableBarbers, setUnavailableBarbers] = useState<string[]>([]); // Names of barbers who are off
     const [contactInfo, setContactInfo] = useState({ name: "", phone: "", email: "" });
+    const [preferredLanguage, setPreferredLanguage] = useState<string>("tr");
     const [countryCode, setCountryCode] = useState("+49");
     const [error, setError] = useState("");
 
@@ -162,7 +163,8 @@ export default function SingleShopBooking() {
                     total: total,
                     date: selectedDate,
                     time: selectedTime,
-                    barber: barberName
+                    barber: barberName,
+                    preferredLanguage: preferredLanguage
                 };
 
                 const res = await fetch('/api/appointments', {
@@ -511,6 +513,26 @@ export default function SingleShopBooking() {
                                                 className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white focus:border-neon-blue focus:outline-none transition-colors"
                                                 placeholder="176 123 45 67"
                                             />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-gray-400 text-sm mb-2">{t('contact.language')}</label>
+                                        <div className="relative">
+                                            <select
+                                                value={preferredLanguage}
+                                                onChange={(e) => setPreferredLanguage(e.target.value)}
+                                                className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white focus:border-neon-blue focus:outline-none transition-colors appearance-none cursor-pointer"
+                                            >
+                                                <option value="tr">Türkçe 🇹🇷</option>
+                                                <option value="de">Deutsch 🇩🇪</option>
+                                                <option value="en">English 🇬🇧</option>
+                                                <option value="ku">Kurdî 🇹🇯</option>
+                                                <option value="ar">العربية 🇸🇦</option>
+                                            </select>
+                                            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                                <ChevronRight size={16} className="rotate-90" />
+                                            </div>
                                         </div>
                                     </div>
 

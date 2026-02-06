@@ -62,7 +62,8 @@ export async function POST(request: Request) {
                 services: Array.isArray(body.services) ? body.services.join(", ") : body.services, // Ensure string storage
                 total: parseFloat(body.total),
                 status: 'pending',
-                barber: body.barber || null // Save barber name if present
+                barber: body.barber || null, // Save barber name if present
+                preferredLanguage: body.preferredLanguage || "tr"
             }
         });
 

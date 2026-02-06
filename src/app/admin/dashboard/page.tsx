@@ -7,7 +7,7 @@ import WhatsAppConfirmationModal from "@/components/features/WhatsAppConfirmatio
 import { Check, X, Clock } from "lucide-react";
 
 
-import { useLanguage } from "@/components/features/LanguageContext";
+import { useLanguage, TRANSLATIONS } from "@/components/features/LanguageContext";
 
 export default function AdminDashboardPage() {
     const { t } = useLanguage();
@@ -44,7 +44,18 @@ export default function AdminDashboardPage() {
 
         // Send WhatsApp IMMEDIATELY to avoid popup blockers
         if (sendWhatsApp) {
-            const rawMessage = t("whatsapp.message_template");
+            // Use customer's preferred language if available, otherwise default to "de"
+            // We need to import TRANSLATIONS (referencing it via import) or just assume it is available if we import it
+            // Since we can't easily import a non-exported constant if module system is strict/already imported via default
+            // I will update the import first.
+
+            // Assume "booking" has preferredLanguage.
+            // If TS complains about preferredLanguage not on "any", cast it or just access it.
+            const langCode = (selectedBooking.preferredLanguage || "de") as "de" | "en" | "tr" | "ku" | "ar";
+
+            // @ts-ignore - TRANSLATIONS is exported now
+            const rawMessage = TRANSLATIONS[langCode]?.["whatsapp.message_template"] || TRANSLATIONS["de"]["whatsapp.message_template"];
+
             const message = rawMessage
                 .replace("{name}", selectedBooking.name)
                 .replace("{date}", new Date(selectedBooking.date).toLocaleDateString())

@@ -13,7 +13,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
+export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
     de: {
         "hero.title": "DEIN TERMIN.",
         "hero.subtitle": "PREMIUM TERMINE FÜR DEN MODERNEN GENTLEMAN",
@@ -51,6 +51,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.title": "Kontaktdaten",
         "contact.phone": "Telefonnummer",
         "contact.email": "E-Mail",
+        "contact.language": "Bevorzugte Sprache",
         "contact.required": "Bitte geben Sie Telefon oder E-Mail an.",
         "contact.disclaimer": "Bitte geben Sie Ihre E-Mail-Adresse oder Telefonnummer an, damit wir Sie kontaktieren können, falls Ihr Termin nicht bestätigt werden kann.",
         "book.another": "Weiteren Termin buchen",
@@ -223,6 +224,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.title": "Contact Details",
         "contact.phone": "Phone Number",
         "contact.email": "Email Address",
+        "contact.language": "Preferred Language",
         "contact.required": "Please provide either phone or email.",
         "contact.disclaimer": "Please enter your email or number to be contacted in case your appointment is not approved.",
         "book.another": "Book Another",
@@ -395,6 +397,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.title": "İletişim Bilgileri",
         "contact.phone": "Telefon Numarası",
         "contact.email": "E-Posta",
+        "contact.language": "Tercih Edilen Dil",
         "contact.required": "Lütfen telefon veya e-posta giriniz.",
         "contact.disclaimer": "Randevunuzun onaylanmaması durumunda size dönüş yapılabilmesi için lütfen e-posta veya telefon numaranızı giriniz.",
         "book.another": "Başka Randevu Al",
@@ -567,6 +570,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.title": "Agahiyên Têkiliyê",
         "contact.phone": "Hejmara Telefonê",
         "contact.email": "E-Posta",
+        "contact.language": "Zimanê Bijare",
         "contact.required": "Zehmet nebe telefon an e-posta binivîse.",
         "contact.disclaimer": "Heke randevûya te neyê erêkirin, ji bo em karibin li te vegerin ji kerema xwe e-posta an hejmara xwe binivîse.",
         "book.another": "Randevûyek Din Bigire",
@@ -738,6 +742,7 @@ const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "contact.title": "تفاصيل الاتصال",
         "contact.phone": "رقم الهاتف",
         "contact.email": "البريد الإلكتروني",
+        "contact.language": "اللغة المفضلة",
         "contact.required": "يرجى تقديم الهاتف أو البريد الإلكتروني.",
         "contact.disclaimer": "يرجى إدخال بريدك الإلكتروني أو رقم هاتفك ليتم الاتصال بك في حال عدم الموافقة على موعدك.",
         "book.another": "حجز موعد آخر",

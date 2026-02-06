@@ -90,6 +90,7 @@ model SimpleAppointment {
   total     Float
   status    String   @default("pending")
   barber    String?
+  preferredLanguage String @default("de")
   createdAt DateTime @default(now())
 }
 
