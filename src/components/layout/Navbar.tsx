@@ -38,6 +38,8 @@ export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
 
     const navLinks = [
         { name: t("nav.home"), id: "hero-section" },
+        { name: t("nav.services"), id: "services-section" },
+        { name: t("nav.team"), id: "team-section" },
         { name: t("nav.info"), id: "info-section" },
         { name: t("nav.gallery"), id: "gallery-section" },
         { name: t("nav.book"), id: "booking-section" },
