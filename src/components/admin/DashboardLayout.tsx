@@ -130,7 +130,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
                         <div className="flex items-center gap-4">
                             <div className="text-right hidden md:block">
-                                <p className="font-bold">Makas Admin</p>
+                                <p className="font-bold">Nelio Admin</p>
                                 <p className="text-xs text-gray-500">Administrator</p>
                             </div>
                             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-neon-purple/20 border border-neon-purple/50 flex-shrink-0" />

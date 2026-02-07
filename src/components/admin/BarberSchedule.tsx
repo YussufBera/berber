@@ -275,7 +275,7 @@ export default function BarberSchedule() {
                                         <div className="mt-3 flex justify-end">
                                             <button
                                                 onClick={() => {
-                                                    const message = `Sayın ${app.name}, randevunuzu hatırlatmak isteriz: 🗓️ ${new Date(app.date).toLocaleDateString()} ⏰ ${app.time}. - MAKAS`;
+                                                    const message = `Sayın ${app.name}, randevunuzu hatırlatmak isteriz: 🗓️ ${new Date(app.date).toLocaleDateString()} ⏰ ${app.time}. - NELIO`;
                                                     const cleanPhone = app.phone.replace(/\D/g, '');
                                                     window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
                                                 }}

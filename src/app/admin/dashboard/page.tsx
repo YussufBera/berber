@@ -60,7 +60,7 @@ export default function AdminDashboardPage() {
                 .replace("{name}", selectedBooking.name)
                 .replace("{date}", new Date(selectedBooking.date).toLocaleDateString())
                 .replace("{time}", selectedBooking.time)
-                .replace("{barber}", selectedBooking.barber || "MAKAS")
+                .replace("{barber}", selectedBooking.barber || "NELIO")
                 .replace("{total}", selectedBooking.total);
 
             const cleanPhone = selectedBooking.phone.replace(/\D/g, '');

@@ -3,8 +3,8 @@ import "./globals.css";
 import ClientLayout from "@/components/layout/ClientLayout";
 
 export const metadata: Metadata = {
-  title: "BERBER | Premium Appointments",
-  description: "Modern appointment booking for barbers.",
+  title: "Nelio Friseur",
+  description: "Premium Barber Shop",
 };
 
 export default function RootLayout({

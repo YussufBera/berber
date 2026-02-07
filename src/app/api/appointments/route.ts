@@ -94,7 +94,7 @@ export async function PATCH(request: Request) {
         // SMS Notification Logic
         if (body.status === 'confirmed' && updated.phone) {
             const { sendSMS } = await import('@/lib/sms');
-            const message = `Sayın ${updated.name}, randevunuz onaylandı! 🗓️ ${updated.date} ⏰ ${updated.time}. Bizi tercih ettiğiniz için teşekkürler. - MAKAS`;
+            const message = `Sayın ${updated.name}, randevunuz onaylandı! 🗓️ ${updated.date} ⏰ ${updated.time}. Bizi tercih ettiğiniz için teşekkürler. - NELIO`;
 
             // Fire and forget (don't block response)
             sendSMS(updated.phone, message).catch(err => console.error("SMS Error:", err));

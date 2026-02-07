@@ -75,7 +75,7 @@ export default function Home() {
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="text-7xl md:text-[10rem] font-bold leading-none tracking-tighter text-white mix-blend-overlay"
           >
-            MAKAS
+            NELIO
           </motion.h1>
           <motion.p
             initial={{ y: 20, opacity: 0 }}
@@ -164,7 +164,7 @@ export default function Home() {
 
       {/* SIMPLE FOOTER */}
       <footer className="py-8 text-center text-gray-600 text-xs uppercase tracking-widest bg-black border-t border-white/5">
-        <p>&copy; {new Date().getFullYear()} Makas Friseur. All Rights Reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Nelio Friseur. All Rights Reserved.</p>
       </footer>
 
     </main>

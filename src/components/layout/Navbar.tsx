@@ -60,7 +60,7 @@ export default function Navbar({ onBookClick }: { onBookClick?: () => void }) {
                         className="flex items-center gap-2 text-white font-bold text-xl tracking-tighter hover:text-neon-blue transition-colors"
                     >
                         <Scissors className="text-neon-blue" />
-                        <span>MAKAS</span>
+                        <span>NELIO</span>
                     </button>
 
                     {/* Desktop Nav */}

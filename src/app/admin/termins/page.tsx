@@ -33,7 +33,7 @@ export default function TerminsPage() {
             .replace("{name}", booking.name)
             .replace("{date}", new Date(booking.date).toLocaleDateString())
             .replace("{time}", booking.time)
-            .replace("{barber}", booking.barber || "MAKAS")
+            .replace("{barber}", booking.barber || "NELIO")
             .replace("{total}", booking.total);
 
         // Basic phone cleanup (keep numbers only)

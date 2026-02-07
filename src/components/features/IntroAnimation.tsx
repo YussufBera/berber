@@ -33,7 +33,7 @@ export default function IntroAnimation({ onComplete }: { onComplete: () => void 
                         className="mb-20 text-center"
                     >
                         <h1 className="text-5xl md:text-7xl font-bold tracking-[0.2em] text-white">
-                            MAKAS
+                            NELIO
                         </h1>
                         <h2 className="text-lg md:text-2xl tracking-[0.5em] text-neon-blue mt-2">
                             FRISEUR
