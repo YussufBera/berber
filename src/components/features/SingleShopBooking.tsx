@@ -94,7 +94,9 @@ export default function SingleShopBooking() {
         if (!s.campaignPrice || !s.campaignStartDate || !s.campaignEndDate) return null;
         const now = new Date();
         const start = new Date(s.campaignStartDate);
+        start.setHours(0, 0, 0, 0);
         const end = new Date(s.campaignEndDate);
+        end.setHours(23, 59, 59, 999);
 
         // Ensure dates are valid and current time is within range
         if (now >= start && now <= end) {

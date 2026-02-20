@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 
 import { MOCK_SHOPS } from '@/lib/mockData';
 
+export const dynamic = 'force-dynamic';
+
 // GET: Fetch all services (with Seeding)
 export async function GET() {
     try {
