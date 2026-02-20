@@ -88,15 +88,24 @@ export async function PUT(request: Request) {
 
         if (!body.id) return NextResponse.json({ error: 'Missing ID' }, { status: 400 });
 
+        const dataToUpdate: any = {};
+        if (body.price !== undefined) dataToUpdate.price = parseFloat(body.price);
+        if (body.duration !== undefined) dataToUpdate.duration = parseInt(body.duration);
+
+        // Always handle campaign fields if they are explicitly sent (can be null for removal)
+        if (body.campaignPrice !== undefined) {
+            dataToUpdate.campaignPrice = body.campaignPrice ? parseFloat(body.campaignPrice) : null;
+        }
+        if (body.campaignStartDate !== undefined) {
+            dataToUpdate.campaignStartDate = body.campaignStartDate ? new Date(body.campaignStartDate) : null;
+        }
+        if (body.campaignEndDate !== undefined) {
+            dataToUpdate.campaignEndDate = body.campaignEndDate ? new Date(body.campaignEndDate) : null;
+        }
+
         const service = await prisma.simpleService.update({
             where: { id: body.id },
-            data: {
-                price: parseFloat(body.price),
-                duration: parseInt(body.duration),
-                campaignPrice: body.campaignPrice ? parseFloat(body.campaignPrice) : null,
-                campaignStartDate: body.campaignStartDate ? new Date(body.campaignStartDate) : null,
-                campaignEndDate: body.campaignEndDate ? new Date(body.campaignEndDate) : null
-            }
+            data: dataToUpdate
         });
 
         return NextResponse.json({ success: true, service });

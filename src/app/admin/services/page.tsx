@@ -125,16 +125,24 @@ export default function ServicesPage() {
                 campaignEndDate: campaignForm.endDate ? new Date(campaignForm.endDate).toISOString() : null
             };
 
-            await fetch('/api/services', {
+            const res = await fetch('/api/services', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 
+            if (!res.ok) {
+                const errorData = await res.json();
+                console.error("Failed to update campaign. Server response:", errorData);
+                alert("Kampanya kaydedilirken bir hata oluştu. Lütfen tekrar deneyin.");
+                return;
+            }
+
             setLocalServices(prev => prev.map(s => s.id === id ? { ...s, ...payload } as any : s));
             setCampaignEditorId(null);
         } catch (e) {
             console.error("Failed to update campaign", e);
+            alert("Sunucuya bağlanırken bir hata oluştu.");
         }
     };
 
