@@ -5,11 +5,13 @@ const prisma = new PrismaClient();
 
 export async function PATCH(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
         const body = await request.json();
         const { status } = body;
+        const resolvedParams = await params;
+        const id = resolvedParams.id;
 
         if (!status) {
             return NextResponse.json(
@@ -19,7 +21,7 @@ export async function PATCH(
         }
 
         const application = await prisma.jobApplication.update({
-            where: { id: params.id },
+            where: { id },
             data: { status },
         });
 
@@ -35,11 +37,14 @@ export async function PATCH(
 
 export async function DELETE(
     request: Request,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const resolvedParams = await params;
+        const id = resolvedParams.id;
+
         await prisma.jobApplication.delete({
-            where: { id: params.id },
+            where: { id },
         });
 
         return NextResponse.json({ success: true });

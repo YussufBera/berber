@@ -19,6 +19,14 @@ export default function ApplicationManager() {
     const { t } = useLanguage();
     const [applications, setApplications] = useState<JobApplication[]>([]);
     const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState<"pending" | "reviewed" | "approved" | "rejected">("pending");
+
+    const tabs = [
+        { id: "pending", label: "Yeni" },
+        { id: "reviewed", label: "Okunanlar" },
+        { id: "approved", label: "Onaylananlar" },
+        { id: "rejected", label: "Reddedilenler" },
+    ] as const;
 
     useEffect(() => {
         fetchApplications();
@@ -73,11 +81,13 @@ export default function ApplicationManager() {
     const getStatusBadge = (status: string) => {
         switch (status) {
             case "reviewed":
-                return <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/20"><CheckCircle size={12} /> Reviewed</span>;
+                return <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20"><CheckCircle size={12} /> Okundu</span>;
+            case "approved":
+                return <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/20"><CheckCircle size={12} /> Onaylandı</span>;
             case "rejected":
-                return <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20"><XCircle size={12} /> Rejected</span>;
+                return <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20"><XCircle size={12} /> Reddedildi</span>;
             default:
-                return <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"><Clock size={12} /> Pending</span>;
+                return <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"><Clock size={12} /> Yeni / Bekliyor</span>;
         }
     };
 
@@ -99,15 +109,34 @@ export default function ApplicationManager() {
                 </div>
             </div>
 
-            {applications.length === 0 ? (
+            {/* Tabs */}
+            <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0">
+                {tabs.map((tab) => (
+                    <button
+                        key={tab.id}
+                        onClick={() => setActiveTab(tab.id)}
+                        className={`px-4 py-2 rounded-xl font-medium text-sm whitespace-nowrap transition-colors ${activeTab === tab.id
+                                ? "bg-neon-purple text-white"
+                                : "bg-neutral-900 border border-white/10 text-gray-400 hover:text-white hover:bg-white/5"
+                            }`}
+                    >
+                        {tab.label}
+                        <span className="ml-2 bg-black/50 px-2 py-0.5 rounded-lg text-xs">
+                            {applications.filter((a) => a.status === tab.id).length}
+                        </span>
+                    </button>
+                ))}
+            </div>
+
+            {applications.filter(a => a.status === activeTab).length === 0 ? (
                 <div className="bg-neutral-900 border border-white/10 rounded-2xl p-12 text-center">
                     <BriefcasePlaceholder className="mx-auto w-16 h-16 text-gray-600 mb-4" />
-                    <h3 className="text-xl font-bold text-gray-300 mb-2">No Applications Yet</h3>
-                    <p className="text-gray-500">When someone applies, it will appear here.</p>
+                    <h3 className="text-xl font-bold text-gray-300 mb-2">Bu sekmede başvuru yom</h3>
+                    <p className="text-gray-500">Kayıtlı başvuru bulunamadı.</p>
                 </div>
             ) : (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                    {applications.map((app, i) => (
+                    {applications.filter(a => a.status === activeTab).map((app, i) => (
                         <motion.div
                             key={app.id}
                             initial={{ opacity: 0, y: 10 }}
@@ -145,24 +174,32 @@ export default function ApplicationManager() {
 
                             <div className="flex gap-2 mt-auto pt-4 border-t border-white/5">
                                 {app.status === "pending" && (
+                                    <button
+                                        onClick={() => updateStatus(app.id, "reviewed")}
+                                        className="flex-1 py-2 bg-blue-500/10 text-blue-400 rounded-lg text-sm font-bold border border-blue-500/20 hover:bg-blue-500/20 transition-colors"
+                                    >
+                                        Okundu İşaretle
+                                    </button>
+                                )}
+                                {app.status === "reviewed" && (
                                     <>
                                         <button
-                                            onClick={() => updateStatus(app.id, "reviewed")}
-                                            className="flex-1 py-2 bg-green-500/10 text-green-400 rounded-lg text-sm font-medium border border-green-500/20 hover:bg-green-500/20 transition-colors"
+                                            onClick={() => updateStatus(app.id, "approved")}
+                                            className="flex-1 py-2 bg-green-500/10 text-green-400 rounded-lg text-sm font-bold border border-green-500/20 hover:bg-green-500/20 transition-colors"
                                         >
-                                            Mark Reviewed
+                                            Onayla
                                         </button>
                                         <button
                                             onClick={() => updateStatus(app.id, "rejected")}
-                                            className="flex-1 py-2 bg-yellow-500/10 text-yellow-500 rounded-lg text-sm font-medium border border-yellow-500/20 hover:bg-yellow-500/20 transition-colors"
+                                            className="flex-1 py-2 bg-red-500/10 text-red-500 rounded-lg text-sm font-bold border border-red-500/20 hover:bg-red-500/20 transition-colors"
                                         >
-                                            Reject
+                                            Reddet
                                         </button>
                                     </>
                                 )}
                                 <button
                                     onClick={() => deleteApplication(app.id)}
-                                    className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors ml-auto"
+                                    className="p-2 w-10 h-10 flex items-center justify-center text-red-400 hover:bg-red-500/10 rounded-lg transition-colors ml-auto bg-black/20"
                                     title="Delete"
                                 >
                                     <Trash2 size={18} />
