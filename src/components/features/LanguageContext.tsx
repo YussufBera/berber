@@ -88,6 +88,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "services.full": "Komplettpaket",
 
         "admin.login.title": "Admin Zugang",
+        "admin.login.role_title": "Login Modus",
         "admin.login.subtitle": "Bitte Passwort eingeben",
         "admin.login.button": "Anmelden",
         "admin.login.error": "Falsches Passwort",
@@ -273,6 +274,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "services.full": "Full Package",
 
         "admin.login.title": "Admin Access",
+        "admin.login.role_title": "Login Mode",
         "admin.login.subtitle": "Please enter password",
         "admin.login.button": "Login",
         "admin.login.error": "Wrong Password",
@@ -458,6 +460,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "services.full": "Tam Paket",
 
         "admin.login.title": "Yönetici Girişi",
+        "admin.login.role_title": "Giriş Yöntemi",
         "admin.login.subtitle": "Lütfen şifreyi giriniz",
         "admin.login.button": "Giriş Yap",
         "admin.login.error": "Hatalı Şifre",
@@ -643,6 +646,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "services.full": "Pakêta Temam",
 
         "admin.login.title": "Têketina Rêveber",
+        "admin.login.role_title": "Rêbaza Têketinê",
         "admin.login.subtitle": "Zehmet nebe şîfreyê binivîse",
         "admin.login.button": "Têkeve",
         "admin.login.error": "Şîfre Çewt e",
@@ -827,6 +831,7 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "services.full": "باقة كاملة",
 
         "admin.login.title": "دخول المسؤول",
+        "admin.login.role_title": "طريقة الدخول",
         "admin.login.subtitle": "يرجى إدخال كلمة المرور",
         "admin.login.button": "دخول",
         "admin.login.error": "كلمة المرور غير صحيحة",

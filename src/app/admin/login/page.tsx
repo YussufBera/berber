@@ -114,7 +114,7 @@ export default function AdminLogin() {
         return (
             <div className="min-h-screen bg-black flex items-center justify-center p-4 animate-in fade-in duration-500">
                 <div className="w-full max-w-md space-y-4">
-                    <h1 className="text-3xl font-bold text-white text-center mb-8">{t("book.step_1.title")}</h1>
+                    <h1 className="text-3xl font-bold text-white text-center mb-8">{t("admin.login.role_title")}</h1>
 
                     <button
                         onClick={() => { setStep('auth_admin'); setError(""); setPassword(""); }}
