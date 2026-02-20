@@ -185,7 +185,17 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "modal.whatsapp.no_send": "Nein, nur bestätigen",
         "modal.whatsapp.cancel": "Abbrechen",
 
-        "whatsapp.message_template": "Hallo {name}, dein Termin ist bestätigt!\n- Datum & Zeit: {date} um {time}\n- Dein Barbier: {barber}\n- Gesamtbetrag: {total}€\nDanke, dass du dich für MAKAS entschieden hast."
+        "whatsapp.message_template": "Hallo {name}, dein Termin ist bestätigt!\n- Datum & Zeit: {date} um {time}\n- Dein Barbier: {barber}\n- Gesamtbetrag: {total}€\nDanke, dass du dich für MAKAS entschieden hast.",
+
+        "apply.modal_title": "Werden Sie Teil unseres Teams",
+        "apply.name": "Name",
+        "apply.email": "E-Mail",
+        "apply.phone": "Telefon",
+        "apply.message": "Ihre Nachricht (Warum möchten Sie bei uns arbeiten?)",
+        "apply.submit": "Bewerbung senden",
+        "apply.success": "Bewerbung erfolgreich gesendet!",
+        "apply.error": "Fehler beim Senden der Bewerbung",
+        "admin.nav.applications": "Bewerbungen"
     },
     en: {
         "hero.title": "YOUR APPOINTMENT.",
@@ -358,7 +368,17 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "modal.whatsapp.no_send": "No, Just Approve",
         "modal.whatsapp.cancel": "Cancel",
 
-        "whatsapp.message_template": "Hi {name}, your appointment is confirmed!\n- Date & Time: {date} at {time}\n- Your Barber: {barber}\n- Total Amount: {total}€\nThank you for choosing MAKAS."
+        "whatsapp.message_template": "Hi {name}, your appointment is confirmed!\n- Date & Time: {date} at {time}\n- Your Barber: {barber}\n- Total Amount: {total}€\nThank you for choosing MAKAS.",
+
+        "apply.modal_title": "Join Our Team",
+        "apply.name": "Name",
+        "apply.email": "Email",
+        "apply.phone": "Phone",
+        "apply.message": "Your Message (Why do you want to join us?)",
+        "apply.submit": "Submit Application",
+        "apply.success": "Application submitted successfully!",
+        "apply.error": "Error submitting application",
+        "admin.nav.applications": "Applications"
     },
     tr: {
         "hero.title": "RANDEVUNUZ.",
@@ -531,7 +551,17 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "modal.whatsapp.no_send": "Hayır, Sadece Onayla",
         "modal.whatsapp.cancel": "İptal",
 
-        "whatsapp.message_template": "Sayın {name}, randevunuz onaylandı!\n- Randevu tarihi ve saatiniz: {date} - {time}\n- Randevu aldığınız Berber: {barber}\n- Toplam tutar: {total}€\nBizi tercih ettiğiniz için teşekkürler."
+        "whatsapp.message_template": "Sayın {name}, randevunuz onaylandı!\n- Randevu tarihi ve saatiniz: {date} - {time}\n- Randevu aldığınız Berber: {barber}\n- Toplam tutar: {total}€\nBizi tercih ettiğiniz için teşekkürler.",
+
+        "apply.modal_title": "Ekibimize Katılın",
+        "apply.name": "Ad Soyad",
+        "apply.email": "E-Posta",
+        "apply.phone": "Telefon",
+        "apply.message": "Mesajınız (Neden bize katılmak istiyorsunuz?)",
+        "apply.submit": "Başvuruyu Gönder",
+        "apply.success": "Başvuru başarıyla gönderildi!",
+        "apply.error": "Başvuru gönderilirken hata oluştu",
+        "admin.nav.applications": "Başvurular"
     },
     ku: {
         "hero.title": "RANDEVÛYA TE.",
@@ -704,7 +734,17 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "modal.whatsapp.no_send": "Na, Tenê Erê Bike",
         "modal.whatsapp.cancel": "Betal Bike",
 
-        "whatsapp.message_template": "Rêzdar {name}, randevûya te hat erêkirin!\n- Dîrok & Dem: {date} - {time}\n- Berberê te: {barber}\n- Giştî: {total}€\nSpas ku te MAKAS hilbijart."
+        "whatsapp.message_template": "Rêzdar {name}, randevûya te hat erêkirin!\n- Dîrok & Dem: {date} - {time}\n- Berberê te: {barber}\n- Giştî: {total}€\nSpas ku te MAKAS hilbijart.",
+
+        "apply.modal_title": "Tevlî Tîma Me Bibe",
+        "apply.name": "Nav û Paşnav",
+        "apply.email": "E-Posta",
+        "apply.phone": "Telefon",
+        "apply.message": "Peyama te (Çima tu dixwazî tevlî me bibî?)",
+        "apply.submit": "Serlêdanê Bişîne",
+        "apply.success": "Serlêdan bi serkeftî hat şandin!",
+        "apply.error": "Di şandina serlêdanê de çewtî derket",
+        "admin.nav.applications": "Serlêdanan"
     },
     ar: {
         "hero.title": "موعدك.",
@@ -876,7 +916,17 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "admin.services.duration": "المدة (دقيقة)",
         "admin.calendar.no_appts": "لا توجد مواعيد لهذا اليوم.",
         "admin.calendar.schedule_for": "جدول لـ",
-        "admin.calendar.view_schedule_msg": "اختر عضوًا في الفريق لعرض جدوله."
+        "admin.calendar.view_schedule_msg": "اختر عضوًا في الفريق لعرض جدوله.",
+
+        "apply.modal_title": "انضم إلى فريقنا",
+        "apply.name": "الاسم",
+        "apply.email": "البريد الإلكتروني",
+        "apply.phone": "هاتف",
+        "apply.message": "رسالتك (لماذا تريد الانضمام إلينا؟)",
+        "apply.submit": "إرسال الطلب",
+        "apply.success": "تم إرسال الطلب بنجاح!",
+        "apply.error": "حدث خطأ أثناء إرسال الطلب",
+        "admin.nav.applications": "الطلبات"
     }
 };
 

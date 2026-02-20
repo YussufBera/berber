@@ -4,10 +4,12 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLanguage } from "./LanguageContext";
 import { Barber } from "@/lib/mockData";
+import ApplicationModal from "./ApplicationModal";
 
 export default function TeamShowcase() {
     const { t } = useLanguage();
     const [barbers, setBarbers] = useState<Barber[]>([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchBarbers = async () => {
@@ -82,13 +84,19 @@ export default function TeamShowcase() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="group relative w-full md:w-72 h-80 rounded-[2rem] border border-dashed border-white/10 flex flex-col items-center justify-center p-6 hover:border-white/30 transition-colors"
+                        onClick={() => setIsModalOpen(true)}
+                        className="group relative w-full md:w-72 h-80 rounded-[2rem] border border-dashed border-white/10 flex flex-col items-center justify-center p-6 hover:border-white/30 transition-colors cursor-pointer"
                     >
                         <h3 className="text-xl font-bold text-gray-400 mb-2">{t('team.join_title')}</h3>
                         <p className="text-gray-600 text-xs text-center max-w-[200px]">{t('team.join_desc')}</p>
                     </motion.div>
                 </div>
             </div>
+
+            <ApplicationModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
         </section>
     );
 }
