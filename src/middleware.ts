@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-    // Only protect /admin routes
     if (request.nextUrl.pathname.startsWith('/admin')) {
 
         // Allow access to login page
@@ -10,11 +9,19 @@ export function middleware(request: NextRequest) {
             return NextResponse.next();
         }
 
-        // Check for session cookie
-        const session = request.cookies.get('admin_session');
+        const adminSession = request.cookies.get('admin_session');
+        const staffSession = request.cookies.get('staff_session');
 
-        if (!session) {
-            // Redirect to login if no session
+        // Staff route specifically allows staff_session OR admin_session
+        if (request.nextUrl.pathname.startsWith('/admin/staff')) {
+            if (!staffSession && !adminSession) {
+                return NextResponse.redirect(new URL('/admin/login', request.url));
+            }
+            return NextResponse.next();
+        }
+
+        // All other /admin routes strictly require admin_session
+        if (!adminSession) {
             return NextResponse.redirect(new URL('/admin/login', request.url));
         }
     }

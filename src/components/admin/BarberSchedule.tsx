@@ -7,11 +7,11 @@ import { Barber } from "@/lib/mockData";
 
 import { useLanguage } from "@/components/features/LanguageContext";
 
-export default function BarberSchedule() {
+export default function BarberSchedule({ fixedBarberId }: { fixedBarberId?: string }) {
     const { t } = useLanguage();
     const [barbers, setBarbers] = useState<Barber[]>([]);
     const [appointments, setAppointments] = useState<any[]>([]);
-    const [selectedBarberId, setSelectedBarberId] = useState<string | null>(null);
+    const [selectedBarberId, setSelectedBarberId] = useState<string | null>(fixedBarberId || null);
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [loading, setLoading] = useState(true);
@@ -128,40 +128,42 @@ export default function BarberSchedule() {
     return (
         <div className="space-y-6">
             {/* Header / Barber Selector */}
-            <div className="flex flex-col gap-6">
-                {/* Step 1: Barber Selector */}
-                <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
-                    <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <User className="text-neon-blue" />
-                        {t('admin.calendar.select_barber')}
-                    </h3>
-                    <div className="flex gap-4 overflow-x-auto pb-2 custom-scrollbar">
-                        {barbers.map(barber => (
-                            <button
-                                key={barber.id}
-                                onClick={() => {
-                                    setSelectedBarberId(barber.id);
-                                    setSelectedDate(null); // Reset date when changing barber
-                                }}
-                                className={`
-                                    flex items-center gap-3 px-4 py-3 rounded-xl border transition-all min-w-[200px]
-                                    ${selectedBarberId === barber.id
-                                        ? "bg-neon-blue/10 border-neon-blue text-white"
-                                        : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10"}
-                                `}
-                            >
-                                <div className="w-10 h-10 rounded-full bg-gray-800 overflow-hidden">
-                                    <img src={barber.image} alt={barber.name} className="w-full h-full object-cover" />
-                                </div>
-                                <div className="text-left">
-                                    <div className="font-bold">{barber.name}</div>
-                                    <div className="text-xs opacity-70">{barber.specialty}</div>
-                                </div>
-                            </button>
-                        ))}
+            {!fixedBarberId && (
+                <div className="flex flex-col gap-6">
+                    {/* Step 1: Barber Selector */}
+                    <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
+                        <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                            <User className="text-neon-blue" />
+                            {t('admin.calendar.select_barber')}
+                        </h3>
+                        <div className="flex gap-4 overflow-x-auto pb-2 custom-scrollbar">
+                            {barbers.map(barber => (
+                                <button
+                                    key={barber.id}
+                                    onClick={() => {
+                                        setSelectedBarberId(barber.id);
+                                        setSelectedDate(null); // Reset date when changing barber
+                                    }}
+                                    className={`
+                                        flex items-center gap-3 px-4 py-3 rounded-xl border transition-all min-w-[200px]
+                                        ${selectedBarberId === barber.id
+                                            ? "bg-neon-blue/10 border-neon-blue text-white"
+                                            : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10"}
+                                    `}
+                                >
+                                    <div className="w-10 h-10 rounded-full bg-gray-800 overflow-hidden">
+                                        <img src={barber.image} alt={barber.name} className="w-full h-full object-cover" />
+                                    </div>
+                                    <div className="text-left">
+                                        <div className="font-bold">{barber.name}</div>
+                                        <div className="text-xs opacity-70">{(barber as any).specialty}</div>
+                                    </div>
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             <AnimatePresence mode="wait">
                 {!selectedBarberId ? (
