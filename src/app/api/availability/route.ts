@@ -12,7 +12,7 @@ export async function GET(request: Request) {
         const barber = searchParams.get('barber');
         const date = searchParams.get('date');
 
-        let whereClause: any = { isOff: true };
+        let whereClause: any = {};
         if (barber) whereClause.barber = barber;
         if (date) whereClause.date = date;
 
@@ -36,31 +36,14 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        const { barber, date, isOff } = body;
+        const { barber, date, isOff, closedHours } = body;
 
         if (!barber || !date) {
             return NextResponse.json({ error: 'Missing barber or date' }, { status: 400 });
         }
 
-        if (isOff) {
-            // Set as Day Off (Create or Update)
-            const record = await prisma.barberAvailability.upsert({
-                where: {
-                    barber_date: {
-                        barber,
-                        date
-                    }
-                },
-                update: { isOff: true },
-                create: {
-                    barber,
-                    date,
-                    isOff: true
-                }
-            });
-            return NextResponse.json(record);
-        } else {
-            // Set as Working (Delete record)
+        // If not full day off, and no closed hours, delete the record completely
+        if (!isOff && (!closedHours || closedHours === "[]")) {
             try {
                 await prisma.barberAvailability.delete({
                     where: {
@@ -72,10 +55,30 @@ export async function POST(request: Request) {
                 });
                 return NextResponse.json({ success: true, deleted: true });
             } catch (e) {
-                // Record might not exist, which is fine
                 return NextResponse.json({ success: true, deleted: false });
             }
         }
+
+        // Otherwise, Set as Day Off OR Set blocked hours
+        const record = await prisma.barberAvailability.upsert({
+            where: {
+                barber_date: {
+                    barber,
+                    date
+                }
+            },
+            update: {
+                isOff: isOff ?? false,
+                closedHours: closedHours || "[]"
+            },
+            create: {
+                barber,
+                date,
+                isOff: isOff ?? false,
+                closedHours: closedHours || "[]"
+            }
+        });
+        return NextResponse.json(record);
     } catch (error) {
         console.error('Failed to update availability:', error);
         return NextResponse.json({ error: 'Failed to update availability' }, { status: 500 });

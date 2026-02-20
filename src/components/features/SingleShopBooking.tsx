@@ -46,7 +46,7 @@ export default function SingleShopBooking() {
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [selectedBarber, setSelectedBarber] = useState<string | null>(null); // Barber ID
-    const [unavailableBarbers, setUnavailableBarbers] = useState<string[]>([]); // Names of barbers who are off
+    const [barberAvailabilities, setBarberAvailabilities] = useState<any[]>([]); // Full DB objects
     const [contactInfo, setContactInfo] = useState({ name: "", phone: "", email: "" });
     const [countryCode, setCountryCode] = useState("+49");
     const [error, setError] = useState("");
@@ -109,19 +109,30 @@ export default function SingleShopBooking() {
             fetch(`/api/availability?date=${dateStr}`)
                 .then(res => res.json())
                 .then((data: any[]) => {
-                    const off = data.filter(d => d.isOff).map(d => d.barber);
-                    setUnavailableBarbers(off);
-                    // Deselect if currently selected barber is off
-                    if (selectedBarber && off.find(name => {
-                        const b = barbers.find(barb => barb.id === selectedBarber);
-                        return b && b.name === name;
-                    })) {
-                        setSelectedBarber(null);
+                    setBarberAvailabilities(data || []);
+
+                    // Deselect if currently selected barber is off or closed for the selected time
+                    if (selectedBarber && selectedTime) {
+                        const bName = barbers.find(b => b.id === selectedBarber)?.name;
+                        const rec = data.find(d => d.barber === bName);
+
+                        let isClosed = false;
+                        if (rec) {
+                            if (rec.isOff) isClosed = true;
+                            if (rec.closedHours && rec.closedHours !== "[]") {
+                                try {
+                                    const parsed = JSON.parse(rec.closedHours);
+                                    if (parsed.includes(selectedTime)) isClosed = true;
+                                } catch (e) { }
+                            }
+                        }
+
+                        if (isClosed) setSelectedBarber(null);
                     }
                 })
                 .catch(console.error);
         }
-    }, [selectedDate, selectedBarber, barbers]);
+    }, [selectedDate, selectedBarber, selectedTime, barbers]);
 
     const handleNext = async () => {
         if (step === 1 && selectedServices.length > 0) setStep(2);
@@ -353,34 +364,68 @@ export default function SingleShopBooking() {
                                                 if (selDate < today) return true;
 
                                                 // If date is in future, time is not past
-                                                if (selDate > today) return false;
-
                                                 // If date is today, check time
-                                                const [hours, minutes] = time.split(':').map(Number);
-                                                const slotTime = new Date(now);
-                                                slotTime.setHours(hours, minutes, 0, 0);
-
-                                                return slotTime < now;
+                                                if (selDate.getTime() === today.getTime()) {
+                                                    const [hours, minutes] = time.split(':').map(Number);
+                                                    const slotTime = new Date(now);
+                                                    slotTime.setHours(hours, minutes, 0, 0);
+                                                    if (slotTime < now) return true;
+                                                }
+                                                return false;
                                             })();
+
+                                            // Check if all barbers are blocked for this time slot
+                                            const isAllBlocked = (() => {
+                                                if (!barbers || barbers.length === 0) return false;
+
+                                                for (let b of barbers) {
+                                                    const rec = barberAvailabilities.find(a => a.barber === b.name);
+
+                                                    // If we find a barber with NO record, they are fully available
+                                                    if (!rec) return false;
+
+                                                    // If we find a barber who is NOT fully off and DOES NOT have this time closed, someone is available
+                                                    if (!rec.isOff) {
+                                                        let closed = false;
+                                                        if (rec.closedHours && rec.closedHours !== "[]") {
+                                                            try {
+                                                                const parsed = JSON.parse(rec.closedHours);
+                                                                if (parsed.includes(time)) closed = true;
+                                                            } catch (e) { }
+                                                        }
+                                                        if (!closed) return false;
+                                                    }
+                                                }
+                                                // If loop completes, everyone was either off or had this hour closed
+                                                return true;
+                                            })();
+
+                                            const isDisabled = isPast || isAllBlocked;
 
                                             return (
                                                 <button
                                                     key={time}
-                                                    disabled={isPast}
+                                                    disabled={isDisabled}
                                                     onClick={() => {
                                                         setSelectedTime(time);
+                                                        setSelectedBarber(null); // Reset barber pick if time changes
                                                         setTimeout(() => scrollToElement('action-bar-bottom'), 100);
                                                     }}
                                                     className={cn(
-                                                        "py-3 rounded-xl text-center font-bold border transition-all duration-300",
+                                                        "py-3 rounded-xl text-center font-bold border transition-all duration-300 relative overflow-hidden",
                                                         selectedTime === time
                                                             ? "bg-neon-blue text-black border-neon-blue shadow-[0_0_15px_rgba(0,255,255,0.4)]"
-                                                            : isPast
+                                                            : isDisabled
                                                                 ? "bg-white/5 border-white/5 text-gray-600 cursor-not-allowed opacity-50"
                                                                 : "bg-white/5 border-white/10 text-white hover:border-neon-blue/50 hover:bg-white/10"
                                                     )}
                                                 >
                                                     {time}
+                                                    {isDisabled && !isPast && (
+                                                        <div className="absolute inset-0 flex items-center justify-center opacity-30 mt-6 pointer-events-none">
+                                                            <span className="text-[10px] text-red-500 bg-red-500/10 px-1 rounded uppercase tracking-wider font-bold">Dolu</span>
+                                                        </div>
+                                                    )}
                                                 </button>
                                             );
                                         })}
@@ -409,7 +454,19 @@ export default function SingleShopBooking() {
                                     className="grid grid-cols-1 md:grid-cols-2 gap-6"
                                 >
                                     {barbers.map(barber => {
-                                        const isOff = unavailableBarbers.includes(barber.name);
+                                        const rec = barberAvailabilities.find(a => a.barber === barber.name);
+                                        let isOff = false;
+
+                                        if (rec) {
+                                            if (rec.isOff) isOff = true;
+                                            if (selectedTime && rec.closedHours && rec.closedHours !== "[]") {
+                                                try {
+                                                    const parsed = JSON.parse(rec.closedHours);
+                                                    if (parsed.includes(selectedTime)) isOff = true;
+                                                } catch (e) { }
+                                            }
+                                        }
+
                                         return (
                                             <div
                                                 key={barber.id}

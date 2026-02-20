@@ -102,6 +102,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "av.day_off": "Freier Tag",
         "av.working": "Arbeitet",
         "av.cancel": "Abbrechen",
+        "av.select_hours": "Stunden Wählen",
+        "av.save": "Speichern",
         "av.set_off": "Als freien Tag markieren",
         "av.set_working": "Als Arbeitstag markieren",
 
@@ -285,6 +287,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "av.day_off": "Day Off",
         "av.working": "Working",
         "av.cancel": "Cancel",
+        "av.select_hours": "Select Hours",
+        "av.save": "Save",
         "av.set_off": "Mark as Day Off",
         "av.set_working": "Mark as Working",
 
@@ -468,6 +472,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "av.day_off": "İzinli",
         "av.working": "Çalışıyor",
         "av.cancel": "Vazgeç",
+        "av.select_hours": "Saat Seç",
+        "av.save": "Kaydet",
         "av.set_off": "İzinli Olarak İşaretle",
         "av.set_working": "Çalışıyor Olarak İşaretle",
 
@@ -651,6 +657,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "av.day_off": "bêhnvedan",
         "av.working": "Dixebite",
         "av.cancel": "Dev jê berde",
+        "av.select_hours": "Saetan Hilbijêre",
+        "av.save": "Tomar Bike",
         "av.set_off": "Weke Bêhnvedan Nîşan Bide",
         "av.set_working": "Weke Dixebite Nîşan Bide",
 
@@ -833,6 +841,8 @@ export const TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
         "av.day_off": "عطلة",
         "av.working": "عمل",
         "av.cancel": "إلغاء",
+        "av.select_hours": "حدد الساعات",
+        "av.save": "حفظ",
         "av.set_off": "تحديد كعطلة",
         "av.set_working": "تحديد كعمل",
 

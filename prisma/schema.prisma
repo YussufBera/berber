@@ -110,6 +110,7 @@ model BarberAvailability {
   barber    String   // Store name to match current convention
   date      String   // ISO String of the date (YYYY-MM-DD)
   isOff     Boolean  @default(true)
+  closedHours String @default("[]") // JSON string of disabled time slots
   createdAt DateTime @default(now())
 
   @@unique([barber, date])

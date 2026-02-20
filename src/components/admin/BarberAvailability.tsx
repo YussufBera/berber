@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { User, ChevronLeft, ChevronRight, CheckCircle, XCircle } from "lucide-react";
+import { User, ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Barber } from "@/lib/mockData";
 import { useLanguage } from "../features/LanguageContext";
@@ -12,9 +12,17 @@ export default function BarberAvailability() {
     const [selectedBarberId, setSelectedBarberId] = useState<string | null>(null);
     const [currentMonth, setCurrentMonth] = useState(new Date());
     const [loading, setLoading] = useState(true);
-    const [offDays, setOffDays] = useState<string[]>([]); // Array of date strings "YYYY-MM-DD"
+    const [availabilities, setAvailabilities] = useState<any[]>([]); // Array of full DB records
+    const [selectedDayAvail, setSelectedDayAvail] = useState<any | null>(null);
     const [selectedDay, setSelectedDay] = useState<Date | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    // Time Slots constant matching frontend SingleShopBooking.tsx
+    const TIME_SLOTS = [
+        "10:00", "10:45", "11:30", "13:00", "13:45", "14:30", "15:15", "16:00", "16:45", "17:30", "18:15", "19:00"
+    ];
+    const [tempClosedHours, setTempClosedHours] = useState<string[]>([]);
+    const [isHoursView, setIsHoursView] = useState(false);
 
     useEffect(() => {
         // Fetch Barbers
@@ -27,20 +35,21 @@ export default function BarberAvailability() {
             .catch(err => console.error(err));
     }, []);
 
-    useEffect(() => {
-        if (!selectedBarberId) return;
-
-        // Fetch Availability for selected barber
-        const selectedBarber = barbers.find(b => b.id === selectedBarberId);
+    const fetchAvailability = (barberId: string) => {
+        const selectedBarber = barbers.find(b => b.id === barberId);
         if (selectedBarber) {
             fetch(`/api/availability?barber=${encodeURIComponent(selectedBarber.name)}`)
                 .then(res => res.json())
                 .then((data: any[]) => {
-                    // Extract dates from data where isOff is true
-                    setOffDays(data.filter(d => d.isOff).map(d => d.date));
+                    setAvailabilities(data || []);
                 })
                 .catch(err => console.error(err));
         }
+    }
+
+    useEffect(() => {
+        if (!selectedBarberId) return;
+        fetchAvailability(selectedBarberId);
     }, [selectedBarberId, barbers]);
 
     // Calendar Logic (Simplified duplicate of Schedule)
@@ -52,9 +61,21 @@ export default function BarberAvailability() {
     const nextMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
     const prevMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
 
-    const handleDayClick = (day: number) => {
-        const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+    const handleDayClick = (dayStr: string) => {
+        const date = new Date(dayStr);
         setSelectedDay(date);
+
+        // Find existing record
+        const existing = availabilities.find(a => a.date === dayStr);
+        setSelectedDayAvail(existing || null);
+
+        // Parse closedHours if they exist
+        let parsed = [];
+        if (existing && existing.closedHours && existing.closedHours !== "[]") {
+            try { parsed = JSON.parse(existing.closedHours); } catch (e) { }
+        }
+        setTempClosedHours(parsed);
+        setIsHoursView(false);
         setIsModalOpen(true);
     };
 
@@ -66,7 +87,7 @@ export default function BarberAvailability() {
         return `${year}-${month}-${day}`;
     };
 
-    const updateAvailability = async (isOff: boolean) => {
+    const updateAvailability = async (isOff: boolean, closedHours: string[] = []) => {
         if (!selectedDay || !selectedBarberId) return;
 
         const barberName = barbers.find(b => b.id === selectedBarberId)?.name;
@@ -74,6 +95,7 @@ export default function BarberAvailability() {
 
         const dateKey = formatDateKey(selectedDay);
 
+        // Optimistic UI update could go here, but fetch is safer.
         try {
             await fetch('/api/availability', {
                 method: 'POST',
@@ -81,20 +103,24 @@ export default function BarberAvailability() {
                 body: JSON.stringify({
                     barber: barberName,
                     date: dateKey,
-                    isOff
+                    isOff,
+                    closedHours: JSON.stringify(closedHours)
                 })
             });
 
-            // Update local state
-            if (isOff) {
-                setOffDays(prev => [...prev, dateKey]);
-            } else {
-                setOffDays(prev => prev.filter(d => d !== dateKey));
-            }
+            // Re-fetch to guarantee sync
+            fetchAvailability(selectedBarberId);
             setIsModalOpen(false);
+            setIsHoursView(false);
         } catch (error) {
             console.error("Failed to update availability", error);
         }
+    };
+
+    const toggleHour = (time: string) => {
+        setTempClosedHours(prev =>
+            prev.includes(time) ? prev.filter(t => t !== time) : [...prev, time]
+        );
     };
 
     const renderCalendar = () => {
@@ -109,7 +135,18 @@ export default function BarberAvailability() {
         for (let i = 1; i <= daysInMonth; i++) {
             const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i);
             const dateKey = formatDateKey(date);
-            const isOff = offDays.includes(dateKey);
+
+            const record = availabilities.find(a => a.date === dateKey);
+            const isOff = record?.isOff;
+
+            let hasClosedHours = false;
+            if (record?.closedHours && record.closedHours !== "[]") {
+                try {
+                    const parsed = JSON.parse(record.closedHours);
+                    if (parsed.length > 0) hasClosedHours = true;
+                } catch (e) { }
+            }
+
             const isToday = new Date().toDateString() === date.toDateString();
 
             days.push(
@@ -117,18 +154,20 @@ export default function BarberAvailability() {
                     key={i}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => handleDayClick(i)}
+                    onClick={() => handleDayClick(dateKey)}
                     className={`
                         h-14 md:h-24 p-1 md:p-2 rounded-xl border flex flex-col items-center justify-center transition-all relative
                         ${isOff
                             ? "bg-red-500/20 border-red-500 text-red-500 hover:bg-red-500/30"
-                            : "bg-green-500/10 border-green-500/30 text-white hover:bg-green-500/20"}
+                            : hasClosedHours
+                                ? "bg-orange-500/20 border-orange-500 text-orange-400 hover:bg-orange-500/30"
+                                : "bg-green-500/10 border-green-500/30 text-white hover:bg-green-500/20"}
                         ${isToday ? "ring-2 ring-white" : ""}
                     `}
                 >
                     <span className="text-lg md:text-2xl font-bold">{i}</span>
                     <span className="text-[10px] md:text-xs font-bold mt-1 md:mt-2 uppercase truncate w-full text-center">
-                        {isOff ? t('av.day_off') : t('av.working')}
+                        {isOff ? t('av.day_off') : hasClosedHours ? t('av.select_hours') : t('av.working')}
                     </span>
                 </motion.button>
             );
@@ -169,7 +208,6 @@ export default function BarberAvailability() {
                             </div>
                             <div className="text-left">
                                 <div className="font-bold">{barber.name}</div>
-                                <div className="text-xs opacity-70">{barber.specialty}</div>
                             </div>
                         </button>
                     ))}
@@ -228,24 +266,68 @@ export default function BarberAvailability() {
                             </p>
 
                             <div className="flex flex-col gap-3">
-                                <button
-                                    onClick={() => updateAvailability(true)}
-                                    className="w-full py-4 rounded-xl bg-red-500/20 text-red-500 border border-red-500 hover:bg-red-500 hover:text-white transition-all font-bold flex items-center justify-center gap-2"
-                                >
-                                    <XCircle /> {t('av.day_off', 'Day Off')}
-                                </button>
-                                <button
-                                    onClick={() => updateAvailability(false)}
-                                    className="w-full py-4 rounded-xl bg-green-500/20 text-green-500 border border-green-500 hover:bg-green-500 hover:text-white transition-all font-bold flex items-center justify-center gap-2"
-                                >
-                                    <CheckCircle /> {t('av.working', 'Working')}
-                                </button>
-                                <button
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="w-full py-4 rounded-xl bg-white/5 text-gray-400 hover:bg-white/10 transition-all font-bold mt-2"
-                                >
-                                    {t('av.cancel', 'Cancel')}
-                                </button>
+                                {!isHoursView ? (
+                                    <>
+                                        <button
+                                            onClick={() => updateAvailability(true)}
+                                            className="w-full py-4 rounded-xl bg-red-500/20 text-red-500 border border-red-500 hover:bg-red-500 hover:text-white transition-all font-bold flex items-center justify-center gap-2"
+                                        >
+                                            <XCircle /> {t('av.day_off', 'Day Off')}
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setIsHoursView(true);
+                                            }}
+                                            className="w-full py-4 rounded-xl bg-orange-500/20 text-orange-400 border border-orange-500 hover:bg-orange-500 hover:text-white transition-all font-bold flex items-center justify-center gap-2"
+                                        >
+                                            <Clock /> {t('av.select_hours', 'Select Hours')}
+                                        </button>
+                                        <button
+                                            onClick={() => updateAvailability(false)}
+                                            className="w-full py-4 rounded-xl bg-green-500/20 text-green-500 border border-green-500 hover:bg-green-500 hover:text-white transition-all font-bold flex items-center justify-center gap-2"
+                                        >
+                                            <CheckCircle /> {t('av.working', 'Working')}
+                                        </button>
+                                        <button
+                                            onClick={() => setIsModalOpen(false)}
+                                            className="w-full py-4 rounded-xl bg-white/5 text-gray-400 hover:bg-white/10 transition-all font-bold mt-2"
+                                        >
+                                            {t('av.cancel', 'Cancel')}
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="grid grid-cols-3 gap-2 mb-4">
+                                            {TIME_SLOTS.map(time => {
+                                                const isSelected = tempClosedHours.includes(time);
+                                                return (
+                                                    <button
+                                                        key={time}
+                                                        onClick={() => toggleHour(time)}
+                                                        className={`py-2 rounded-lg text-sm font-bold border transition-all ${isSelected
+                                                                ? "bg-red-500 border-red-500 text-white"
+                                                                : "bg-white/5 border-white/10 text-gray-400 hover:bg-white/10"
+                                                            }`}
+                                                    >
+                                                        {time}
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                        <button
+                                            onClick={() => updateAvailability(false, tempClosedHours)}
+                                            className="w-full py-4 rounded-xl bg-neon-blue text-black border border-neon-blue hover:bg-white hover:border-white transition-all font-bold flex items-center justify-center gap-2"
+                                        >
+                                            <CheckCircle /> {t('av.save', 'Save')}
+                                        </button>
+                                        <button
+                                            onClick={() => setIsHoursView(false)}
+                                            className="w-full py-4 rounded-xl bg-white/5 text-gray-400 hover:bg-white/10 transition-all font-bold mt-2"
+                                        >
+                                            {t('back', 'Back')}
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         </motion.div>
                     </div>
