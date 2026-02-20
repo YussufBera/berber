@@ -92,14 +92,17 @@ export default function SingleShopBooking() {
     // Campaign helper
     const getActiveCampaign = (s: any) => {
         if (!s.campaignPrice || !s.campaignStartDate || !s.campaignEndDate) return null;
-        const now = new Date();
+
+        // Use the selected date if they've picked one, otherwise fallback to current date
+        const targetDate = selectedDate ? new Date(selectedDate) : new Date();
+
         const start = new Date(s.campaignStartDate);
         start.setHours(0, 0, 0, 0);
         const end = new Date(s.campaignEndDate);
         end.setHours(23, 59, 59, 999);
 
-        // Ensure dates are valid and current time is within range
-        if (now >= start && now <= end) {
+        // Ensure dates are valid and target date is within range
+        if (targetDate >= start && targetDate <= end) {
             return { price: s.campaignPrice, endDate: end };
         }
         return null;
