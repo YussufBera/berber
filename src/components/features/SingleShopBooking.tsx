@@ -89,9 +89,26 @@ export default function SingleShopBooking() {
         );
     };
 
+    // Campaign helper
+    const getActiveCampaign = (s: any) => {
+        if (!s.campaignPrice || !s.campaignStartDate || !s.campaignEndDate) return null;
+        const now = new Date();
+        const start = new Date(s.campaignStartDate);
+        const end = new Date(s.campaignEndDate);
+
+        // Ensure dates are valid and current time is within range
+        if (now >= start && now <= end) {
+            return { price: s.campaignPrice, endDate: end };
+        }
+        return null;
+    };
+
     const servicesTotal = services
         .filter(s => selectedServices.includes(s.id))
-        .reduce((acc, s) => acc + s.price, 0);
+        .reduce((acc, s) => {
+            const camp = getActiveCampaign(s);
+            return acc + (camp ? camp.price : s.price);
+        }, 0);
 
     // Add 1 Euro if specific barber is selected (and it's not "any" - represented by null or "any" based on logic below)
     // We'll use "any" as the ID for Any Barber selection
@@ -260,36 +277,59 @@ export default function SingleShopBooking() {
                                 transition={{ duration: 0.5 }}
                                 className="grid grid-cols-1 md:grid-cols-2 gap-4"
                             >
-                                {services.map(service => (
-                                    <div
-                                        key={service.id}
-                                        onClick={() => {
-                                            toggleService(service.id);
-                                            // Scroll down a bit to encourage progression or show more
-                                            setTimeout(() => {
-                                                window.scrollBy({ top: 150, behavior: 'smooth' });
-                                            }, 100);
-                                        }}
-                                        className={cn(
-                                            "relative group p-6 rounded-2xl border cursor-pointer transition-all duration-300 overflow-hidden",
-                                            selectedServices.includes(service.id)
-                                                ? "bg-neon-blue/10 border-neon-blue"
-                                                : "bg-white/5 border-white/10 hover:border-white/30"
-                                        )}
-                                    >
-                                        <div className="flex justify-between items-start mb-2">
-                                            <h3 className="text-xl font-bold text-white">{getServiceName(service)}</h3>
-                                            <span className="text-neon-blue font-mono text-lg">€{service.price}</span>
-                                        </div>
-                                        <p className="text-gray-400 text-sm">{service.duration} {t('unit.mins')}</p>
-
-                                        {selectedServices.includes(service.id) && (
-                                            <div className="absolute right-4 bottom-4 w-8 h-8 bg-neon-blue rounded-full flex items-center justify-center text-black">
-                                                <Check size={18} />
+                                {services.map(service => {
+                                    const camp = getActiveCampaign(service);
+                                    return (
+                                        <div
+                                            key={service.id}
+                                            onClick={() => {
+                                                toggleService(service.id);
+                                                // Scroll down a bit to encourage progression or show more
+                                                setTimeout(() => {
+                                                    window.scrollBy({ top: 150, behavior: 'smooth' });
+                                                }, 100);
+                                            }}
+                                            className={cn(
+                                                "relative group p-6 rounded-2xl border cursor-pointer transition-all duration-300 overflow-hidden flex flex-col justify-between",
+                                                selectedServices.includes(service.id)
+                                                    ? "bg-neon-blue/10 border-neon-blue"
+                                                    : "bg-white/5 border-white/10 hover:border-white/30"
+                                            )}
+                                        >
+                                            <div>
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                                                        {getServiceName(service)}
+                                                    </h3>
+                                                    <div className="text-right flex flex-col items-end">
+                                                        {camp ? (
+                                                            <>
+                                                                <span className="text-gray-500 font-bold line-through text-xs">€{service.price}</span>
+                                                                <span className="text-neon-blue font-extrabold text-xl">€{camp.price}</span>
+                                                            </>
+                                                        ) : (
+                                                            <span className="text-neon-blue font-mono text-lg">€{service.price}</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col gap-1">
+                                                    <p className="text-gray-400 text-sm">{service.duration} {t('unit.mins')}</p>
+                                                    {camp && (
+                                                        <p className="text-xs text-red-400 font-medium">
+                                                            ⏱ {camp.endDate.toLocaleDateString(currentLocale)} {t('admin.services.campaign_until') || 'until'}
+                                                        </p>
+                                                    )}
+                                                </div>
                                             </div>
-                                        )}
-                                    </div>
-                                ))}
+
+                                            {selectedServices.includes(service.id) && (
+                                                <div className="absolute right-4 bottom-4 w-8 h-8 bg-neon-blue rounded-full flex items-center justify-center text-black">
+                                                    <Check size={18} />
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
                             </motion.div>
                         )}
 
@@ -686,12 +726,24 @@ export default function SingleShopBooking() {
                             <p className="text-gray-500 text-sm italic">{t('select.service_prompt')}</p>
                         ) : (
                             <div className="space-y-4">
-                                {services.filter(s => selectedServices.includes(s.id)).map(s => (
-                                    <div key={s.id} className="flex justify-between text-gray-300 text-sm border-b border-white/5 pb-2">
-                                        <span>{getServiceName(s)}</span>
-                                        <span>€{s.price}</span>
-                                    </div>
-                                ))}
+                                {services.filter(s => selectedServices.includes(s.id)).map(s => {
+                                    const camp = getActiveCampaign(s);
+                                    return (
+                                        <div key={s.id} className="flex justify-between text-gray-300 text-sm border-b border-white/5 pb-2">
+                                            <span>{getServiceName(s)} {camp && <span className="text-red-400 text-[10px] uppercase ml-1 block">{t('admin.services.campaign')}</span>}</span>
+                                            <div className="text-right">
+                                                {camp ? (
+                                                    <div className="flex flex-col items-end leading-tight">
+                                                        <span className="line-through text-gray-500 text-[10px]">€{s.price}</span>
+                                                        <span className="text-neon-blue font-bold">€{camp.price}</span>
+                                                    </div>
+                                                ) : (
+                                                    <span>€{s.price}</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                                 {isSpecificBarberSelected && (
                                     <div className="flex justify-between text-neon-blue text-sm border-b border-white/5 pb-2">
                                         <span>{t("select.barber")} ({barbers.find(b => b.id === selectedBarber)?.name})</span>

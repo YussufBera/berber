@@ -31,7 +31,10 @@ export async function GET() {
             id: s.id,
             name: { de: s.name_de, en: s.name_en, tr: s.name_tr },
             price: s.price,
-            duration: s.duration
+            duration: s.duration,
+            campaignPrice: s.campaignPrice,
+            campaignStartDate: s.campaignStartDate,
+            campaignEndDate: s.campaignEndDate
         }));
 
         return NextResponse.json(formatted);
@@ -53,7 +56,10 @@ export async function POST(request: Request) {
                 name_en: body.name.en,
                 name_tr: body.name.tr,
                 price: parseFloat(body.price),
-                duration: parseInt(body.duration)
+                duration: parseInt(body.duration),
+                campaignPrice: body.campaignPrice ? parseFloat(body.campaignPrice) : null,
+                campaignStartDate: body.campaignStartDate ? new Date(body.campaignStartDate) : null,
+                campaignEndDate: body.campaignEndDate ? new Date(body.campaignEndDate) : null
             }
         });
 
@@ -62,7 +68,10 @@ export async function POST(request: Request) {
             id: service.id,
             name: { de: service.name_de, en: service.name_en, tr: service.name_tr },
             price: service.price,
-            duration: service.duration
+            duration: service.duration,
+            campaignPrice: service.campaignPrice,
+            campaignStartDate: service.campaignStartDate,
+            campaignEndDate: service.campaignEndDate
         });
     } catch (error) {
         return NextResponse.json({ error: 'Failed to create service' }, { status: 500 });
@@ -81,7 +90,10 @@ export async function PUT(request: Request) {
             where: { id: body.id },
             data: {
                 price: parseFloat(body.price),
-                duration: parseInt(body.duration)
+                duration: parseInt(body.duration),
+                campaignPrice: body.campaignPrice ? parseFloat(body.campaignPrice) : null,
+                campaignStartDate: body.campaignStartDate ? new Date(body.campaignStartDate) : null,
+                campaignEndDate: body.campaignEndDate ? new Date(body.campaignEndDate) : null
             }
         });
 

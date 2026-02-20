@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/admin/DashboardLayout";
 
 import { MOCK_SHOPS, Service } from "@/lib/mockData";
-import { Trash2, Plus, Save, X, RefreshCw, Edit2 } from "lucide-react";
+import { Trash2, Plus, Save, X, RefreshCw, Edit2, Tag } from "lucide-react";
 
 import { useLanguage } from "@/components/features/LanguageContext";
 
@@ -92,6 +92,52 @@ export default function ServicesPage() {
         }
     };
 
+    // Campaign Form State
+    const [campaignEditorId, setCampaignEditorId] = useState<string | null>(null);
+    const [campaignForm, setCampaignForm] = useState<{
+        price: number;
+        startDate: string;
+        endDate: string;
+    }>({ price: 0, startDate: "", endDate: "" });
+
+    const startCampaignEdit = (service: Service | any) => {
+        setCampaignEditorId(service.id);
+        const sDate = service.campaignStartDate ? new Date(service.campaignStartDate).toISOString().split('T')[0] : "";
+        const eDate = service.campaignEndDate ? new Date(service.campaignEndDate).toISOString().split('T')[0] : "";
+        setCampaignForm({
+            price: service.campaignPrice || service.price || 0,
+            startDate: sDate,
+            endDate: eDate
+        });
+    };
+
+    const saveCampaignEdit = async (id: string, remove: boolean = false) => {
+        try {
+            const payload = remove ? {
+                id,
+                campaignPrice: null,
+                campaignStartDate: null,
+                campaignEndDate: null
+            } : {
+                id,
+                campaignPrice: Number(campaignForm.price),
+                campaignStartDate: campaignForm.startDate ? new Date(campaignForm.startDate).toISOString() : null,
+                campaignEndDate: campaignForm.endDate ? new Date(campaignForm.endDate).toISOString() : null
+            };
+
+            await fetch('/api/services', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            setLocalServices(prev => prev.map(s => s.id === id ? { ...s, ...payload } as any : s));
+            setCampaignEditorId(null);
+        } catch (e) {
+            console.error("Failed to update campaign", e);
+        }
+    };
+
     return (
         <DashboardLayout>
             <div className="bg-[#111] border border-white/5 rounded-2xl p-6">
@@ -169,64 +215,118 @@ export default function ServicesPage() {
                     {localServices.length === 0 && (
                         <p className="text-center text-gray-500 py-10">{t('admin.services.empty')}</p>
                     )}
-                    {localServices.map(service => (
-                        <div key={service.id} className="flex justify-between items-center p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-colors group">
-                            <div>
-                                <h4 className="font-bold text-white group-hover:text-neon-blue transition-colors">{service.name.de}</h4>
-                                <p className="text-xs text-gray-500">{service.name.en} / {service.name.tr}</p>
-                            </div>
-                            <div className="flex items-center gap-6">
-                                <div className="text-right">
-                                    {editingId === service.id ? (
-                                        <div className="flex flex-col gap-1 w-24">
-                                            <input
-                                                type="number"
-                                                className="bg-black border border-neon-blue rounded px-2 py-1 text-right text-sm text-neon-blue font-mono"
-                                                value={editForm.price}
-                                                onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
-                                                autoFocus
-                                            />
-                                            <input
-                                                type="number"
-                                                className="bg-black border border-white/20 rounded px-2 py-1 text-right text-xs text-gray-400"
-                                                value={editForm.duration}
-                                                onChange={e => setEditForm({ ...editForm, duration: Number(e.target.value) })}
-                                            />
+                    {localServices.map((service: any) => {
+                        const hasCampaign = !!service.campaignPrice;
+                        return (
+                            <div key={service.id} className="flex flex-col gap-2 p-4 bg-white/5 rounded-xl border border-white/5 hover:border-white/10 transition-colors group">
+                                <div className="flex justify-between items-center">
+                                    <div className="flex items-center gap-3">
+                                        <div>
+                                            <h4 className="font-bold text-white group-hover:text-neon-blue transition-colors flex items-center gap-2">
+                                                {service.name.de}
+                                                {hasCampaign && <span className="text-[10px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded uppercase font-bold tracking-wide animate-pulse">{t('admin.services.campaign_active')}</span>}
+                                            </h4>
+                                            <p className="text-xs text-gray-500">{service.name.en} / {service.name.tr}</p>
                                         </div>
-                                    ) : (
-                                        <>
-                                            <p className="font-mono text-neon-blue font-bold">€{service.price}</p>
-                                            <p className="text-xs text-gray-400">{service.duration} min</p>
-                                        </>
-                                    )}
-                                </div>
-                                <div className="flex gap-2">
-                                    {editingId === service.id ? (
-                                        <button
-                                            onClick={() => saveEdit(service.id)}
-                                            className="p-2 bg-neon-blue/10 text-neon-blue hover:bg-neon-blue hover:text-black rounded-lg transition-colors"
-                                        >
-                                            <Save size={18} />
-                                        </button>
-                                    ) : (
-                                        <button
-                                            onClick={() => startEdit(service)}
-                                            className="p-2 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-colors"
-                                        >
-                                            <Edit2 size={18} />
-                                        </button>
-                                    )}
+                                    </div>
+                                    <div className="flex items-center gap-6">
+                                        <div className="text-right">
+                                            {editingId === service.id ? (
+                                                <div className="flex flex-col gap-1 w-24">
+                                                    <input
+                                                        type="number"
+                                                        className="bg-black border border-neon-blue rounded px-2 py-1 text-right text-sm text-neon-blue font-mono"
+                                                        value={editForm.price}
+                                                        onChange={e => setEditForm({ ...editForm, price: Number(e.target.value) })}
+                                                        autoFocus
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        className="bg-black border border-white/20 rounded px-2 py-1 text-right text-xs text-gray-400"
+                                                        value={editForm.duration}
+                                                        onChange={e => setEditForm({ ...editForm, duration: Number(e.target.value) })}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <>
+                                                    {hasCampaign ? (
+                                                        <>
+                                                            <p className="font-mono text-gray-500 font-bold line-through text-xs">€{service.price}</p>
+                                                            <p className="font-mono text-neon-blue font-extrabold text-lg">€{service.campaignPrice}</p>
+                                                        </>
+                                                    ) : (
+                                                        <p className="font-mono text-neon-blue font-bold">€{service.price}</p>
+                                                    )}
+                                                    <p className="text-xs text-gray-400">{service.duration} {t('unit.mins')}</p>
+                                                </>
+                                            )}
+                                        </div>
+                                        <div className="flex flex-col md:flex-row gap-2">
+                                            <button
+                                                onClick={() => startCampaignEdit(service)}
+                                                className="p-2 hover:bg-neon-purple/20 text-neon-purple rounded-lg transition-colors border border-neon-purple/30"
+                                                title={t('admin.services.campaign')}
+                                            >
+                                                <Tag size={18} />
+                                            </button>
 
-                                    <button
-                                        onClick={() => handleDelete(service.id)}
-                                        className="p-2 hover:bg-red-500/20 text-gray-400 hover:text-red-500 rounded-lg transition-colors"
-                                    >
-                                        <Trash2 size={18} />
-                                    </button>
+
+
+                                            <button
+                                                onClick={() => handleDelete(service.id)}
+                                                className="p-2 hover:bg-red-500/20 text-gray-400 hover:text-red-500 rounded-lg transition-colors"
+                                            >
+                                                <Trash2 size={18} />
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
+
+                                {/* Campaign Editor Modal-like Inline Dropdown */}
+                                {campaignEditorId === service.id && (
+                                    <div className="mt-4 p-4 border border-neon-purple/30 bg-neon-purple/5 rounded-xl flex flex-col gap-4 animate-in fade-in zoom-in-95">
+                                        <h5 className="text-neon-purple font-bold flex items-center gap-2"><Tag size={16} /> {t('admin.services.campaign')}</h5>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                            <div>
+                                                <label className="text-xs text-gray-400 block mb-1">{t('admin.services.campaign_price')}</label>
+                                                <input
+                                                    type="number"
+                                                    value={campaignForm.price}
+                                                    onChange={e => setCampaignForm({ ...campaignForm, price: e.target.valueAsNumber })}
+                                                    className="w-full bg-black border border-white/10 rounded-lg p-2 text-white"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="text-xs text-gray-400 block mb-1">{t('admin.services.campaign_start')}</label>
+                                                <input
+                                                    type="date"
+                                                    value={campaignForm.startDate}
+                                                    onChange={e => setCampaignForm({ ...campaignForm, startDate: e.target.value })}
+                                                    className="w-full bg-black border border-white/10 rounded-lg p-2 text-white"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="text-xs text-gray-400 block mb-1">{t('admin.services.campaign_end')}</label>
+                                                <input
+                                                    type="date"
+                                                    value={campaignForm.endDate}
+                                                    onChange={e => setCampaignForm({ ...campaignForm, endDate: e.target.value })}
+                                                    className="w-full bg-black border border-white/10 rounded-lg p-2 text-white"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-between items-center pt-2">
+                                            <button onClick={() => saveCampaignEdit(service.id, true)} className="text-xs text-red-500 hover:text-red-400 px-2 py-1">{t('admin.services.campaign_remove')}</button>
+                                            <div className="flex gap-2">
+                                                <button onClick={() => setCampaignEditorId(null)} className="text-xs text-gray-400 hover:text-white px-3 py-1 bg-white/5 rounded-lg">{t('admin.barbers.cancel')}</button>
+                                                <button onClick={() => saveCampaignEdit(service.id, false)} className="text-xs text-black font-bold bg-neon-purple hover:bg-white px-3 py-1 rounded-lg transition-colors">{t('av.save')}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </DashboardLayout>
